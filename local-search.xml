@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>BUUCTF 新生赛ErrorFlask</title>
+    <link href="/2023/10/27/BUUCTF-%E6%96%B0%E7%94%9F%E8%B5%9BErrorFlask/"/>
+    <url>/2023/10/27/BUUCTF-%E6%96%B0%E7%94%9F%E8%B5%9BErrorFlask/</url>
+    
+    <content type="html"><![CDATA[<p><img src="https://cdn.jsdelivr.net/gh/gaifagafin/picture_bed@main/image-20231027101609419.png" alt="image-20231027101609419"></p><p>进入，看到页面</p><p><img src="https://cdn.jsdelivr.net/gh/gaifagafin/picture_bed@main/image-20231027110819310.png" alt="image-20231027110819310"></p><p>url输入</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://12292bef-a6d9-4fad-9d18-a99ee1cc7a03.node4.buuoj.cn:81/?number1=1&amp;number2=3<br></code></pre></td></tr></table></figure><p>回显</p><p><img src="https://cdn.jsdelivr.net/gh/gaifagafin/picture_bed@main/image-20230926180954191.png" alt="image-20230926180954191"></p><p>url输入</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://fd392ec2-b64c-468a-8242-d1b80e5af4d2.node4.buuoj.cn:81/?number2=a&amp;number1=3<br></code></pre></td></tr></table></figure><p>后会进入报错页面</p><p><img src="https://cdn.jsdelivr.net/gh/gaifagafin/picture_bed@main/image-20231027111425371.png" alt="image-20231027111425371"></p><p>很离谱啊这道题，flag就在报错页面里面，ctrl+f搜flag就出来了</p><p><img src="https://cdn.jsdelivr.net/gh/gaifagafin/picture_bed@main/image-20231027111643832.png" alt="image-20231027111643832"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF Writeup</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>CTF</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Begin_of_HTTP</title>
     <link href="/2023/10/26/Begin-of-HTTP/"/>
     <url>/2023/10/26/Begin-of-HTTP/</url>
