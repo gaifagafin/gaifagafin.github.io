@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://s2.loli.net/2023/10/30/o6qYpUMxtBeOTDz.png">
 <meta property="og:image" content="https://s2.loli.net/2023/10/30/Us8wouE4pIPM93R.png">
 <meta property="article:published_time" content="2023-10-30T04:09:33.000Z">
-<meta property="article:modified_time" content="2023-10-31T04:23:33.719Z">
+<meta property="article:modified_time" content="2023-10-31T09:48:00.291Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary_large_image">
@@ -587,7 +587,7 @@
 <p>上层使用下层提供的服务必须通过与下层交换一些命令，即<strong>服务原语</strong>。</p>
 <p>同一系统中相邻两层的实体交互的地方称为<strong>服务访问点</strong>，实际上就是一个逻辑接口。</p>
 <p>协议必须把所有不利的条件都事先估计到，确保能应对所有异常情况。</p>
-<p><strong>1.7.5 TCP&#x2F;IP****的体系结构</strong></p>
+<p><strong>1.7.5 TCP&#x2F;IP的体系结构</strong></p>
 <p>技术的发展不严格遵循分层概念，事实上现在某些应用程序可以直接使用 IP 层甚至网络接口层，如下图。</p>
 <p><img src="https://s2.loli.net/2023/10/30/IO5SB3qRxMvUF1A.png" srcset="/img/loading.gif" lazyload></p>
 <p>TCP&#x2F;IP 协议族中的多种协议如下所示：</p>
@@ -1070,7 +1070,7 @@
 <li>第一个字段是网络号，标志主机所连接到的网络，一个网络号在整个互联网范围内是唯一的。</li>
 <li>第二个字段是主机号，标志该主机（或路由器），一个主机号在该网络号所指明的网络范围内是唯一的。</li>
 </ol>
-<p><strong>IP</strong> **地址 &#x3D; {，}**，它既指明了主机接口，也指明了所在网络。</p>
+<p>**IP地址 &#x3D; {，}**，它既指明了主机接口，也指明了所在网络。</p>
 <p>分类的 IP 地址分为以下 5 类：</p>
 <ol>
 <li>A 类、B 类、C 类都是单播地址，是最常用的。</li>
@@ -1833,7 +1833,7 @@
 <p><strong>6.4.2</strong> <strong>统一资源定位符URL</strong></p>
 <p>万维网使用统一资源定位符 URL 来标志万维网上的各种文档，<strong>每个文档有在互联网内唯一的 URL</strong>。</p>
 <p>URL 相当于指向互联网上任何可访问对象的一个指针。</p>
-<p>URL 的一般形式：**:&#x2F;&#x2F;:&#x2F;**</p>
+<p>URL 的一般形式为 <strong>:&#x2F;&#x2F;:&#x2F;</strong></p>
 <ol>
 <li>协议：指出采用何种协议来获取该万维网文档，一般为 http，其次为 ftp</li>
 <li>主机：即该主机的域名。</li>
@@ -2304,8 +2304,8 @@
 <p><strong>9.1.3 802.11局域网的MAC层协议</strong></p>
 <p>区分 CSMA&#x2F;CA 协议和 CSMA&#x2F;CD 协议：</p>
 <ol>
-<li><strong>CSMA&#x2F;CA**<strong>：载波监听多点接入</strong></strong>&#x2F;**<strong>碰撞避免</strong></li>
-<li><strong>CSMA&#x2F;CD<strong><strong>：</strong></strong>载波监听多点接入&#x2F;碰撞检测</strong></li>
+<li><strong>CSMA&#x2F;CA</strong>：载波监听多点接入&#x2F;碰撞避免</li>
+<li><strong>CSMA&#x2F;CD</strong>：载波监听多点接入&#x2F;碰撞检测</li>
 </ol>
 <p>802.11 无线以太网在 MAC 层使用 <strong>CSMA&#x2F;CA 协议和停止等待协议</strong>。</p>
 <p>使用停止等待协议是因为无线信道的通信质量远不如有限信道，要使用停止等待来保证<strong>可靠传输</strong>。</p>
@@ -2324,7 +2324,7 @@
 <li><strong>帧间间隔时间：</strong>所有的站在完成发送后，必须再等待一段<strong>帧间间隔时间</strong>才能发送下一帧。不同优先级的帧具有不同的帧间间隔 IFS。这可以降低碰撞概率</li>
 <li><strong>虚拟载波监听：</strong>源站把要占用信道的时间通知给其他所有站，其他站在这段时间就停止发送（其他站实际上没有监听，因此叫做虚拟载波监听），这可以降低碰撞概率。</li>
 <li><strong>随机退避算法：</strong>当某个站发现信道变为空闲时，要等待一个 DIFS 的间隔，再执行退避算法，维护一个退避计时器，计时器归零后就立即发送。这样也可以降低碰撞概率。</li>
-<li><strong>预约机制：****要发送数据的站对信道进行预约</strong>，即<strong>在发送数据帧之前先发送 RTS 帧请求发送</strong>，收到响应允许发送的 CTS 帧后，就可发送数据帧。预约帧中会指明预约时间，期间其他站不会再发送数据。用户可以选择性使用预约机制。</li>
+<li><strong>预约机制：</strong>要发送数据的站对信道进行预约，即<strong>在发送数据帧之前先发送 RTS 帧请求发送</strong>，收到响应允许发送的 CTS 帧后，就可发送数据帧。预约帧中会指明预约时间，期间其他站不会再发送数据。用户可以选择性使用预约机制。</li>
 </ol>
 <p><strong>9.1.4 802.11局域网的MAC帧</strong></p>
 <p>802.11 的 MAC 帧有<strong>三种类型：控制帧、数据帧、管理帧</strong>。</p>
