@@ -23,22 +23,22 @@
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
 <meta property="og:description" content="在线互动聊天系统的设计与实现一.系统需求分析1.1 引言1.1.1编写目的本文档的编写目的是在系统分析设计阶段,对于网络聊天系统的需求进行明确的描述,并在此基础上对系统的总体设计思路进行概述,为后续的详细设计、编码和测试工作提供参考。 1.1.2背景是重庆邮电大学一名学生在其程序设计实验课程的作品。 1.1.3术语和缩略词待定 1.1.4参考资料https:&#x2F;&#x2F;github.com&#x2F;YuumiAn">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/6cJHe8VREPn79qQ.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/bd9VUFEtGoDHIeJ.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/rtm4FwyYKO5gpJq.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/7kC9VwpxbAN8YUs.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/Snyq2bvxY9CFZUL.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/I9ztMJDHVFWCx14.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/Yp3UTW5OxA9sMSw.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/6MdwVkRu8Ji2GpE.png">
-<meta property="og:image" content="https://s2.loli.net/2023/11/01/HE6vTus21htAMJl.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051135778.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051134492.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051134508.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051135346.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051139730.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051141104.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051141883.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051141912.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051142228.png">
 <meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
-<meta property="article:modified_time" content="2023-11-01T14:10:17.619Z">
+<meta property="article:modified_time" content="2023-11-05T03:43:01.862Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="socket">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://s2.loli.net/2023/11/01/6cJHe8VREPn79qQ.png">
+<meta name="twitter:image" content="https://images.gaifagafin.top/202311051135778.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -370,7 +370,7 @@
 <h3 id="1-7-2软件接口"><a href="#1-7-2软件接口" class="headerlink" title="1.7.2软件接口"></a>1.7.2软件接口</h3><p>socket</p>
 <p>tkinter<br>threading<br>time<br>pymysql</p>
 <h3 id="1-7-3硬件接口"><a href="#1-7-3硬件接口" class="headerlink" title="1.7.3硬件接口"></a>1.7.3硬件接口</h3><p>无</p>
-<h1 id="二-系统设计"><a href="#二-系统设计" class="headerlink" title="二.系统设计"></a>二.系统设计</h1><h2 id="2-1-系统整体功能结构"><a href="#2-1-系统整体功能结构" class="headerlink" title="2.1 系统整体功能结构"></a>2.1 系统整体功能结构</h2><p><img src="https://s2.loli.net/2023/11/01/6cJHe8VREPn79qQ.png" srcset="/img/loading.gif" lazyload alt="系统整体功能结构图"></p>
+<h1 id="二-系统设计"><a href="#二-系统设计" class="headerlink" title="二.系统设计"></a>二.系统设计</h1><h2 id="2-1-系统整体功能结构"><a href="#2-1-系统整体功能结构" class="headerlink" title="2.1 系统整体功能结构"></a>2.1 系统整体功能结构</h2><p><img src="https://images.gaifagafin.top/202311051135778.png" srcset="/img/loading.gif" lazyload alt="系统整体功能结构图"></p>
 <h2 id="2-2-系统功能模块详细设计"><a href="#2-2-系统功能模块详细设计" class="headerlink" title="2.2 系统功能模块详细设计"></a>2.2 系统功能模块详细设计</h2><p><em><strong>注：以下部分按照各个模块功能进行介绍</strong></em></p>
 <ol>
 <li>用户注册登录模块:描述用户注册、登录等功能</li>
@@ -400,12 +400,12 @@
 <p>在聊天界面消息输入框输入想要发送的消息，将消息发送的指定的群聊端口。</p>
 <p>服务器转发群聊消息时，在数据库查找群聊所有群成员的端口，将消息发送至除消息发送至以外的所有群成员</p>
 </blockquote>
-<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><p><img src="https://s2.loli.net/2023/11/01/bd9VUFEtGoDHIeJ.png" srcset="/img/loading.gif" lazyload alt="登录界面"></p>
-<p><img src="https://s2.loli.net/2023/11/01/rtm4FwyYKO5gpJq.png" srcset="/img/loading.gif" lazyload alt="用户注册界面"></p>
-<p><img src="https://s2.loli.net/2023/11/01/7kC9VwpxbAN8YUs.png" srcset="/img/loading.gif" lazyload alt="程序主界面"></p>
-<p><img src="https://s2.loli.net/2023/11/01/Snyq2bvxY9CFZUL.png" srcset="/img/loading.gif" lazyload alt="删除好友界面"></p>
-<p><img src="https://s2.loli.net/2023/11/01/I9ztMJDHVFWCx14.png" srcset="/img/loading.gif" lazyload alt="私聊聊天界面"></p>
-<p><img src="https://s2.loli.net/2023/11/01/Yp3UTW5OxA9sMSw.png" srcset="/img/loading.gif" lazyload alt="群聊聊天界面"></p>
+<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><p><img src="https://images.gaifagafin.top/202311051134492.png" srcset="/img/loading.gif" lazyload alt="登录界面"></p>
+<p><img src="https://images.gaifagafin.top/202311051134508.png" srcset="/img/loading.gif" lazyload alt="用户注册界面"></p>
+<p><img src="https://images.gaifagafin.top/202311051135346.png" srcset="/img/loading.gif" lazyload alt="程序主界面"></p>
+<p><img src="https://images.gaifagafin.top/202311051139730.png" srcset="/img/loading.gif" lazyload alt="删除好友界面"></p>
+<p><img src="https://images.gaifagafin.top/202311051141104.png" srcset="/img/loading.gif" lazyload alt="私聊聊天界面"></p>
+<p><img src="https://images.gaifagafin.top/202311051141883.png" srcset="/img/loading.gif" lazyload alt="群聊聊天界面"></p>
 <h2 id="2-4-数据库设计"><a href="#2-4-数据库设计" class="headerlink" title="2.4 数据库设计"></a>2.4 数据库设计</h2><p>实体1:用户(User)</p>
 <p>用户ID(用户的唯一标识)</p>
 <p>密码</p>
@@ -421,7 +421,7 @@
 <p>用户可加入多个群组,群组中有多位成员</p>
 <p>用户可在群组中发送消息,消息可推送给所有成员</p>
 <p>用户之间可以互发私聊消息</p>
-<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><p><img src="https://s2.loli.net/2023/11/01/6MdwVkRu8Ji2GpE.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><p><img src="https://images.gaifagafin.top/202311051141912.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="2-4-2-关系模式"><a href="#2-4-2-关系模式" class="headerlink" title="2.4.2 关系模式"></a>2.4.2 关系模式</h3><p>1. 用户表(user_info)</p>
 <p>User_info(用户ID, 密码,端口号)</p>
 <p>2. 好友关系表(friend_info)</p>
@@ -501,7 +501,7 @@
 <ul>
 <li>群成员间发送文本消息,确认群成员都能收到消息</li>
 </ul>
-<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><p><img src="https://s2.loli.net/2023/11/01/HE6vTus21htAMJl.png" srcset="/img/loading.gif" lazyload alt="功能测试用例"></p>
+<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><p><img src="https://images.gaifagafin.top/202311051142228.png" srcset="/img/loading.gif" lazyload alt="功能测试用例"></p>
 <p>完整的项目在<a target="_blank" rel="noopener" href="https://github.com/gaifagafin/-Python-socket-QQ-bushi">https://github.com/gaifagafin/-Python-socket-QQ-bushi</a></p>
 <p>项目存在很多瑕疵和不足，可能等以后有时间再去慢慢完善</p>
 
@@ -596,9 +596,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" title="攻防世界-easytornado">
+                      <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" title="攻防世界 easytornado">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">攻防世界-easytornado</span>
+                        <span class="hidden-mobile">攻防世界 easytornado</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
