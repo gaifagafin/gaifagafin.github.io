@@ -1,27 +1,33 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.ico">
-  <link rel="icon" href="/img/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="gaifagafin">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="在线互动聊天系统的设计与实现一.系统需求分析1.1 引言1.1.1编写目的本文档的编写目的是在系统分析设计阶段,对于网络聊天系统的需求进行明确的描述,并在此基础上对系统的总体设计思路进行概述,为后续的详细设计、编码和测试工作提供参考。 1.1.2背景是重庆邮电大学一名学生在其程序设计实验课程的作品。 1.1.3术语和缩略词待定 1.1.4参考资料https:&#x2F;&#x2F;github.com&#x2F;YuumiAn">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.css" integrity="sha256-vQkngPS8jiHHH0I6ABTZroZk8NPZ7b+MUReOFE9UsXQ=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/silver/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"bounceIn","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本系统的开发任务是设计并实现一个类似QQ的网络聊天系统,系统需要包含用户注册、登录、用户关系管理、单聊、群聊、消息收发等功能">
 <meta property="og:type" content="article">
 <meta property="og:title" content="仿QQ实时聊天(socket)">
 <meta property="og:url" content="https://gaifagafin.github.io/2023/10/31/%E4%BB%BFQQ%E5%AE%9E%E6%97%B6%E8%81%8A%E5%A4%A9(socket)/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
-<meta property="og:description" content="在线互动聊天系统的设计与实现一.系统需求分析1.1 引言1.1.1编写目的本文档的编写目的是在系统分析设计阶段,对于网络聊天系统的需求进行明确的描述,并在此基础上对系统的总体设计思路进行概述,为后续的详细设计、编码和测试工作提供参考。 1.1.2背景是重庆邮电大学一名学生在其程序设计实验课程的作品。 1.1.3术语和缩略词待定 1.1.4参考资料https:&#x2F;&#x2F;github.com&#x2F;YuumiAn">
+<meta property="og:description" content="本系统的开发任务是设计并实现一个类似QQ的网络聊天系统,系统需要包含用户注册、登录、用户关系管理、单聊、群聊、消息收发等功能">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051135778.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051134492.png">
@@ -33,285 +39,238 @@
 <meta property="og:image" content="https://images.gaifagafin.top/202311051141912.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051142228.png">
 <meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
-<meta property="article:modified_time" content="2023-11-05T03:43:01.862Z">
+<meta property="article:modified_time" content="2023-11-07T13:26:04.901Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="socket">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.gaifagafin.top/202311051135778.png">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>仿QQ实时聊天(socket) - gaifagafin&#39;s blog</title>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+<link rel="canonical" href="https://gaifagafin.github.io/2023/10/31/%E4%BB%BFQQ%E5%AE%9E%E6%97%B6%E8%81%8A%E5%A4%A9(socket)/">
 
 
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gaifagafin.github.io/2023/10/31/%E4%BB%BFQQ%E5%AE%9E%E6%97%B6%E8%81%8A%E5%A4%A9(socket)/","path":"2023/10/31/仿QQ实时聊天(socket)/","title":"仿QQ实时聊天(socket)"}</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>仿QQ实时聊天(socket) | gaifagafin's blog</title>
   
 
 
 
-  
-<link rel="stylesheet" href="/css/macpanel.css">
 
 
 
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"gaifagafin.github.io","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":70,"cursorChar":"▋","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
 
 
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
 
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Gaifa_Gafin</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">gaifagafin's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">21</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">6</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
 </nav>
 
-  
 
-<div id="banner" class="banner" parallax=true
-     style="background: url('https://pic.imgdb.cn/item/653cf7c5c458853aefafe947.jpg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="仿QQ实时聊天(socket)"></span>
-          
-        </div>
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-10-31 19:17" pubdate>
-          2023年10月31日 晚上
-        </time>
-      </span>
-    
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
   </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          17k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          140 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span> 次
-        </span>
-        
-      
-    
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
+</div>
 
-
-        
-      </div>
-
-      
     </div>
   </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E4%BA%92%E5%8A%A8%E8%81%8A%E5%A4%A9%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">在线互动聊天系统的设计与实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80-%E7%B3%BB%E7%BB%9F%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">一.系统需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%BC%95%E8%A8%80"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1%E7%BC%96%E5%86%99%E7%9B%AE%E7%9A%84"><span class="nav-number">2.1.1.</span> <span class="nav-text">1.1.1编写目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2%E8%83%8C%E6%99%AF"><span class="nav-number">2.1.2.</span> <span class="nav-text">1.1.2背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-3%E6%9C%AF%E8%AF%AD%E5%92%8C%E7%BC%A9%E7%95%A5%E8%AF%8D"><span class="nav-number">2.1.3.</span> <span class="nav-text">1.1.3术语和缩略词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-4%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">2.1.4.</span> <span class="nav-text">1.1.4参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2%E4%BB%BB%E5%8A%A1%E6%A6%82%E8%BF%B0"><span class="nav-number">2.2.</span> <span class="nav-text">1.2任务概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0"><span class="nav-number">2.3.</span> <span class="nav-text">1.3项目概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-1-%E9%A1%B9%E7%9B%AE%E6%9D%A5%E6%BA%90%E5%8F%8A%E8%83%8C%E6%99%AF"><span class="nav-number">2.3.1.</span> <span class="nav-text">1.3.1 项目来源及背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-2-%E9%A1%B9%E7%9B%AE%E7%9B%AE%E6%A0%87"><span class="nav-number">2.3.2.</span> <span class="nav-text">1.3.2 项目目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-3%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E6%A6%82%E8%BF%B0"><span class="nav-number">2.3.3.</span> <span class="nav-text">1.3.3系统功能概述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4%E7%94%A8%E6%88%B7%E7%89%B9%E7%82%B9"><span class="nav-number">2.4.</span> <span class="nav-text">1.4用户特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5%E5%8A%9F%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">2.5.</span> <span class="nav-text">1.5功能需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD"><span class="nav-number">2.5.1.</span> <span class="nav-text">1.5.1系统功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2%E5%8A%9F%E8%83%BD%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.5.2.</span> <span class="nav-text">1.5.2功能描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6%E6%80%A7%E8%83%BD%E9%9C%80%E6%B1%82"><span class="nav-number">2.6.</span> <span class="nav-text">1.6性能需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1%E6%95%B0%E6%8D%AE%E7%B2%BE%E5%BA%A6%E8%A6%81%E6%B1%82"><span class="nav-number">2.6.1.</span> <span class="nav-text">1.6.1数据精度要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2%E6%97%B6%E9%97%B4%E7%89%B9%E6%80%A7"><span class="nav-number">2.6.2.</span> <span class="nav-text">1.6.2时间特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7%E8%BF%90%E8%A1%8C%E9%9C%80%E6%B1%82"><span class="nav-number">2.7.</span> <span class="nav-text">1.7运行需求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-1%E7%B3%BB%E7%BB%9F%E7%95%8C%E9%9D%A2%E9%9C%80%E6%B1%82"><span class="nav-number">2.7.1.</span> <span class="nav-text">1.7.1系统界面需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-2%E8%BD%AF%E4%BB%B6%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.7.2.</span> <span class="nav-text">1.7.2软件接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-3%E7%A1%AC%E4%BB%B6%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.7.3.</span> <span class="nav-text">1.7.3硬件接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">二.系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%B3%BB%E7%BB%9F%E6%95%B4%E4%BD%93%E5%8A%9F%E8%83%BD%E7%BB%93%E6%9E%84"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 系统整体功能结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97%E8%AF%A6%E7%BB%86%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 系统功能模块详细设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%B3%BB%E7%BB%9F%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 系统界面设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.4.</span> <span class="nav-text">2.4 数据库设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-%E6%95%B0%E6%8D%AE%E5%BA%93E-R%E5%9B%BE"><span class="nav-number">3.4.1.</span> <span class="nav-text">2.4.1 数据库E-R图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.4.2.</span> <span class="nav-text">2.4.2 关系模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-3-%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.4.3.</span> <span class="nav-text">2.4.3 物理结构设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89-%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A0%81%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">三.系统编码与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95%E5%8A%9F%E8%83%BD%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 用户登录功能编码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E7%94%A8%E6%88%B7%E6%B3%A8%E5%86%8C%E5%8A%9F%E8%83%BD%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 用户注册功能编码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E7%94%A8%E6%88%B7%E7%A7%81%E8%81%8A%E5%8A%9F%E8%83%BD%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 用户私聊功能编码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E7%94%A8%E6%88%B7%E7%BE%A4%E8%81%8A%E5%8A%9F%E8%83%BD%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 用户群聊功能编码实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B-%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">四.系统测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%B5%8B%E8%AF%95%E8%8C%83%E5%9B%B4"><span class="nav-number">5.1.</span> <span class="nav-text">4.1 测试范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E4%B8%8E%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE"><span class="nav-number">5.2.</span> <span class="nav-text">4.2 测试环境与系统配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.3.</span> <span class="nav-text">4.3 测试覆盖设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-number">5.4.</span> <span class="nav-text">4.4  功能测试用例</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">gaifagafin</p>
+  <div class="site-description" itemprop="description"></div>
 </div>
-
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gaifagafin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gaifagafin" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1454991831@qq.com" title="E-Mail → 1454991831@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
-  </header>
+        </div>
+      </div>
+    </div>
 
-  <main>
     
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
   </aside>
 
 
     </div>
 
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">仿QQ实时聊天(socket)</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="在线互动聊天系统的设计与实现"><a href="#在线互动聊天系统的设计与实现" class="headerlink" title="在线互动聊天系统的设计与实现"></a><strong>在线互动聊天系统的设计与实现</strong></h1><h1 id="一-系统需求分析"><a href="#一-系统需求分析" class="headerlink" title="一.系统需求分析"></a>一.系统需求分析</h1><h2 id="1-1-引言"><a href="#1-1-引言" class="headerlink" title="1.1 引言"></a>1.1 引言</h2><h3 id="1-1-1编写目的"><a href="#1-1-1编写目的" class="headerlink" title="1.1.1编写目的"></a>1.1.1编写目的</h3><p>本文档的编写目的是在系统分析设计阶段,对于网络聊天系统的需求进行明确的描述,并在此基础上对系统的总体设计思路进行概述,为后续的详细设计、编码和测试工作提供参考。</p>
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gaifagafin.github.io/2023/10/31/%E4%BB%BFQQ%E5%AE%9E%E6%97%B6%E8%81%8A%E5%A4%A9(socket)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="gaifagafin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gaifagafin's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="仿QQ实时聊天(socket) | gaifagafin's blog">
+      <meta itemprop="description" content="本系统的开发任务是设计并实现一个类似QQ的网络聊天系统,系统需要包含用户注册、登录、用户关系管理、单聊、群聊、消息收发等功能">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          仿QQ实时聊天(socket)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-31 19:17:42" itemprop="dateCreated datePublished" datetime="2023-10-31T19:17:42+08:00">2023-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-07 21:26:04" itemprop="dateModified" datetime="2023-11-07T21:26:04+08:00">2023-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">程序设计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">本系统的开发任务是设计并实现一个类似QQ的网络聊天系统,系统需要包含用户注册、登录、用户关系管理、单聊、群聊、消息收发等功能</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="在线互动聊天系统的设计与实现"><a href="#在线互动聊天系统的设计与实现" class="headerlink" title="在线互动聊天系统的设计与实现"></a><strong>在线互动聊天系统的设计与实现</strong></h1><h1 id="一-系统需求分析"><a href="#一-系统需求分析" class="headerlink" title="一.系统需求分析"></a>一.系统需求分析</h1><h2 id="1-1-引言"><a href="#1-1-引言" class="headerlink" title="1.1 引言"></a>1.1 引言</h2><h3 id="1-1-1编写目的"><a href="#1-1-1编写目的" class="headerlink" title="1.1.1编写目的"></a>1.1.1编写目的</h3><p>本文档的编写目的是在系统分析设计阶段,对于网络聊天系统的需求进行明确的描述,并在此基础上对系统的总体设计思路进行概述,为后续的详细设计、编码和测试工作提供参考。</p>
 <h3 id="1-1-2背景"><a href="#1-1-2背景" class="headerlink" title="1.1.2背景"></a>1.1.2背景</h3><p>是重庆邮电大学一名学生在其程序设计实验课程的作品。</p>
 <h3 id="1-1-3术语和缩略词"><a href="#1-1-3术语和缩略词" class="headerlink" title="1.1.3术语和缩略词"></a>1.1.3术语和缩略词</h3><p>待定</p>
 <h3 id="1-1-4参考资料"><a href="#1-1-4参考资料" class="headerlink" title="1.1.4参考资料"></a>1.1.4参考资料</h3><p><a target="_blank" rel="noopener" href="https://github.com/YuumiAndYasuo/socket_chat">https://github.com/YuumiAndYasuo/socket_chat</a></p>
@@ -352,10 +311,9 @@
 <h3 id="1-6-2时间特性"><a href="#1-6-2时间特性" class="headerlink" title="1.6.2时间特性"></a>1.6.2时间特性</h3><p>服务器响应时间小于200ms</p>
 <p>消息传递延迟小于500ms</p>
 <h2 id="1-7运行需求"><a href="#1-7运行需求" class="headerlink" title="1.7运行需求"></a>1.7运行需求</h2><h3 id="1-7-1系统界面需求"><a href="#1-7-1系统界面需求" class="headerlink" title="1.7.1系统界面需求"></a>1.7.1系统界面需求</h3><p>界面风格简洁干净,符合现代视觉风格</p>
-<h3 id="1-7-2软件接口"><a href="#1-7-2软件接口" class="headerlink" title="1.7.2软件接口"></a>1.7.2软件接口</h3><p>socket</p>
-<p>tkinter<br>threading<br>time<br>pymysql</p>
+<h3 id="1-7-2软件接口"><a href="#1-7-2软件接口" class="headerlink" title="1.7.2软件接口"></a>1.7.2软件接口</h3><p>socket, tkinter, threading, time, pymyusql </p>
 <h3 id="1-7-3硬件接口"><a href="#1-7-3硬件接口" class="headerlink" title="1.7.3硬件接口"></a>1.7.3硬件接口</h3><p>无</p>
-<h1 id="二-系统设计"><a href="#二-系统设计" class="headerlink" title="二.系统设计"></a>二.系统设计</h1><h2 id="2-1-系统整体功能结构"><a href="#2-1-系统整体功能结构" class="headerlink" title="2.1 系统整体功能结构"></a>2.1 系统整体功能结构</h2><p><img src="https://images.gaifagafin.top/202311051135778.png" srcset="/img/loading.gif" lazyload alt="系统整体功能结构图"></p>
+<h1 id="二-系统设计"><a href="#二-系统设计" class="headerlink" title="二.系统设计"></a>二.系统设计</h1><h2 id="2-1-系统整体功能结构"><a href="#2-1-系统整体功能结构" class="headerlink" title="2.1 系统整体功能结构"></a>2.1 系统整体功能结构</h2><p><img data-src="https://images.gaifagafin.top/202311051135778.png" alt="系统整体功能结构图"></p>
 <h2 id="2-2-系统功能模块详细设计"><a href="#2-2-系统功能模块详细设计" class="headerlink" title="2.2 系统功能模块详细设计"></a>2.2 系统功能模块详细设计</h2><p><em><strong>注：以下部分按照各个模块功能进行介绍</strong></em></p>
 <ol>
 <li>用户注册登录模块:描述用户注册、登录等功能</li>
@@ -385,12 +343,12 @@
 <p>在聊天界面消息输入框输入想要发送的消息，将消息发送的指定的群聊端口。</p>
 <p>服务器转发群聊消息时，在数据库查找群聊所有群成员的端口，将消息发送至除消息发送至以外的所有群成员</p>
 </blockquote>
-<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><p><img src="https://images.gaifagafin.top/202311051134492.png" srcset="/img/loading.gif" lazyload alt="登录界面"></p>
-<p><img src="https://images.gaifagafin.top/202311051134508.png" srcset="/img/loading.gif" lazyload alt="用户注册界面"></p>
-<p><img src="https://images.gaifagafin.top/202311051135346.png" srcset="/img/loading.gif" lazyload alt="程序主界面"></p>
-<p><img src="https://images.gaifagafin.top/202311051139730.png" srcset="/img/loading.gif" lazyload alt="删除好友界面"></p>
-<p><img src="https://images.gaifagafin.top/202311051141104.png" srcset="/img/loading.gif" lazyload alt="私聊聊天界面"></p>
-<p><img src="https://images.gaifagafin.top/202311051141883.png" srcset="/img/loading.gif" lazyload alt="群聊聊天界面"></p>
+<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><p><img data-src="https://images.gaifagafin.top/202311051134492.png" alt="登录界面"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051134508.png" alt="用户注册界面"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051135346.png" alt="程序主界面"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051139730.png" alt="删除好友界面"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051141104.png" alt="私聊聊天界面"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051141883.png" alt="群聊聊天界面"></p>
 <h2 id="2-4-数据库设计"><a href="#2-4-数据库设计" class="headerlink" title="2.4 数据库设计"></a>2.4 数据库设计</h2><p>实体1:用户(User)</p>
 <p>用户ID(用户的唯一标识)</p>
 <p>密码</p>
@@ -406,7 +364,7 @@
 <p>用户可加入多个群组,群组中有多位成员</p>
 <p>用户可在群组中发送消息,消息可推送给所有成员</p>
 <p>用户之间可以互发私聊消息</p>
-<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><p><img src="https://images.gaifagafin.top/202311051141912.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><p><img data-src="https://images.gaifagafin.top/202311051141912.png"></p>
 <h3 id="2-4-2-关系模式"><a href="#2-4-2-关系模式" class="headerlink" title="2.4.2 关系模式"></a>2.4.2 关系模式</h3><p>1. 用户表(user_info)</p>
 <p>User_info(用户ID, 密码,端口号)</p>
 <p>2. 好友关系表(friend_info)</p>
@@ -414,30 +372,30 @@
 <p>3. 群组表(group_info)</p>
 <p>Group_info(群ID, 用户ID,端口号)</p>
 <h3 id="2-4-3-物理结构设计"><a href="#2-4-3-物理结构设计" class="headerlink" title="2.4.3 物理结构设计"></a>2.4.3 物理结构设计</h3><p>1.用户表(user_info)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE user_info<br>(<br>    user_id varchar(10) PRIMARY KEY,<br>    pwd VARCHAR(15) NOT NULL,<br>    port INT NOT NULL<br>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE user_info</span><br><span class="line">(</span><br><span class="line">    user_id varchar(10) PRIMARY KEY,</span><br><span class="line">    pwd VARCHAR(15) NOT NULL,</span><br><span class="line">    port INT NOT NULL</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 <p>2. 好友关系表(friend_id)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE friend_info<br>(<br>    user_id varchar(10),<br>    friend_id varchar(10),<br>    PRIMARY KEY (user_id, friend_id),<br>    FOREIGN KEY (user_id)<br>    REFERENCES user_info(user_id)<br>);<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE friend_info</span><br><span class="line">(</span><br><span class="line">    user_id varchar(10),</span><br><span class="line">    friend_id varchar(10),</span><br><span class="line">    PRIMARY KEY (user_id, friend_id),</span><br><span class="line">    FOREIGN KEY (user_id)</span><br><span class="line">    REFERENCES user_info(user_id)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
 <p>3. 群组表(group_id)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mysql">CREATE TABLE group_info<br>(<br>Group_id varchar(10)<br>member_id varchar(10),<br>Port INT NOT NULL,<br>FOREIGN KEY (member_ID) REFERENCES user_info(user_ID)<br>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CREATE TABLE group_info</span><br><span class="line">(</span><br><span class="line">    Group_id varchar(10)</span><br><span class="line">    member_id varchar(10),</span><br><span class="line">    Port INT NOT NULL,</span><br><span class="line">    FOREIGN KEY (member_ID) REFERENCES user_info(user_ID)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-<h1 id="三-系统编码与实现"><a href="#三-系统编码与实现" class="headerlink" title="三.系统编码与实现"></a>三.系统编码与实现</h1><h2 id="3-1-用户登录功能编码实现"><a href="#3-1-用户登录功能编码实现" class="headerlink" title="3.1 用户登录功能编码实现"></a>3.1 用户登录功能编码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#登录</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginPanel</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        self.root.mainloop()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 图形界面区域</span><br>        self.root = Tk()<br>        self.root.title(<span class="hljs-string">&#x27;登录&#x27;</span>)<br>        self.root.geometry(<span class="hljs-string">&#x27;450x220+700+400&#x27;</span>)<br><br>        <span class="hljs-comment"># 输入区域</span><br>        self.<span class="hljs-built_in">input</span> = Canvas(self.root, bg=<span class="hljs-string">&#x27;#ffffff&#x27;</span>)<br>        self.<span class="hljs-built_in">input</span>.place(x=<span class="hljs-number">0</span>, y=<span class="hljs-number">0</span>, heigh=<span class="hljs-number">350</span>, width=<span class="hljs-number">450</span>)<br><br>        <span class="hljs-comment"># 账号输入框标签</span><br>        Label(self.root, text=<span class="hljs-string">&quot;账号:&quot;</span>, background=<span class="hljs-string">&#x27;white&#x27;</span>).place(x=<span class="hljs-number">75</span>, y=<span class="hljs-number">53</span>)<br>        Label(self.root, text=<span class="hljs-string">&quot;密码:&quot;</span>, background=<span class="hljs-string">&#x27;white&#x27;</span>).place(x=<span class="hljs-number">75</span>, y=<span class="hljs-number">90</span>)<br>        db=connect_to_mysql()<br>        cursor = db.cursor()<br>        sql1 = <span class="hljs-string">&#x27;select id from user_info&#x27;</span><br>        cursor.execute(sql1)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;执行成功!&#x27;</span>)<br>        id_data = cursor.fetchall()<br>        <span class="hljs-built_in">print</span>(id_data)<br><br>        <span class="hljs-comment"># 账号输入框  账号输入框</span><br>        xVariable = tkinter.StringVar()  <span class="hljs-comment"># #创建变量，便于取值</span><br>        self.accountinput = ttk.Combobox(self.root, textvariable=xVariable)  <span class="hljs-comment"># 创建下拉菜单</span><br>        self.accountinput.pack()  <span class="hljs-comment"># #将下拉菜单绑定到窗体</span><br>        self.accountinput.place(x=<span class="hljs-number">130</span>, y=<span class="hljs-number">50</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">210</span>)<br>        self.accountinput[<span class="hljs-string">&quot;value&quot;</span>] = id_data  <span class="hljs-comment"># #给下拉菜单设定值</span><br>        self.accountinput.current(<span class="hljs-number">0</span>)  <span class="hljs-comment"># 设定下拉菜单的默认值为第1个</span><br><br>        <span class="hljs-comment"># 密码输入框</span><br>        self.passwordinput = Entry(self.<span class="hljs-built_in">input</span>, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;bold&quot;</span>), show=<span class="hljs-string">&#x27;*&#x27;</span>)<br>        self.passwordinput.place(x=<span class="hljs-number">130</span>, y=<span class="hljs-number">85</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">210</span>)<br><br>        <span class="hljs-comment"># 登陆按钮</span><br>        self.loginbutton = Button(self.<span class="hljs-built_in">input</span>, text=<span class="hljs-string">&#x27;登录&#x27;</span>, bg=<span class="hljs-string">&#x27;#4fcffd&#x27;</span>,command=self.loginbutton_clicked)<br>        self.loginbutton.place(x=<span class="hljs-number">100</span>, y=<span class="hljs-number">160</span>, heigh=<span class="hljs-number">40</span>, width=<span class="hljs-number">240</span>)<br><br>        <span class="hljs-comment"># 注册账号按钮</span><br>        self.registerbutton = Button(self.<span class="hljs-built_in">input</span>, text=<span class="hljs-string">&#x27;注册账号&#x27;</span>, bg=<span class="hljs-string">&#x27;white&#x27;</span>,command=RegisterPanel)<br>        self.registerbutton.place(x=<span class="hljs-number">10</span>, y=<span class="hljs-number">190</span>, heigh=<span class="hljs-number">20</span>, width=<span class="hljs-number">70</span>)<br>        sql3 = <span class="hljs-string">&#x27;select id from user_info where id=%s&#x27;</span> % (self.accountinput.get())<br>        cursor.execute(sql3)<br>        self.account_id=cursor.fetchone()<br>        db.close()  <span class="hljs-comment">#关闭数据库</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;数据库连接断开&#x27;</span>)<br>        <span class="hljs-comment"># 登录按钮点击事件</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">loginbutton_clicked</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 输入过滤</span><br>        account = self.accountinput.get().strip().replace(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>        self.accountinput.delete(<span class="hljs-number">0</span>, END)<br>        self.accountinput.insert(END, account)<br>        <span class="hljs-built_in">print</span>(account)<br>        password = self.passwordinput.get().strip().replace(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>        self.passwordinput.delete(<span class="hljs-number">0</span>, END)<br>        self.passwordinput.insert(END, password)<br>        <span class="hljs-built_in">print</span>(password)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;等待连接数据库。。。&#x27;</span>)<br>        db = connect_to_mysql()<br>        cursor = db.cursor()<br>        sql1 = <span class="hljs-string">&quot;select * from user_info where id=%s&quot;</span> % account  <span class="hljs-comment"># 数据库中查询与账号对应的元组</span><br>        sql2 = <span class="hljs-string">&#x27;select id from user_info&#x27;</span><br>        <span class="hljs-comment"># 获取数据库中的信息</span><br>        cursor.execute(sql1)<br>        result1 = cursor.fetchone()<br>        <span class="hljs-comment"># cursor.execute(sql2)</span><br>        <span class="hljs-comment"># result2=cursor.fetchone()</span><br>        <span class="hljs-built_in">print</span>(account)<br>        password = self.passwordinput.get().replace(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(password)<br><br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(account) &lt; <span class="hljs-number">8</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> account.isdigit():<br>            messagebox.showinfo(<span class="hljs-string">&#x27;登录失败&#x27;</span>, <span class="hljs-string">&#x27;查无此号&#x27;</span>)<br>        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> password:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">ord</span>(c) &gt; <span class="hljs-number">255</span>:<br>                messagebox.showinfo(<span class="hljs-string">&#x27;登录失败&#x27;</span>, <span class="hljs-string">&#x27;密码错误\n( ⊙ o ⊙ )&#x27;</span>)<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;results&#x27;</span>, result1)<br>            <span class="hljs-keyword">if</span> result1[<span class="hljs-number">1</span>] == password:<br>                messagebox.showinfo(<span class="hljs-string">&#x27;登录成功&#x27;</span>, <span class="hljs-string">&#x27;登录成功&#x27;</span>)<br>                db.close()<br>                self.root.destroy()<br>                mainpanel = MainPanel(result1[<span class="hljs-number">0</span>])<br>                mainpanel.run()<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br>            messagebox.showinfo(<span class="hljs-string">&#x27;登录失败&#x27;</span>, <span class="hljs-string">&#x27;账号密码不匹配&#x27;</span>)<br>        <span class="hljs-keyword">except</span>:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;登录抛出异常&#x27;</span>)<br>            db.rollback()<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<h1 id="三-系统编码与实现"><a href="#三-系统编码与实现" class="headerlink" title="三.系统编码与实现"></a>三.系统编码与实现</h1><h2 id="3-1-用户登录功能编码实现"><a href="#3-1-用户登录功能编码实现" class="headerlink" title="3.1 用户登录功能编码实现"></a>3.1 用户登录功能编码实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#登录</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">LoginPanel</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        self.root.mainloop()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 图形界面区域</span></span><br><span class="line">        self.root = Tk()</span><br><span class="line">        self.root.title(<span class="string">&#x27;登录&#x27;</span>)</span><br><span class="line">        self.root.geometry(<span class="string">&#x27;450x220+700+400&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 输入区域</span></span><br><span class="line">        self.<span class="built_in">input</span> = Canvas(self.root, bg=<span class="string">&#x27;#ffffff&#x27;</span>)</span><br><span class="line">        self.<span class="built_in">input</span>.place(x=<span class="number">0</span>, y=<span class="number">0</span>, heigh=<span class="number">350</span>, width=<span class="number">450</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 账号输入框标签</span></span><br><span class="line">        Label(self.root, text=<span class="string">&quot;账号:&quot;</span>, background=<span class="string">&#x27;white&#x27;</span>).place(x=<span class="number">75</span>, y=<span class="number">53</span>)</span><br><span class="line">        Label(self.root, text=<span class="string">&quot;密码:&quot;</span>, background=<span class="string">&#x27;white&#x27;</span>).place(x=<span class="number">75</span>, y=<span class="number">90</span>)</span><br><span class="line">        db=connect_to_mysql()</span><br><span class="line">        cursor = db.cursor()</span><br><span class="line">        sql1 = <span class="string">&#x27;select id from user_info&#x27;</span></span><br><span class="line">        cursor.execute(sql1)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;执行成功!&#x27;</span>)</span><br><span class="line">        id_data = cursor.fetchall()</span><br><span class="line">        <span class="built_in">print</span>(id_data)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 账号输入框  账号输入框</span></span><br><span class="line">        xVariable = tkinter.StringVar()  <span class="comment"># #创建变量，便于取值</span></span><br><span class="line">        self.accountinput = ttk.Combobox(self.root, textvariable=xVariable)  <span class="comment"># 创建下拉菜单</span></span><br><span class="line">        self.accountinput.pack()  <span class="comment"># #将下拉菜单绑定到窗体</span></span><br><span class="line">        self.accountinput.place(x=<span class="number">130</span>, y=<span class="number">50</span>, heigh=<span class="number">30</span>, width=<span class="number">210</span>)</span><br><span class="line">        self.accountinput[<span class="string">&quot;value&quot;</span>] = id_data  <span class="comment"># #给下拉菜单设定值</span></span><br><span class="line">        self.accountinput.current(<span class="number">0</span>)  <span class="comment"># 设定下拉菜单的默认值为第1个</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 密码输入框</span></span><br><span class="line">        self.passwordinput = Entry(self.<span class="built_in">input</span>, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;bold&quot;</span>), show=<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">        self.passwordinput.place(x=<span class="number">130</span>, y=<span class="number">85</span>, heigh=<span class="number">30</span>, width=<span class="number">210</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 登陆按钮</span></span><br><span class="line">        self.loginbutton = Button(self.<span class="built_in">input</span>, text=<span class="string">&#x27;登录&#x27;</span>, bg=<span class="string">&#x27;#4fcffd&#x27;</span>,command=self.loginbutton_clicked)</span><br><span class="line">        self.loginbutton.place(x=<span class="number">100</span>, y=<span class="number">160</span>, heigh=<span class="number">40</span>, width=<span class="number">240</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 注册账号按钮</span></span><br><span class="line">        self.registerbutton = Button(self.<span class="built_in">input</span>, text=<span class="string">&#x27;注册账号&#x27;</span>, bg=<span class="string">&#x27;white&#x27;</span>,command=RegisterPanel)</span><br><span class="line">        self.registerbutton.place(x=<span class="number">10</span>, y=<span class="number">190</span>, heigh=<span class="number">20</span>, width=<span class="number">70</span>)</span><br><span class="line">        sql3 = <span class="string">&#x27;select id from user_info where id=%s&#x27;</span> % (self.accountinput.get())</span><br><span class="line">        cursor.execute(sql3)</span><br><span class="line">        self.account_id=cursor.fetchone()</span><br><span class="line">        db.close()  <span class="comment">#关闭数据库</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;数据库连接断开&#x27;</span>)</span><br><span class="line">        <span class="comment"># 登录按钮点击事件</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">loginbutton_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 输入过滤</span></span><br><span class="line">        account = self.accountinput.get().strip().replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        self.accountinput.delete(<span class="number">0</span>, END)</span><br><span class="line">        self.accountinput.insert(END, account)</span><br><span class="line">        <span class="built_in">print</span>(account)</span><br><span class="line">        password = self.passwordinput.get().strip().replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        self.passwordinput.delete(<span class="number">0</span>, END)</span><br><span class="line">        self.passwordinput.insert(END, password)</span><br><span class="line">        <span class="built_in">print</span>(password)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;等待连接数据库。。。&#x27;</span>)</span><br><span class="line">        db = connect_to_mysql()</span><br><span class="line">        cursor = db.cursor()</span><br><span class="line">        sql1 = <span class="string">&quot;select * from user_info where id=%s&quot;</span> % account  <span class="comment"># 数据库中查询与账号对应的元组</span></span><br><span class="line">        sql2 = <span class="string">&#x27;select id from user_info&#x27;</span></span><br><span class="line">        <span class="comment"># 获取数据库中的信息</span></span><br><span class="line">        cursor.execute(sql1)</span><br><span class="line">        result1 = cursor.fetchone()</span><br><span class="line">        <span class="comment"># cursor.execute(sql2)</span></span><br><span class="line">        <span class="comment"># result2=cursor.fetchone()</span></span><br><span class="line">        <span class="built_in">print</span>(account)</span><br><span class="line">        password = self.passwordinput.get().replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(password)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(account) &lt; <span class="number">8</span> <span class="keyword">or</span> <span class="keyword">not</span> account.isdigit():</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;登录失败&#x27;</span>, <span class="string">&#x27;查无此号&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> password:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">ord</span>(c) &gt; <span class="number">255</span>:</span><br><span class="line">                messagebox.showinfo(<span class="string">&#x27;登录失败&#x27;</span>, <span class="string">&#x27;密码错误\n( ⊙ o ⊙ )&#x27;</span>)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;results&#x27;</span>, result1)</span><br><span class="line">            <span class="keyword">if</span> result1[<span class="number">1</span>] == password:</span><br><span class="line">                messagebox.showinfo(<span class="string">&#x27;登录成功&#x27;</span>, <span class="string">&#x27;登录成功&#x27;</span>)</span><br><span class="line">                db.close()</span><br><span class="line">                self.root.destroy()</span><br><span class="line">                mainpanel = MainPanel(result1[<span class="number">0</span>])</span><br><span class="line">                mainpanel.run()</span><br><span class="line">                <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;登录失败&#x27;</span>, <span class="string">&#x27;账号密码不匹配&#x27;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;登录抛出异常&#x27;</span>)</span><br><span class="line">            db.rollback()</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="3-2-用户注册功能编码实现"><a href="#3-2-用户注册功能编码实现" class="headerlink" title="3.2 用户注册功能编码实现"></a>3.2 用户注册功能编码实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#注册</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">RegisterPanel</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        self.root.mainloop()<br>    <span class="hljs-comment">#图形界面</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        self.root = Tk()<br>        self.root.title(<span class="hljs-string">&#x27;用户注册&#x27;</span>)<br>        self.root.geometry(<span class="hljs-string">&#x27;450x220+700+450&#x27;</span>)<br><br>        <span class="hljs-comment"># 输入区域</span><br>        self.<span class="hljs-built_in">input</span> = Canvas(self.root, bg=<span class="hljs-string">&#x27;#ffffff&#x27;</span>)<br>        self.<span class="hljs-built_in">input</span>.place(x=<span class="hljs-number">0</span>, y=<span class="hljs-number">0</span>, heigh=<span class="hljs-number">220</span>, width=<span class="hljs-number">450</span>)<br><br>        <span class="hljs-comment"># 昵称账号密码输入提醒</span><br>        Label(self.root, text=<span class="hljs-string">&quot;账号:&quot;</span>, background=<span class="hljs-string">&#x27;white&#x27;</span>).place(x=<span class="hljs-number">77</span>, y=<span class="hljs-number">63</span>)<br>        Label(self.root, text=<span class="hljs-string">&quot;密码:&quot;</span>, background=<span class="hljs-string">&#x27;white&#x27;</span>).place(x=<span class="hljs-number">77</span>, y=<span class="hljs-number">97</span>)<br><br>        <span class="hljs-comment"># 账号输入框</span><br>        self.accountinput = Entry(self.<span class="hljs-built_in">input</span>, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;bold&quot;</span>))<br>        self.accountinput.place(x=<span class="hljs-number">130</span>, y=<span class="hljs-number">60</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">210</span>, )<br><br>        <span class="hljs-comment"># 密码输入框</span><br>        self.passwordinput = Entry(self.<span class="hljs-built_in">input</span>, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;bold&quot;</span>), show=<span class="hljs-string">&#x27;*&#x27;</span>)<br>        self.passwordinput.place(x=<span class="hljs-number">130</span>, y=<span class="hljs-number">95</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">210</span>)<br><br>        <span class="hljs-comment"># 注册按钮</span><br>        self.registerbutton = Button(self.<span class="hljs-built_in">input</span>, text=<span class="hljs-string">&#x27;立即注册&#x27;</span>, bg=<span class="hljs-string">&#x27;#4fcffd&#x27;</span>, command=self.register_button_clicked)<br>        self.registerbutton.place(x=<span class="hljs-number">100</span>, y=<span class="hljs-number">160</span>, heigh=<span class="hljs-number">40</span>, width=<span class="hljs-number">240</span>)<br><br>    <span class="hljs-comment">#注册按钮点击</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">register_button_clicked</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 输入</span><br>        account = self.accountinput.get().strip().replace(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>        self.accountinput.delete(<span class="hljs-number">0</span>, END)<br>        self.accountinput.insert(END, account)<br>        <span class="hljs-built_in">print</span>(account)<br>        password = self.passwordinput.get().strip().replace(<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>)<br>        self.passwordinput.delete(<span class="hljs-number">0</span>, END)<br>        self.passwordinput.insert(END, password)<br>        <span class="hljs-built_in">print</span>(password)<br>        <span class="hljs-comment"># 输入过滤</span><br>        <span class="hljs-comment">#实际用的时候好像不是那么理想，待完善</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(account) &lt; <span class="hljs-number">8</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(password) &lt; <span class="hljs-number">8</span>:<br>            messagebox.showinfo(<span class="hljs-string">&#x27;注册失败&#x27;</span>, <span class="hljs-string">&#x27;账号或密码至少8位\no(︶︿︶)o&#x27;</span>)<br>            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> account.isdigit():<br>            messagebox.showinfo(<span class="hljs-string">&#x27;注册失败&#x27;</span>, <span class="hljs-string">&#x27;账号必须全为数字\n(╯﹏╰）&#x27;</span>)<br>            <span class="hljs-keyword">return</span> -<span class="hljs-number">2</span><br>        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> password:<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">ord</span>(c) &gt; <span class="hljs-number">255</span>:<br>                messagebox.showinfo(<span class="hljs-string">&#x27;注册失败&#x27;</span>, <span class="hljs-string">&#x27;密码不能包含非法字符\n( ⊙ o ⊙ )&#x27;</span>)<br>                <span class="hljs-keyword">return</span> -<span class="hljs-number">3</span><br>        port=<span class="hljs-built_in">int</span>(random.randint(<span class="hljs-number">1</span>,<span class="hljs-number">1000000</span>)%<span class="hljs-number">65535</span>)<br>        db=connect_to_mysql()<br>        cursor=db.cursor()<br>        sql=<span class="hljs-string">&quot;INSERT INTO user_info(id, pwd, port) VALUES (&#x27;%s&#x27;, &#x27;%s&#x27;, %d)&quot;</span> % (account, password, port)<br>        <span class="hljs-keyword">try</span>:<br>            cursor.execute(sql)<br>            db.commit()<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;成功修改数据库内容&#x27;</span>)<br>        <span class="hljs-keyword">except</span>:<br>            db.rollback()<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;失败&quot;</span>)<br>        db.close()<br>        messagebox.showinfo(<span class="hljs-string">&#x27;注册成功&#x27;</span>,<span class="hljs-string">&#x27;恭喜您 注册成功\n~\(≧▽≦)/~&#x27;</span>)<br>        self.root.destroy()<span class="hljs-comment">#销毁注册窗口</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<h2 id="3-2-用户注册功能编码实现"><a href="#3-2-用户注册功能编码实现" class="headerlink" title="3.2 用户注册功能编码实现"></a>3.2 用户注册功能编码实现</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#注册</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RegisterPanel</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        self.root.mainloop()</span><br><span class="line">    <span class="comment">#图形界面</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        self.root = Tk()</span><br><span class="line">        self.root.title(<span class="string">&#x27;用户注册&#x27;</span>)</span><br><span class="line">        self.root.geometry(<span class="string">&#x27;450x220+700+450&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 输入区域</span></span><br><span class="line">        self.<span class="built_in">input</span> = Canvas(self.root, bg=<span class="string">&#x27;#ffffff&#x27;</span>)</span><br><span class="line">        self.<span class="built_in">input</span>.place(x=<span class="number">0</span>, y=<span class="number">0</span>, heigh=<span class="number">220</span>, width=<span class="number">450</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 昵称账号密码输入提醒</span></span><br><span class="line">        Label(self.root, text=<span class="string">&quot;账号:&quot;</span>, background=<span class="string">&#x27;white&#x27;</span>).place(x=<span class="number">77</span>, y=<span class="number">63</span>)</span><br><span class="line">        Label(self.root, text=<span class="string">&quot;密码:&quot;</span>, background=<span class="string">&#x27;white&#x27;</span>).place(x=<span class="number">77</span>, y=<span class="number">97</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 账号输入框</span></span><br><span class="line">        self.accountinput = Entry(self.<span class="built_in">input</span>, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;bold&quot;</span>))</span><br><span class="line">        self.accountinput.place(x=<span class="number">130</span>, y=<span class="number">60</span>, heigh=<span class="number">30</span>, width=<span class="number">210</span>, )</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 密码输入框</span></span><br><span class="line">        self.passwordinput = Entry(self.<span class="built_in">input</span>, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;bold&quot;</span>), show=<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">        self.passwordinput.place(x=<span class="number">130</span>, y=<span class="number">95</span>, heigh=<span class="number">30</span>, width=<span class="number">210</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 注册按钮</span></span><br><span class="line">        self.registerbutton = Button(self.<span class="built_in">input</span>, text=<span class="string">&#x27;立即注册&#x27;</span>, bg=<span class="string">&#x27;#4fcffd&#x27;</span>, command=self.register_button_clicked)</span><br><span class="line">        self.registerbutton.place(x=<span class="number">100</span>, y=<span class="number">160</span>, heigh=<span class="number">40</span>, width=<span class="number">240</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#注册按钮点击</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">register_button_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 输入</span></span><br><span class="line">        account = self.accountinput.get().strip().replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        self.accountinput.delete(<span class="number">0</span>, END)</span><br><span class="line">        self.accountinput.insert(END, account)</span><br><span class="line">        <span class="built_in">print</span>(account)</span><br><span class="line">        password = self.passwordinput.get().strip().replace(<span class="string">&#x27; &#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        self.passwordinput.delete(<span class="number">0</span>, END)</span><br><span class="line">        self.passwordinput.insert(END, password)</span><br><span class="line">        <span class="built_in">print</span>(password)</span><br><span class="line">        <span class="comment"># 输入过滤</span></span><br><span class="line">        <span class="comment">#实际用的时候好像不是那么理想，待完善</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(account) &lt; <span class="number">8</span> <span class="keyword">or</span> <span class="built_in">len</span>(password) &lt; <span class="number">8</span>:</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;注册失败&#x27;</span>, <span class="string">&#x27;账号或密码至少8位\no(︶︿︶)o&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> account.isdigit():</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;注册失败&#x27;</span>, <span class="string">&#x27;账号必须全为数字\n(╯﹏╰）&#x27;</span>)</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">2</span></span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> password:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">ord</span>(c) &gt; <span class="number">255</span>:</span><br><span class="line">                messagebox.showinfo(<span class="string">&#x27;注册失败&#x27;</span>, <span class="string">&#x27;密码不能包含非法字符\n( ⊙ o ⊙ )&#x27;</span>)</span><br><span class="line">                <span class="keyword">return</span> -<span class="number">3</span></span><br><span class="line">        port=<span class="built_in">int</span>(random.randint(<span class="number">1</span>,<span class="number">1000000</span>)%<span class="number">65535</span>)</span><br><span class="line">        db=connect_to_mysql()</span><br><span class="line">        cursor=db.cursor()</span><br><span class="line">        sql=<span class="string">&quot;INSERT INTO user_info(id, pwd, port) VALUES (&#x27;%s&#x27;, &#x27;%s&#x27;, %d)&quot;</span> % (account, password, port)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            cursor.execute(sql)</span><br><span class="line">            db.commit()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;成功修改数据库内容&#x27;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            db.rollback()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;失败&quot;</span>)</span><br><span class="line">        db.close()</span><br><span class="line">        messagebox.showinfo(<span class="string">&#x27;注册成功&#x27;</span>,<span class="string">&#x27;恭喜您 注册成功\n~\(≧▽≦)/~&#x27;</span>)</span><br><span class="line">        self.root.destroy()<span class="comment">#销毁注册窗口</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="3-3-用户私聊功能编码实现"><a href="#3-3-用户私聊功能编码实现" class="headerlink" title="3.3 用户私聊功能编码实现"></a>3.3 用户私聊功能编码实现</h2><p><em><strong>注：根据自己的系统功能划分进行编码介绍，粘贴主要代码，对相应的功能进行详细描述。</strong></em></p>
 <p>开启聊天时，自动打开客户端,提供用户私聊功能</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#客户端</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">client</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, user_id, contact_id, chatPanel</span>):<br>        self.chatPanel=chatPanel<br>        self.user_id = user_id<br>        self.contact_id=contact_id<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;conact_id为：&#x27;</span>+<span class="hljs-built_in">str</span>(self.contact_id))<br>        <span class="hljs-comment">#连接数据库，获取用户端口</span><br>        self.db = connect_to_mysql()<br>        self.cursor = self.db.cursor()<br>        sql1 = <span class="hljs-string">&#x27;select port from user_info where id=%s&#x27;</span> % (self.user_id)<br>        self.cursor.execute(sql1)<br>        self.user_port = <span class="hljs-built_in">int</span>(self.cursor.fetchone()[<span class="hljs-number">0</span>])<br>        self.s = socket.socket()<span class="hljs-comment">#绑定用户socket</span><br>        self.s.bind((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,self.user_port))<br><br>    <span class="hljs-comment">#私聊发信息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_message_to_friend</span>(<span class="hljs-params">self, msg</span>):<br>        <span class="hljs-comment"># 根据好友id从数据库获取端口号</span><br>        sql2 = <span class="hljs-string">&#x27;select port from user_info where id=%s&#x27;</span> % (self.contact_id)<br>        <span class="hljs-built_in">print</span>(sql2)<br>        self.cursor.execute(sql2)<br>        self.friend_port = <span class="hljs-built_in">int</span>(self.cursor.fetchone()[<span class="hljs-number">0</span>])<br>        <span class="hljs-built_in">print</span>(self.friend_port)<br>        <span class="hljs-comment"># 建立socket连接</span><br>        self.send_socket = socket.socket()<br>        self.send_socket.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, self.friend_port))<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-comment"># 发送消息给好友</span><br>            message=<span class="hljs-built_in">str</span>(self.user_id)+<span class="hljs-string">&#x27;,&#x27;</span>+<span class="hljs-built_in">str</span>(msg)<span class="hljs-comment">#发送者id和消息内容</span><br>            self.send_socket.send(<span class="hljs-built_in">bytes</span>(message,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;消息发送成功&#x27;</span>)<br>        <span class="hljs-keyword">except</span>:<br>            messagebox.showinfo(<span class="hljs-string">&#x27;错误&#x27;</span>,<span class="hljs-string">&#x27;消息发送出错&#x27;</span>)<br>    <span class="hljs-comment">#群聊发信息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_message_to_group</span>(<span class="hljs-params">self, msg</span>):<br>        <span class="hljs-comment"># 根据群聊从数据库获取端口号</span><br>        sql2 = <span class="hljs-string">&#x27;select port from group_info where group_id=%s&#x27;</span> % (self.contact_id[<span class="hljs-number">0</span>])<br>        self.cursor.execute(sql2)<br>        self.group_port = <span class="hljs-built_in">int</span>(self.cursor.fetchone()[<span class="hljs-number">0</span>])<br>        <span class="hljs-comment">#建立socket连接</span><br>        self.send_socket = socket.socket()<br>        self.send_socket.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, self.group_port))<br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-comment"># 发送消息给服务器</span><br>            message=<span class="hljs-built_in">str</span>(self.user_id)+<span class="hljs-string">&#x27;,&#x27;</span>+<span class="hljs-built_in">str</span>(msg)<span class="hljs-comment">#发送者id和消息内容</span><br>            self.send_socket.send(<span class="hljs-built_in">bytes</span>(message, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;消息发送成功&#x27;</span>)<br>        <span class="hljs-keyword">except</span>:<br>            messagebox.showinfo(<span class="hljs-string">&#x27;错误&#x27;</span>, <span class="hljs-string">&#x27;消息发送出错&#x27;</span>)<br><br>    <span class="hljs-comment"># 接收私聊发来的信息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">recv_private_message</span>(<span class="hljs-params">self</span>):<br>        self.s.listen(<span class="hljs-number">5</span>)<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            conn, addr = self.s.accept()<br>            <span class="hljs-comment"># 接收消息</span><br>            t = strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())<br>            message = conn.recv(<span class="hljs-number">1024</span>).decode()<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> message:<br>                <span class="hljs-keyword">continue</span><br>            send_user_id = message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">0</span>]  <span class="hljs-comment"># 发送者id</span><br>            msg = message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">1</span>]  <span class="hljs-comment"># 消息内容</span><br>            self.chatPanel.chat_scroll_box.insert(END, <span class="hljs-built_in">str</span>(t) + <span class="hljs-string">&#x27;\n&#x27;</span> + <span class="hljs-built_in">str</span>(send_user_id) + <span class="hljs-string">&#x27;\t:&#x27;</span> + <span class="hljs-built_in">str</span>(msg) + <span class="hljs-string">&#x27;\n&#x27;</span>)<br>    <span class="hljs-comment">#接收群聊信息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">recv_group_message</span>(<span class="hljs-params">self</span>):<br>        self.s.listen(<span class="hljs-number">5</span>)<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            conn, addr = self.s.accept()<br>            <span class="hljs-comment"># 接收消息</span><br>            t = strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())<br>            message = conn.recv(<span class="hljs-number">1024</span>).decode()<br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> message:<br>                <span class="hljs-keyword">continue</span><br>            send_user_id=message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">0</span>]<span class="hljs-comment">#发送者id</span><br>            msg=message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">1</span>]<span class="hljs-comment">#消息内容</span><br>            self.chatPanel.chat_scroll_box.insert(END, <span class="hljs-built_in">str</span>(t) + <span class="hljs-string">&#x27;\n&#x27;</span> + <span class="hljs-built_in">str</span>(send_user_id) + <span class="hljs-string">&#x27;\t:&#x27;</span> + <span class="hljs-built_in">str</span>(msg) + <span class="hljs-string">&#x27;\n&#x27;</span>)<br>    <span class="hljs-comment">#断开与服务器的连接</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">close_connect</span>(<span class="hljs-params">self</span>):<br>        self.s.close()<br>        self.db.close()<span class="hljs-comment">#关闭数据库连接</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;客户端与服务器断开连接！！！\n&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#客户端</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">client</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, user_id, contact_id, chatPanel</span>):</span><br><span class="line">        self.chatPanel=chatPanel</span><br><span class="line">        self.user_id = user_id</span><br><span class="line">        self.contact_id=contact_id</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;conact_id为：&#x27;</span>+<span class="built_in">str</span>(self.contact_id))</span><br><span class="line">        <span class="comment">#连接数据库，获取用户端口</span></span><br><span class="line">        self.db = connect_to_mysql()</span><br><span class="line">        self.cursor = self.db.cursor()</span><br><span class="line">        sql1 = <span class="string">&#x27;select port from user_info where id=%s&#x27;</span> % (self.user_id)</span><br><span class="line">        self.cursor.execute(sql1)</span><br><span class="line">        self.user_port = <span class="built_in">int</span>(self.cursor.fetchone()[<span class="number">0</span>])</span><br><span class="line">        self.s = socket.socket()<span class="comment">#绑定用户socket</span></span><br><span class="line">        self.s.bind((<span class="string">&#x27;127.0.0.1&#x27;</span>,self.user_port))</span><br><span class="line"></span><br><span class="line">    <span class="comment">#私聊发信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_message_to_friend</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="comment"># 根据好友id从数据库获取端口号</span></span><br><span class="line">        sql2 = <span class="string">&#x27;select port from user_info where id=%s&#x27;</span> % (self.contact_id)</span><br><span class="line">        <span class="built_in">print</span>(sql2)</span><br><span class="line">        self.cursor.execute(sql2)</span><br><span class="line">        self.friend_port = <span class="built_in">int</span>(self.cursor.fetchone()[<span class="number">0</span>])</span><br><span class="line">        <span class="built_in">print</span>(self.friend_port)</span><br><span class="line">        <span class="comment"># 建立socket连接</span></span><br><span class="line">        self.send_socket = socket.socket()</span><br><span class="line">        self.send_socket.connect((<span class="string">&#x27;127.0.0.1&#x27;</span>, self.friend_port))</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 发送消息给好友</span></span><br><span class="line">            message=<span class="built_in">str</span>(self.user_id)+<span class="string">&#x27;,&#x27;</span>+<span class="built_in">str</span>(msg)<span class="comment">#发送者id和消息内容</span></span><br><span class="line">            self.send_socket.send(<span class="built_in">bytes</span>(message,encoding=<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;消息发送成功&#x27;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;错误&#x27;</span>,<span class="string">&#x27;消息发送出错&#x27;</span>)</span><br><span class="line">    <span class="comment">#群聊发信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_message_to_group</span>(<span class="params">self, msg</span>):</span><br><span class="line">        <span class="comment"># 根据群聊从数据库获取端口号</span></span><br><span class="line">        sql2 = <span class="string">&#x27;select port from group_info where group_id=%s&#x27;</span> % (self.contact_id[<span class="number">0</span>])</span><br><span class="line">        self.cursor.execute(sql2)</span><br><span class="line">        self.group_port = <span class="built_in">int</span>(self.cursor.fetchone()[<span class="number">0</span>])</span><br><span class="line">        <span class="comment">#建立socket连接</span></span><br><span class="line">        self.send_socket = socket.socket()</span><br><span class="line">        self.send_socket.connect((<span class="string">&#x27;127.0.0.1&#x27;</span>, self.group_port))</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="comment"># 发送消息给服务器</span></span><br><span class="line">            message=<span class="built_in">str</span>(self.user_id)+<span class="string">&#x27;,&#x27;</span>+<span class="built_in">str</span>(msg)<span class="comment">#发送者id和消息内容</span></span><br><span class="line">            self.send_socket.send(<span class="built_in">bytes</span>(message, encoding=<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;消息发送成功&#x27;</span>)</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;错误&#x27;</span>, <span class="string">&#x27;消息发送出错&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 接收私聊发来的信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv_private_message</span>(<span class="params">self</span>):</span><br><span class="line">        self.s.listen(<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            conn, addr = self.s.accept()</span><br><span class="line">            <span class="comment"># 接收消息</span></span><br><span class="line">            t = strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())</span><br><span class="line">            message = conn.recv(<span class="number">1024</span>).decode()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> message:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            send_user_id = message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">0</span>]  <span class="comment"># 发送者id</span></span><br><span class="line">            msg = message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">1</span>]  <span class="comment"># 消息内容</span></span><br><span class="line">            self.chatPanel.chat_scroll_box.insert(END, <span class="built_in">str</span>(t) + <span class="string">&#x27;\n&#x27;</span> + <span class="built_in">str</span>(send_user_id) + <span class="string">&#x27;\t:&#x27;</span> + <span class="built_in">str</span>(msg) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    <span class="comment">#接收群聊信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv_group_message</span>(<span class="params">self</span>):</span><br><span class="line">        self.s.listen(<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            conn, addr = self.s.accept()</span><br><span class="line">            <span class="comment"># 接收消息</span></span><br><span class="line">            t = strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())</span><br><span class="line">            message = conn.recv(<span class="number">1024</span>).decode()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> message:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            send_user_id=message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">0</span>]<span class="comment">#发送者id</span></span><br><span class="line">            msg=message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">1</span>]<span class="comment">#消息内容</span></span><br><span class="line">            self.chatPanel.chat_scroll_box.insert(END, <span class="built_in">str</span>(t) + <span class="string">&#x27;\n&#x27;</span> + <span class="built_in">str</span>(send_user_id) + <span class="string">&#x27;\t:&#x27;</span> + <span class="built_in">str</span>(msg) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    <span class="comment">#断开与服务器的连接</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">close_connect</span>(<span class="params">self</span>):</span><br><span class="line">        self.s.close()</span><br><span class="line">        self.db.close()<span class="comment">#关闭数据库连接</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;客户端与服务器断开连接！！！\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <p><strong>用户私聊功能实现</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#一对一聊天界面</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">private_ChatPanel</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        threading.Thread(target=self.client.recv_private_message).start()  <span class="hljs-comment"># 接收私聊信息线程开启</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;接收信息线程启动!\n&#x27;</span>)<br>        self.root.mainloop()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,user_id,friend_id</span>):<br>        self.root = Tk()<br>        self.client=client(user_id,friend_id,self)<br>        self.user_id = user_id<br>        self.friend_id = friend_id<br><br>        <span class="hljs-comment"># 标题</span><br>        self.root.title(<span class="hljs-string">&#x27;登录用户: &#x27;</span>+<span class="hljs-built_in">str</span>(self.user_id)+<span class="hljs-string">&#x27;聊天对象:&#x27;</span>+<span class="hljs-built_in">str</span>(self.friend_id))<br>        self.root.geometry(<span class="hljs-string">&#x27;700x600+400+50&#x27;</span>)<br>        self.headtitle = Canvas(self.root, bg=<span class="hljs-string">&#x27;skyblue&#x27;</span>)<br>        self.headtitle.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">40</span>, width=<span class="hljs-number">690</span>)<br><br>        <span class="hljs-comment">#好友名字标签</span><br>        titlenamelable=Label(self.headtitle,text=self.friend_id,bg=<span class="hljs-string">&#x27;skyblue&#x27;</span>)<br>        titlenamelable.place(x=<span class="hljs-number">50</span>,y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">300</span>)<br>        <span class="hljs-comment">#聊天信息区域</span><br>        self.chat_area = Canvas(self.root, bg=<span class="hljs-string">&#x27;orange&#x27;</span>)<br>        self.chat_area.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">45</span>, heigh=<span class="hljs-number">400</span>, width=<span class="hljs-number">690</span>)<br>        <span class="hljs-comment">#输入区域</span><br>        self.input_area = Canvas(self.root, bg=<span class="hljs-string">&#x27;pink&#x27;</span>)<br>        self.input_area.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">445</span>, heigh=<span class="hljs-number">150</span>, width=<span class="hljs-number">690</span>)<br><br>        <span class="hljs-comment">#发送按钮</span><br>        send_button=Button(self.input_area, text=<span class="hljs-string">&#x27;发送&#x27;</span>,command=self.send_button_clicked) <span class="hljs-comment">#待确定</span><br>        send_button.place(x=<span class="hljs-number">600</span>, y=<span class="hljs-number">110</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">80</span>)<br>        <span class="hljs-comment">#关闭按钮</span><br>        closebutton=Button(self.input_area, text=<span class="hljs-string">&#x27;关闭&#x27;</span>, command=self.close_button_clicked)<span class="hljs-comment">#绑定按键功能为摧毁当前界面</span><br>        closebutton.place(x=<span class="hljs-number">510</span>, y=<span class="hljs-number">110</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">80</span>)<br><br>        <span class="hljs-comment">#聊天信息框</span><br>        self.chat_scroll_box=scrolledtext.ScrolledText(self.chat_area, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;normal&quot;</span>))<br>        self.chat_scroll_box.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">390</span>, width=<span class="hljs-number">680</span>)<br><br>        <span class="hljs-comment"># 信息输入框</span><br>        self.input_chat_box = scrolledtext.ScrolledText(self.input_area, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;normal&quot;</span>))<br>        self.input_chat_box.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">100</span>, width=<span class="hljs-number">680</span>)<br><br>    <span class="hljs-comment">#关闭按钮点击事件</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">close_button_clicked</span>(<span class="hljs-params">self</span>):<br>        self.root.destroy()<br>        self.client.close_connect()<br><br>    <span class="hljs-comment">#发送按钮点击事件</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_button_clicked</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 获取输入信息</span><br>        t = strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())<br>        msg = self.input_chat_box.get(<span class="hljs-string">&#x27;0.0&#x27;</span>, END)<br>        self.input_chat_box.delete(<span class="hljs-string">&#x27;0.0&#x27;</span>, END)<br>        <span class="hljs-comment"># 若不为空将消息发送</span><br>        <span class="hljs-keyword">if</span> msg:<br>            self.client.send_message_to_friend(msg)<br>        <span class="hljs-keyword">else</span>:<br>            messagebox.showinfo(<span class="hljs-string">&#x27;提示&#x27;</span>,<span class="hljs-string">&#x27;消息不能为空&#x27;</span>)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;发送按钮被点击了&#x27;</span>)<br>        <span class="hljs-comment"># 将输入信息贴到聊天记录中</span><br>        self.chat_scroll_box.insert(END, <span class="hljs-built_in">str</span>(t) + <span class="hljs-string">&#x27;\n&#x27;</span> + <span class="hljs-built_in">str</span>(<span class="hljs-string">&#x27;我:  &#x27;</span>) + <span class="hljs-built_in">str</span>(msg)+<span class="hljs-string">&#x27;\n&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#一对一聊天界面</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">private_ChatPanel</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        threading.Thread(target=self.client.recv_private_message).start()  <span class="comment"># 接收私聊信息线程开启</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;接收信息线程启动!\n&#x27;</span>)</span><br><span class="line">        self.root.mainloop()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,user_id,friend_id</span>):</span><br><span class="line">        self.root = Tk()</span><br><span class="line">        self.client=client(user_id,friend_id,self)</span><br><span class="line">        self.user_id = user_id</span><br><span class="line">        self.friend_id = friend_id</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 标题</span></span><br><span class="line">        self.root.title(<span class="string">&#x27;登录用户: &#x27;</span>+<span class="built_in">str</span>(self.user_id)+<span class="string">&#x27;聊天对象:&#x27;</span>+<span class="built_in">str</span>(self.friend_id))</span><br><span class="line">        self.root.geometry(<span class="string">&#x27;700x600+400+50&#x27;</span>)</span><br><span class="line">        self.headtitle = Canvas(self.root, bg=<span class="string">&#x27;skyblue&#x27;</span>)</span><br><span class="line">        self.headtitle.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">40</span>, width=<span class="number">690</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#好友名字标签</span></span><br><span class="line">        titlenamelable=Label(self.headtitle,text=self.friend_id,bg=<span class="string">&#x27;skyblue&#x27;</span>)</span><br><span class="line">        titlenamelable.place(x=<span class="number">50</span>,y=<span class="number">5</span>, heigh=<span class="number">30</span>, width=<span class="number">300</span>)</span><br><span class="line">        <span class="comment">#聊天信息区域</span></span><br><span class="line">        self.chat_area = Canvas(self.root, bg=<span class="string">&#x27;orange&#x27;</span>)</span><br><span class="line">        self.chat_area.place(x=<span class="number">5</span>, y=<span class="number">45</span>, heigh=<span class="number">400</span>, width=<span class="number">690</span>)</span><br><span class="line">        <span class="comment">#输入区域</span></span><br><span class="line">        self.input_area = Canvas(self.root, bg=<span class="string">&#x27;pink&#x27;</span>)</span><br><span class="line">        self.input_area.place(x=<span class="number">5</span>, y=<span class="number">445</span>, heigh=<span class="number">150</span>, width=<span class="number">690</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#发送按钮</span></span><br><span class="line">        send_button=Button(self.input_area, text=<span class="string">&#x27;发送&#x27;</span>,command=self.send_button_clicked) <span class="comment">#待确定</span></span><br><span class="line">        send_button.place(x=<span class="number">600</span>, y=<span class="number">110</span>, heigh=<span class="number">30</span>, width=<span class="number">80</span>)</span><br><span class="line">        <span class="comment">#关闭按钮</span></span><br><span class="line">        closebutton=Button(self.input_area, text=<span class="string">&#x27;关闭&#x27;</span>, command=self.close_button_clicked)<span class="comment">#绑定按键功能为摧毁当前界面</span></span><br><span class="line">        closebutton.place(x=<span class="number">510</span>, y=<span class="number">110</span>, heigh=<span class="number">30</span>, width=<span class="number">80</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#聊天信息框</span></span><br><span class="line">        self.chat_scroll_box=scrolledtext.ScrolledText(self.chat_area, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;normal&quot;</span>))</span><br><span class="line">        self.chat_scroll_box.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">390</span>, width=<span class="number">680</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 信息输入框</span></span><br><span class="line">        self.input_chat_box = scrolledtext.ScrolledText(self.input_area, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;normal&quot;</span>))</span><br><span class="line">        self.input_chat_box.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">100</span>, width=<span class="number">680</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#关闭按钮点击事件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">close_button_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        self.root.destroy()</span><br><span class="line">        self.client.close_connect()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#发送按钮点击事件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_button_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 获取输入信息</span></span><br><span class="line">        t = strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())</span><br><span class="line">        msg = self.input_chat_box.get(<span class="string">&#x27;0.0&#x27;</span>, END)</span><br><span class="line">        self.input_chat_box.delete(<span class="string">&#x27;0.0&#x27;</span>, END)</span><br><span class="line">        <span class="comment"># 若不为空将消息发送</span></span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            self.client.send_message_to_friend(msg)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            messagebox.showinfo(<span class="string">&#x27;提示&#x27;</span>,<span class="string">&#x27;消息不能为空&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;发送按钮被点击了&#x27;</span>)</span><br><span class="line">        <span class="comment"># 将输入信息贴到聊天记录中</span></span><br><span class="line">        self.chat_scroll_box.insert(END, <span class="built_in">str</span>(t) + <span class="string">&#x27;\n&#x27;</span> + <span class="built_in">str</span>(<span class="string">&#x27;我:  &#x27;</span>) + <span class="built_in">str</span>(msg)+<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-4-用户群聊功能编码实现"><a href="#3-4-用户群聊功能编码实现" class="headerlink" title="3.4 用户群聊功能编码实现"></a>3.4 用户群聊功能编码实现</h2><p><strong>服务端程序（需在打开群聊之前开启）</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#服务器程序</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">service</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,group_id</span>):<br>        self.group_id=group_id[<span class="hljs-number">0</span>]<br>        <span class="hljs-comment">#获取群端口</span><br>        db=connect_to_mysql()<br>        cursor = db.cursor()<br>        sql1 = <span class="hljs-string">&#x27;SELECT distinct port FROM group_info where group_id=%s&#x27;</span> % self.group_id<br>        cursor.execute(sql1)<br>        self.group_port=cursor.fetchone()[<span class="hljs-number">0</span>]<span class="hljs-comment">#群端口</span><br>        sql2=<span class="hljs-string">&#x27;select member_id from group_info where group_id=%s&#x27;</span> % self.group_id<br>        cursor.execute(sql2)<br>        self.group_member_list=cursor.fetchall()<span class="hljs-comment">#群聊中的成员列表</span><br>        <span class="hljs-built_in">print</span>(self.group_member_list)<br>        <span class="hljs-comment"># 创建服务器socket</span><br>        self.server_socket = socket.socket()<br>        <span class="hljs-comment"># self.server_socket.setblocking(False)#设置socket为非阻塞模式</span><br>        <span class="hljs-comment"># 绑定监听端口</span><br>        self.server_socket.bind((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-built_in">int</span>(self.group_port)))<br>        self.server_socket.listen(<span class="hljs-number">50</span>)<br>        <span class="hljs-comment"># 开始监听</span><br>        threading.Thread(target=self.recv_message).start()<span class="hljs-comment">#接收信息线程</span><br>    <span class="hljs-comment"># 接收信息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">recv_message</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>            <span class="hljs-keyword">try</span>:<br>                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;群聊&#x27;</span> + <span class="hljs-built_in">str</span>(self.group_id) + <span class="hljs-string">&#x27;正在监听&#x27;</span>)<br>                conn,addr=self.server_socket.accept()<span class="hljs-comment">#接收连接</span><br>                <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(addr)+<span class="hljs-string">&#x27;已连接&#x27;</span>)<br>                message = conn.recv(<span class="hljs-number">1024</span>).decode()<br>                <span class="hljs-comment">#将信息数据拆分</span><br>                send_user_id=message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">0</span>]<span class="hljs-comment">#发送者id</span><br>                msg=message.split(<span class="hljs-string">&#x27;,&#x27;</span>)[<span class="hljs-number">1</span>]<span class="hljs-comment">#发送的消息内容</span><br>                <span class="hljs-comment"># 给群里的成员每一个都发信息</span><br>                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(self.group_member_list)):<br>                    self.send_msg_to_group(self.group_member_list[j][<span class="hljs-number">0</span>],send_user_id,msg)<br>            <span class="hljs-keyword">except</span>:<br>                <span class="hljs-keyword">continue</span><br>    <span class="hljs-comment">#群发消息</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_msg_to_group</span>(<span class="hljs-params">self,recv_id,send_user_id,msg</span>):<br>        db = connect_to_mysql()<br>        cursor = db.cursor()<br>        sql1 = <span class="hljs-string">&#x27;SELECT port FROM user_info where id=%s&#x27;</span> % recv_id<span class="hljs-comment">#得到接收者的端口</span><br>        cursor.execute(sql1)<br>        recv_port=cursor.fetchone()[<span class="hljs-number">0</span>]<br>        <span class="hljs-keyword">if</span> recv_id !=send_user_id:<br>            <span class="hljs-comment">#根据群聊成员端口发送信息</span><br>            self.send_socket=socket.socket()<br>            self.send_socket.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, recv_port))<br>            self.send_socket.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(send_user_id)+<span class="hljs-string">&#x27;,&#x27;</span>+<span class="hljs-built_in">str</span>(msg),encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>))<span class="hljs-comment">#发送者id和消息内容</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#服务器程序</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">service</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,group_id</span>):</span><br><span class="line">        self.group_id=group_id[<span class="number">0</span>]</span><br><span class="line">        <span class="comment">#获取群端口</span></span><br><span class="line">        db=connect_to_mysql()</span><br><span class="line">        cursor = db.cursor()</span><br><span class="line">        sql1 = <span class="string">&#x27;SELECT distinct port FROM group_info where group_id=%s&#x27;</span> % self.group_id</span><br><span class="line">        cursor.execute(sql1)</span><br><span class="line">        self.group_port=cursor.fetchone()[<span class="number">0</span>]<span class="comment">#群端口</span></span><br><span class="line">        sql2=<span class="string">&#x27;select member_id from group_info where group_id=%s&#x27;</span> % self.group_id</span><br><span class="line">        cursor.execute(sql2)</span><br><span class="line">        self.group_member_list=cursor.fetchall()<span class="comment">#群聊中的成员列表</span></span><br><span class="line">        <span class="built_in">print</span>(self.group_member_list)</span><br><span class="line">        <span class="comment"># 创建服务器socket</span></span><br><span class="line">        self.server_socket = socket.socket()</span><br><span class="line">        <span class="comment"># self.server_socket.setblocking(False)#设置socket为非阻塞模式</span></span><br><span class="line">        <span class="comment"># 绑定监听端口</span></span><br><span class="line">        self.server_socket.bind((<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="built_in">int</span>(self.group_port)))</span><br><span class="line">        self.server_socket.listen(<span class="number">50</span>)</span><br><span class="line">        <span class="comment"># 开始监听</span></span><br><span class="line">        threading.Thread(target=self.recv_message).start()<span class="comment">#接收信息线程</span></span><br><span class="line">    <span class="comment"># 接收信息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">recv_message</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;群聊&#x27;</span> + <span class="built_in">str</span>(self.group_id) + <span class="string">&#x27;正在监听&#x27;</span>)</span><br><span class="line">                conn,addr=self.server_socket.accept()<span class="comment">#接收连接</span></span><br><span class="line">                <span class="built_in">print</span>(<span class="built_in">str</span>(addr)+<span class="string">&#x27;已连接&#x27;</span>)</span><br><span class="line">                message = conn.recv(<span class="number">1024</span>).decode()</span><br><span class="line">                <span class="comment">#将信息数据拆分</span></span><br><span class="line">                send_user_id=message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">0</span>]<span class="comment">#发送者id</span></span><br><span class="line">                msg=message.split(<span class="string">&#x27;,&#x27;</span>)[<span class="number">1</span>]<span class="comment">#发送的消息内容</span></span><br><span class="line">                <span class="comment"># 给群里的成员每一个都发信息</span></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(self.group_member_list)):</span><br><span class="line">                    self.send_msg_to_group(self.group_member_list[j][<span class="number">0</span>],send_user_id,msg)</span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">    <span class="comment">#群发消息</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_msg_to_group</span>(<span class="params">self,recv_id,send_user_id,msg</span>):</span><br><span class="line">        db = connect_to_mysql()</span><br><span class="line">        cursor = db.cursor()</span><br><span class="line">        sql1 = <span class="string">&#x27;SELECT port FROM user_info where id=%s&#x27;</span> % recv_id<span class="comment">#得到接收者的端口</span></span><br><span class="line">        cursor.execute(sql1)</span><br><span class="line">        recv_port=cursor.fetchone()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> recv_id !=send_user_id:</span><br><span class="line">            <span class="comment">#根据群聊成员端口发送信息</span></span><br><span class="line">            self.send_socket=socket.socket()</span><br><span class="line">            self.send_socket.connect((<span class="string">&#x27;127.0.0.1&#x27;</span>, recv_port))</span><br><span class="line">            self.send_socket.send(<span class="built_in">bytes</span>(<span class="built_in">str</span>(send_user_id)+<span class="string">&#x27;,&#x27;</span>+<span class="built_in">str</span>(msg),encoding=<span class="string">&#x27;utf-8&#x27;</span>))<span class="comment">#发送者id和消息内容</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>群聊功能实现</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#群聊界面</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">group_ChatPanel</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self</span>):<br>        threading.Thread(target=self.client.recv_group_message).start()  <span class="hljs-comment"># 接收群聊信息线程开启</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;接收信息线程启动!\n&#x27;</span>)<br>        self.root.mainloop()<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,user_id,group_id</span>):<br>        self.root = Tk()<br>        self.client=client(user_id,group_id,self)<br>        self.user_id = user_id<br>        self.group_id = group_id<br><br>        <span class="hljs-comment"># 标题</span><br>        self.root.title(<span class="hljs-string">&#x27;登录用户: &#x27;</span>+<span class="hljs-built_in">str</span>(self.user_id)+<span class="hljs-string">&#x27; 群聊:&#x27;</span>+<span class="hljs-built_in">str</span>(self.group_id[<span class="hljs-number">0</span>]))<br>        self.root.geometry(<span class="hljs-string">&#x27;700x600+400+50&#x27;</span>)<br>        self.headtitle = Canvas(self.root, bg=<span class="hljs-string">&#x27;skyblue&#x27;</span>)<br>        self.headtitle.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">40</span>, width=<span class="hljs-number">690</span>)<br><br>        <span class="hljs-comment">#好友名字标签</span><br>        titlenamelable=Label(self.headtitle,text=self.group_id,bg=<span class="hljs-string">&#x27;skyblue&#x27;</span>)<br>        titlenamelable.place(x=<span class="hljs-number">50</span>,y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">300</span>)<br>        <span class="hljs-comment">#聊天信息区域</span><br>        self.chat_area = Canvas(self.root, bg=<span class="hljs-string">&#x27;orange&#x27;</span>)<br>        self.chat_area.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">45</span>, heigh=<span class="hljs-number">400</span>, width=<span class="hljs-number">690</span>)<br>        <span class="hljs-comment">#输入区域</span><br>        self.input_area = Canvas(self.root, bg=<span class="hljs-string">&#x27;pink&#x27;</span>)<br>        self.input_area.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">445</span>, heigh=<span class="hljs-number">150</span>, width=<span class="hljs-number">690</span>)<br><br>        <span class="hljs-comment">#发送按钮</span><br>        send_button=Button(self.input_area, text=<span class="hljs-string">&#x27;发送&#x27;</span>,command=self.send_button_clicked) <span class="hljs-comment">#待确定</span><br>        send_button.place(x=<span class="hljs-number">600</span>, y=<span class="hljs-number">110</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">80</span>)<br>        <span class="hljs-comment">#关闭按钮</span><br>        closebutton=Button(self.input_area, text=<span class="hljs-string">&#x27;关闭&#x27;</span>, command=self.close_button_clicked)<span class="hljs-comment">#绑定按键功能为摧毁当前界面</span><br>        closebutton.place(x=<span class="hljs-number">510</span>, y=<span class="hljs-number">110</span>, heigh=<span class="hljs-number">30</span>, width=<span class="hljs-number">80</span>)<br><br>        <span class="hljs-comment">#聊天信息框</span><br>        self.chat_scroll_box=scrolledtext.ScrolledText(self.chat_area, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;normal&quot;</span>))<br>        self.chat_scroll_box.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">390</span>, width=<span class="hljs-number">680</span>)<br><br>        <span class="hljs-comment"># 信息输入框</span><br>        self.input_chat_box = scrolledtext.ScrolledText(self.input_area, font=(<span class="hljs-string">&quot;宋体&quot;</span>, <span class="hljs-number">16</span>, <span class="hljs-string">&quot;normal&quot;</span>))<br>        self.input_chat_box.place(x=<span class="hljs-number">5</span>, y=<span class="hljs-number">5</span>, heigh=<span class="hljs-number">100</span>, width=<span class="hljs-number">680</span>)<br><br>    <span class="hljs-comment">#关闭按钮点击事件</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">close_button_clicked</span>(<span class="hljs-params">self</span>):<br>        self.root.destroy()<br>        self.client.close_connect()<br><br>    <span class="hljs-comment">#发送按钮点击事件</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">send_button_clicked</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-comment"># 获取输入信息</span><br>        t = strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())<br>        msg = self.input_chat_box.get(<span class="hljs-string">&#x27;0.0&#x27;</span>, END)<br>        self.input_chat_box.delete(<span class="hljs-string">&#x27;0.0&#x27;</span>, END)<br>        <span class="hljs-comment"># 将消息发送</span><br>        message=<span class="hljs-built_in">str</span>(msg)<br>        self.client.send_message_to_group(message)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;发送按钮被点击了&#x27;</span>)<br>        <span class="hljs-comment"># 将输入信息贴到聊天记录中</span><br>        self.chat_scroll_box.insert(END, <span class="hljs-built_in">str</span>(t) + <span class="hljs-string">&#x27;\n&#x27;</span> + <span class="hljs-built_in">str</span>(<span class="hljs-string">&#x27;我: &#x27;</span>) + <span class="hljs-built_in">str</span>(msg)+<span class="hljs-string">&#x27;\n&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#群聊界面</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">group_ChatPanel</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">run</span>(<span class="params">self</span>):</span><br><span class="line">        threading.Thread(target=self.client.recv_group_message).start()  <span class="comment"># 接收群聊信息线程开启</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;接收信息线程启动!\n&#x27;</span>)</span><br><span class="line">        self.root.mainloop()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self,user_id,group_id</span>):</span><br><span class="line">        self.root = Tk()</span><br><span class="line">        self.client=client(user_id,group_id,self)</span><br><span class="line">        self.user_id = user_id</span><br><span class="line">        self.group_id = group_id</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 标题</span></span><br><span class="line">        self.root.title(<span class="string">&#x27;登录用户: &#x27;</span>+<span class="built_in">str</span>(self.user_id)+<span class="string">&#x27; 群聊:&#x27;</span>+<span class="built_in">str</span>(self.group_id[<span class="number">0</span>]))</span><br><span class="line">        self.root.geometry(<span class="string">&#x27;700x600+400+50&#x27;</span>)</span><br><span class="line">        self.headtitle = Canvas(self.root, bg=<span class="string">&#x27;skyblue&#x27;</span>)</span><br><span class="line">        self.headtitle.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">40</span>, width=<span class="number">690</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#好友名字标签</span></span><br><span class="line">        titlenamelable=Label(self.headtitle,text=self.group_id,bg=<span class="string">&#x27;skyblue&#x27;</span>)</span><br><span class="line">        titlenamelable.place(x=<span class="number">50</span>,y=<span class="number">5</span>, heigh=<span class="number">30</span>, width=<span class="number">300</span>)</span><br><span class="line">        <span class="comment">#聊天信息区域</span></span><br><span class="line">        self.chat_area = Canvas(self.root, bg=<span class="string">&#x27;orange&#x27;</span>)</span><br><span class="line">        self.chat_area.place(x=<span class="number">5</span>, y=<span class="number">45</span>, heigh=<span class="number">400</span>, width=<span class="number">690</span>)</span><br><span class="line">        <span class="comment">#输入区域</span></span><br><span class="line">        self.input_area = Canvas(self.root, bg=<span class="string">&#x27;pink&#x27;</span>)</span><br><span class="line">        self.input_area.place(x=<span class="number">5</span>, y=<span class="number">445</span>, heigh=<span class="number">150</span>, width=<span class="number">690</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#发送按钮</span></span><br><span class="line">        send_button=Button(self.input_area, text=<span class="string">&#x27;发送&#x27;</span>,command=self.send_button_clicked) <span class="comment">#待确定</span></span><br><span class="line">        send_button.place(x=<span class="number">600</span>, y=<span class="number">110</span>, heigh=<span class="number">30</span>, width=<span class="number">80</span>)</span><br><span class="line">        <span class="comment">#关闭按钮</span></span><br><span class="line">        closebutton=Button(self.input_area, text=<span class="string">&#x27;关闭&#x27;</span>, command=self.close_button_clicked)<span class="comment">#绑定按键功能为摧毁当前界面</span></span><br><span class="line">        closebutton.place(x=<span class="number">510</span>, y=<span class="number">110</span>, heigh=<span class="number">30</span>, width=<span class="number">80</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment">#聊天信息框</span></span><br><span class="line">        self.chat_scroll_box=scrolledtext.ScrolledText(self.chat_area, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;normal&quot;</span>))</span><br><span class="line">        self.chat_scroll_box.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">390</span>, width=<span class="number">680</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 信息输入框</span></span><br><span class="line">        self.input_chat_box = scrolledtext.ScrolledText(self.input_area, font=(<span class="string">&quot;宋体&quot;</span>, <span class="number">16</span>, <span class="string">&quot;normal&quot;</span>))</span><br><span class="line">        self.input_chat_box.place(x=<span class="number">5</span>, y=<span class="number">5</span>, heigh=<span class="number">100</span>, width=<span class="number">680</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#关闭按钮点击事件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">close_button_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        self.root.destroy()</span><br><span class="line">        self.client.close_connect()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#发送按钮点击事件</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">send_button_clicked</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="comment"># 获取输入信息</span></span><br><span class="line">        t = strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>, localtime())</span><br><span class="line">        msg = self.input_chat_box.get(<span class="string">&#x27;0.0&#x27;</span>, END)</span><br><span class="line">        self.input_chat_box.delete(<span class="string">&#x27;0.0&#x27;</span>, END)</span><br><span class="line">        <span class="comment"># 将消息发送</span></span><br><span class="line">        message=<span class="built_in">str</span>(msg)</span><br><span class="line">        self.client.send_message_to_group(message)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;发送按钮被点击了&#x27;</span>)</span><br><span class="line">        <span class="comment"># 将输入信息贴到聊天记录中</span></span><br><span class="line">        self.chat_scroll_box.insert(END, <span class="built_in">str</span>(t) + <span class="string">&#x27;\n&#x27;</span> + <span class="built_in">str</span>(<span class="string">&#x27;我: &#x27;</span>) + <span class="built_in">str</span>(msg)+<span class="string">&#x27;\n&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <h1 id="四-系统测试"><a href="#四-系统测试" class="headerlink" title="四.系统测试"></a>四.系统测试</h1><h2 id="4-1-测试范围"><a href="#4-1-测试范围" class="headerlink" title="4.1 测试范围"></a>4.1 测试范围</h2><p>1.注册界面测试</p>
 <p>2.登录界面测试</p>
@@ -486,367 +444,119 @@
 <ul>
 <li>群成员间发送文本消息,确认群成员都能收到消息</li>
 </ul>
-<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><p><img src="https://images.gaifagafin.top/202311051142228.png" srcset="/img/loading.gif" lazyload alt="功能测试用例"></p>
+<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><p><img data-src="https://images.gaifagafin.top/202311051142228.png" alt="功能测试用例"></p>
 <p>完整的项目在<a target="_blank" rel="noopener" href="https://github.com/gaifagafin/-Python-socket-QQ-bushi">https://github.com/gaifagafin/-Python-socket-QQ-bushi</a></p>
 <p>项目存在很多瑕疵和不足，可能等以后有时间再去慢慢完善</p>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/" class="category-chain-item">程序设计</a>
-  
-  
-
-      </span>
     
-  
-</span>
+    
 
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/python/" class="print-no-link">#python</a>
-      
-        <a href="/tags/socket/" class="print-no-link">#socket</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>仿QQ实时聊天(socket)</div>
-      <div>https://gaifagafin.github.io/2023/10/31/仿QQ实时聊天(socket)/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>gaifagafin</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2023年10月31日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
-                  </span>
-                </a>
-              
-            
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/socket/" rel="tag"># socket</a>
           </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
 
+        
 
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/10/31/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/" title="PHP伪协议">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">PHP伪协议</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" title="攻防世界 easytornado">
-                        <span class="hidden-mobile">攻防世界 easytornado</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/" rel="prev" title="攻防世界-Web_python_template_injection">
+                  <i class="fa fa-angle-left"></i> 攻防世界-Web_python_template_injection
+                </a>
             </div>
-
-            
-          </article>
-        </div>
-      </div>
-    </div>
-
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-  </div>
+            <div class="post-nav-item">
+                <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" rel="next" title="攻防世界 easytornado">
+                  攻防世界 easytornado <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
 </div>
 
 
 
 
 
-  
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
 </div>
-
-    
-
-    
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-    </div>
-  
-  
-  
-  
-</div>
 
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaifagafin</span>
+  </div>
+
+    </div>
   </footer>
 
-  <!-- Scripts -->
   
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
 
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
+  <a href="https://github.com/gaifagafin" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
-    <script  src="/js/img-lazyload.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.umd.js" integrity="sha256-oyhjPiYRWGXaAt+ny/mTMWOnN1GBoZDUQnzzgC7FRI4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
   
 
 
 
 
-  
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.3s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
 </script>
 
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
 </body>
 </html>
