@@ -2776,8 +2776,8 @@ header.header {
 code {
   padding: 2px 3px;
   overflow-wrap: break-word;
-  color: #c7254e;
+  color: #000;
   background: #dcdcdc;
   border-radius: 3px;
-  font-size: 17px;
+  font-size: 16px;
 }
