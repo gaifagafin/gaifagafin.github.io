@@ -1240,31 +1240,6 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo fluid美化(持续更新)</title>
-    <url>/2023/11/06/hexo-fluid%E7%BE%8E%E5%8C%96-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<p>目前博客用的是Fuid主题，自带的代码块很丑，想着美化一下。</p>
-<p>首先到<code>hexo-theme-fluid</code>主题根目录下<code>source/css/</code> 创建名为<code>macpanel.styl</code>的文件并加入以下内容。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.highlight</span></span><br><span class="line">    <span class="attribute">background</span>: <span class="number">#21252b</span></span><br><span class="line">    border-radius: <span class="number">5px</span></span><br><span class="line">    box-shadow: <span class="number">0</span> <span class="number">10px</span> <span class="number">30px</span> <span class="number">0</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">4</span>)</span><br><span class="line">    padding-top: <span class="number">30px</span></span><br><span class="line"></span><br><span class="line">    &amp;::before</span><br><span class="line">      background: <span class="number">#fc625d</span></span><br><span class="line">      border-radius: <span class="number">50%</span></span><br><span class="line">      box-shadow: <span class="number">20px</span> <span class="number">0</span> <span class="number">#fdbc40</span>, <span class="number">40px</span> <span class="number">0</span> <span class="number">#35cd4b</span></span><br><span class="line">      content: <span class="string">&#x27; &#x27;</span></span><br><span class="line">      height: <span class="number">12px</span></span><br><span class="line">      left: <span class="number">12px</span></span><br><span class="line">      margin-top: -<span class="number">20px</span></span><br><span class="line">      position: absolute</span><br><span class="line">      width: <span class="number">12px</span></span><br><span class="line"></span><br><span class="line">CSS</span><br></pre></td></tr></table></figure>
-
-<p>再到管理主题的<code>_config.yml</code>文件还是说<code>_config.fluid.yml</code>文件（取决于你怎么调用主题）的配置文件中修改：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">custom_css:    </span><br><span class="line">        - /css/macpanel</span><br><span class="line"></span><br><span class="line">HTML</span><br></pre></td></tr></table></figure>
-
-<p>重启博客即可看到效果啦~~如果代码块风格默认没有修改过的话可能会导致：代码块背景是白色的，而mac栏是黑色的，这时候就要去主题配置文件的<code>_config.yml</code>文件（和第2步一样的文件）中修改代码块风格了。  </p>
-<p>以下是我的博客现在的风格，具体想主题风格可以上See里的连接去看看。</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">highlightjs:</span><br><span class="line">  # 在链接中挑选 style 填入</span><br><span class="line">  # Select a style in the link</span><br><span class="line">  # See: https://highlightjs.org/static/demo/</span><br><span class="line">  style: <span class="string">&quot;github&quot;</span></span><br><span class="line">  style_dark: <span class="string">&quot;github-dark-dimmed&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202311062151272.png" alt="网站的demo演示"></p>
-<p>不得不提的一件事是，我在弄代码块风格前把我网站的域名解析换到cloudflare上(之前是华为云)，弄完之后正常hexo s -g在本地看是部署成功的，代码块的背景也是正常的，但是hexo -d后访问本站，代码块背景的颜色居然是白的，大概过了3~4个小时才恢复成正常的颜色，不知道是哪里出了问题。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>主题美化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ecShop漏洞复现</title>
     <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
