@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://images.gaifagafin.top/202311101728516.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311101728700.png">
 <meta property="article:published_time" content="2023-11-10T02:52:48.000Z">
-<meta property="article:modified_time" content="2023-11-10T09:29:23.645Z">
+<meta property="article:modified_time" content="2023-11-10T11:07:17.267Z">
 <meta property="article:author" content="gaifagafin">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.gaifagafin.top/202311101728889.png">
@@ -241,7 +241,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2023-11-10 10:52:48 / 修改时间：17:29:23" itemprop="dateCreated datePublished" datetime="2023-11-10T10:52:48+08:00">2023-11-10</time>
+      <time title="创建时间：2023-11-10 10:52:48 / 修改时间：19:07:17" itemprop="dateCreated datePublished" datetime="2023-11-10T10:52:48+08:00">2023-11-10</time>
     </span>
 
   
@@ -276,13 +276,13 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
 
 <p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
-<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
 
 <p>输入O确定时，会让你输入密码，这个是可选项</p>
-<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
 
 <p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
-<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom:80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
 
 <p>然后就会生成密钥对</p>
 <img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
@@ -290,23 +290,23 @@
 <p>这里我们看不到私钥，可以终端输入下面指令查看</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
 
-<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
 
 <h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
 <p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
 <p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
 
-<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom:80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
 
 <p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
 <p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
 
-<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
 
 <p>得到<code>.gpg</code>后缀的加密文件</p>
-<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
 
 <p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
@@ -317,7 +317,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
 
 <p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
-<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom:80%;" />
+<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
 
 <hr>
 <p>参考链接:</p>
