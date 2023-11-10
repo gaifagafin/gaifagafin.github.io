@@ -319,6 +319,13 @@
 <p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
 <p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
 ]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>GPG</tag>
+        <tag>Linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>PHP伪协议</title>
