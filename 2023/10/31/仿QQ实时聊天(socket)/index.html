@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/silver/pace-theme-minimal.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInUp","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInUp","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="本系统的开发任务是设计并实现一个类似QQ的网络聊天系统,系统需要包含用户注册、登录、用户关系管理、单聊、群聊、消息收发等功能">
 <meta property="og:type" content="article">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://images.gaifagafin.top/202311051141912.png">
 <meta property="og:image" content="https://images.gaifagafin.top/202311051142228.png">
 <meta property="article:published_time" content="2023-10-31T11:17:42.000Z">
-<meta property="article:modified_time" content="2023-11-07T13:26:04.901Z">
+<meta property="article:modified_time" content="2023-11-10T11:39:12.323Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="python">
 <meta property="article:tag" content="socket">
@@ -248,7 +248,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-07 21:26:04" itemprop="dateModified" datetime="2023-11-07T21:26:04+08:00">2023-11-07</time>
+      <time title="修改时间：2023-11-10 19:39:12" itemprop="dateModified" datetime="2023-11-10T19:39:12+08:00">2023-11-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -343,12 +343,24 @@
 <p>在聊天界面消息输入框输入想要发送的消息，将消息发送的指定的群聊端口。</p>
 <p>服务器转发群聊消息时，在数据库查找群聊所有群成员的端口，将消息发送至除消息发送至以外的所有群成员</p>
 </blockquote>
-<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><p><img data-src="https://images.gaifagafin.top/202311051134492.png" alt="登录界面"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051134508.png" alt="用户注册界面"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051135346.png" alt="程序主界面"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051139730.png" alt="删除好友界面"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051141104.png" alt="私聊聊天界面"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051141883.png" alt="群聊聊天界面"></p>
+<h2 id="2-3-系统界面设计"><a href="#2-3-系统界面设计" class="headerlink" title="2.3 系统界面设计"></a>2.3 系统界面设计</h2><img data-src="https://images.gaifagafin.top/202311051134492.png" alt="登录界面" style="zoom:67%;" />
+
+
+
+<img data-src="https://images.gaifagafin.top/202311051134508.png" alt="用户注册界面" style="zoom:67%;" />
+
+
+
+<img data-src="https://images.gaifagafin.top/202311051135346.png" alt="程序主界面" style="zoom:67%;" />
+
+
+
+<img data-src="https://images.gaifagafin.top/202311051139730.png" alt="删除好友界面" style="zoom:67%;" />
+
+<img data-src="https://images.gaifagafin.top/202311051141104.png" alt="私聊聊天界面" style="zoom:67%;" />
+
+<img data-src="https://images.gaifagafin.top/202311051141883.png" alt="群聊聊天界面" style="zoom:67%;" />
+
 <h2 id="2-4-数据库设计"><a href="#2-4-数据库设计" class="headerlink" title="2.4 数据库设计"></a>2.4 数据库设计</h2><p>实体1:用户(User)</p>
 <p>用户ID(用户的唯一标识)</p>
 <p>密码</p>
@@ -364,7 +376,8 @@
 <p>用户可加入多个群组,群组中有多位成员</p>
 <p>用户可在群组中发送消息,消息可推送给所有成员</p>
 <p>用户之间可以互发私聊消息</p>
-<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><p><img data-src="https://images.gaifagafin.top/202311051141912.png"></p>
+<h3 id="2-4-1-数据库E-R图"><a href="#2-4-1-数据库E-R图" class="headerlink" title="2.4.1 数据库E-R图"></a>2.4.1 数据库E-R图</h3><img data-src="https://images.gaifagafin.top/202311051141912.png" style="zoom: 50%;" />
+
 <h3 id="2-4-2-关系模式"><a href="#2-4-2-关系模式" class="headerlink" title="2.4.2 关系模式"></a>2.4.2 关系模式</h3><p>1. 用户表(user_info)</p>
 <p>User_info(用户ID, 密码,端口号)</p>
 <p>2. 好友关系表(friend_info)</p>
@@ -444,7 +457,8 @@
 <ul>
 <li>群成员间发送文本消息,确认群成员都能收到消息</li>
 </ul>
-<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><p><img data-src="https://images.gaifagafin.top/202311051142228.png" alt="功能测试用例"></p>
+<h2 id="4-4-功能测试用例"><a href="#4-4-功能测试用例" class="headerlink" title="4.4  功能测试用例"></a>4.4  功能测试用例</h2><img data-src="https://images.gaifagafin.top/202311051142228.png" alt="功能测试用例" style="zoom: 50%;" />
+
 <p>完整的项目在<a target="_blank" rel="noopener" href="https://github.com/gaifagafin/-Python-socket-QQ-bushi">https://github.com/gaifagafin/-Python-socket-QQ-bushi</a></p>
 <p>项目存在很多瑕疵和不足，可能等以后有时间再去慢慢完善</p>
 
