@@ -247,9 +247,78 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux使用GPG加密文件</title>
+    <title>Linux_GPG加解密文件</title>
     <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
+<p>我所使用的是kali_Linux，选择的是</p>
+<img data-src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
+
+<p>请自行选择适合的版本下载，解压即可使用</p>
+<p>也可以输入命令安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install gnupg</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
+<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
+<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
+<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
+<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
+<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
+<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
+<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
+<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
+<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
+
+<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
+<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 80%;" />
+
+<p>输入O确定时，会让你输入密码，这个是可选项</p>
+<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 80%;" />
+
+<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
+<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom:80%;" />
+
+<p>然后就会生成密钥对</p>
+<img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
+
+<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 80%;" />
+
+<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
+<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
+<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom:80%;" />
+
+<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
+<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 80%;" />
+
+<p>得到<code>.gpg</code>后缀的加密文件</p>
+<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 80%;" />
+
+<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
+<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom:80%;" />
+
+<hr>
+<p>参考链接:</p>
+<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
+<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
+]]></content>
   </entry>
   <entry>
     <title>SQLmap使用</title>
