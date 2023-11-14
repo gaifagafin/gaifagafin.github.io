@@ -1743,8 +1743,8 @@ figure.highlight pre .javascript .function {
 }
 #article-container code {
   padding: 2px 4px;
-  background: #dedede;
-  color: #fa8072;
+  background: #e6e6e6;
+  color: #20b2aa;
 }
 #article-container pre {
   padding: 10px 20px;
@@ -2947,7 +2947,7 @@ h1.page-title + .tag-cloud-list {
   color: #2f4154;
 }
 #aside-content #card-toc .toc-content .toc-link.active {
-  background: #566269;
+  background: #596776;
   color: #fff;
 }
 #aside-content .sticky_layout:only-child > :first-child {
@@ -5857,7 +5857,7 @@ blockquote.pullquote.right {
   box-shadow: none;
 }
 [data-theme='dark'] #article-container .note code {
-  background: #dedede;
+  background: #e6e6e6;
 }
 [data-theme='dark'] #article-container .aplayer {
   filter: brightness(0.8);
