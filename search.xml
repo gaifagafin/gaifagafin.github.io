@@ -4848,4 +4848,49 @@
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>使用河马对PHP Webshell进行查杀</title>
+    <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
+    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
+<img src="https://images.gaifagafin.top/202311162320021.png" style="zoom: 67%;" />
+
+<p>先创建一个PHP一句话木马shell.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[cmd]);<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求</p>
+<p>于是先将shell文件的后缀改成<code>.jpg</code>，然后burpsuite开启代理后再点击上传文件</p>
+<img src="https://images.gaifagafin.top/202311162320578.png" alt="抓到的数据包" style="zoom:67%;" />
+
+<p>将shell.jpg改成<code>shell.php</code>后点击发送</p>
+<img src="https://images.gaifagafin.top/202311162320533.png" style="zoom:67%;" />
+
+<p>页面回显文件上传成功</p>
+<img src="https://images.gaifagafin.top/202311162320623.png" style="zoom:80%;" />
+
+<p>用蚁剑连接，url地址是：</p>
+<p><code>http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php</code></p>
+<img src="https://images.gaifagafin.top/202311162320789.png" style="zoom: 80%;" />
+
+<p>可以看到连接成功，证明已经将一句话木马上传</p>
+<img src="https://images.gaifagafin.top/202311162320505.png" style="zoom:67%;" />
+
+<h1 id="使用河马查杀脚本木马"><a href="#使用河马查杀脚本木马" class="headerlink" title="使用河马查杀脚本木马"></a>使用河马查杀脚本木马</h1><h2 id="安装河马"><a href="#安装河马" class="headerlink" title="安装河马"></a>安装河马</h2><p>详情见官方教程：<a href="https://www.shellpub.com/doc/hm_win_usage.html">https://www.shellpub.com/doc/hm_win_usage.html</a></p>
+<h2 id="查杀木马"><a href="#查杀木马" class="headerlink" title="查杀木马"></a>查杀木马</h2><p>进入软件点击立即扫描</p>
+<img src="https://images.gaifagafin.top/202311162320739.png" style="zoom: 67%;" />
+
+<p>点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描</p>
+<img src="https://images.gaifagafin.top/202311162320607.png" style="zoom: 80%;" />
+
+<p>扫描结果如下，点击查看，正是之前上传的一句话木马</p>
+<img src="https://images.gaifagafin.top/202311162320240.png" style="zoom:67%;" />
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此次实验使用了河马这款Webshell扫描工具对常见的PHP木马进行查杀，了解了这款扫描工具的使用</p>
+]]></content>
+      <categories>
+        <category>Web安全</category>
+      </categories>
+      <tags>
+        <tag>Webshell扫描</tag>
+      </tags>
+  </entry>
 </search>
