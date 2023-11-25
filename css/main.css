@@ -1098,6 +1098,7 @@ pre code {
   display: flex;
   flex-shrink: 0;
   padding: 0 10px;
+  border-radius: 18.8px 18.8px 0 0;
 }
 .use-motion .column,
 .use-motion .site-brand-container .toggle {
