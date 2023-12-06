@@ -214,34 +214,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
-
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>vulhub</tag>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Http状态码详解</title>
     <url>/2023/11/04/Http%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1 id="Http状态码详解"><a href="#Http状态码详解" class="headerlink" title="Http状态码详解"></a>Http状态码详解</h1><p>转载自:<a href="https://config.net.cn/tools/HttpStatusCode.html">https://config.net.cn/tools/HttpStatusCode.html</a></p>
@@ -639,6 +611,34 @@
       <tags>
         <tag>Http</tag>
         <tag>状态码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -2464,9 +2464,9 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>CTF</tag>
+        <tag>Writeup</tag>
         <tag>攻防世界</tag>
         <tag>SSTI</tag>
-        <tag>Writeup</tag>
       </tags>
   </entry>
   <entry>
@@ -3094,73 +3094,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
         <tag>Web</tag>
         <tag>LAMP</tag>
         <tag>环境</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>逻辑漏洞靶场环境——logic</title>
-    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
-<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
-<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
-<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
-<p>burpsuite开启代理</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
-<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
-
-<p>将爆出的用户名装载进有效负载集，爆破密码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p>使用爆破出的用户名及密码成功登录</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
-<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
-<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
-<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
-<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
-<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
-<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
-<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
-<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
-<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
-<p>点击开始攻击，等待一段时间，得到爆破结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
-
-<p>查询结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
-<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
-<p>将数据包发送到intruder模块，设置如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
-<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
-<p>等待一段时间后，得到爆破结果<code>735142</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
-<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -5207,6 +5140,73 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逻辑漏洞靶场环境——logic</title>
+    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
+<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
+<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
+<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
+<p>burpsuite开启代理</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
+<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
+
+<p>将爆出的用户名装载进有效负载集，爆破密码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>使用爆破出的用户名及密码成功登录</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
+<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
+<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
+<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
+<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
+<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
+<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
+<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
+<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
+<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
+<p>点击开始攻击，等待一段时间，得到爆破结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
+<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
+<p>将数据包发送到intruder模块，设置如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
+<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
+<p>等待一段时间后，得到爆破结果<code>735142</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
+<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
       </tags>
   </entry>
 </search>
