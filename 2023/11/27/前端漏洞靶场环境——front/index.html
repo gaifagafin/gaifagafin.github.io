@@ -23,7 +23,7 @@
     <meta name="description" content="1. 挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明） 2. 复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456 3. 复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息 4. 通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接   	  口的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端漏洞靶场环境——front">
-<meta property="og:url" content="https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/index.html">
+<meta property="og:url" content="http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
 <meta property="og:description" content="1. 挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明） 2. 复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456 3. 复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息 4. 通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接   	  口的">
 <meta property="og:locale" content="zh_CN">
@@ -50,11 +50,11 @@
 <meta name="twitter:image" content="https://images.gaifagafin.top/202312011004731.png">
 
 
-<link rel="canonical" href="https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
+<link rel="canonical" href="http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/","path":"2023/11/27/前端漏洞靶场环境——front/","title":"前端漏洞靶场环境——front"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/","path":"2023/11/27/前端漏洞靶场环境——front/","title":"前端漏洞靶场环境——front"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>前端漏洞靶场环境——front | gaifagafin's blog</title>
@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
+    <link itemprop="mainEntityOfPage" href="http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/gaifagafin.jpg">
@@ -346,7 +346,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/" title="前端漏洞靶场环境——front">https://gaifagafin.top/2023/11/27/前端漏洞靶场环境——front/</a>
+      <a href="http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/" title="前端漏洞靶场环境——front">http://gaifagafin.top/2023/11/27/前端漏洞靶场环境——front/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -442,7 +442,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":"ture","archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/"}</script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":"ture","archive":true,"delay":true,"timeout":3000,"priority":true,"url":"http://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/"}</script>
   <script src="/js/third-party/quicklink.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 
