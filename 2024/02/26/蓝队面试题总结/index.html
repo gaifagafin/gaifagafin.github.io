@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.css" integrity="sha256-vQkngPS8jiHHH0I6ABTZroZk8NPZ7b+MUReOFE9UsXQ=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.top","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"manual"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInUp","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="蓝队面试题总结基础篇题目讲一下TOP10有哪些？A 1.失效的访问控制   2.加密机制失效 3.注入（包括跨站脚本攻击XSS和SQL注入等） 4.不安全设计 5.安全配置错误 6.自带缺陷和过时的组件 7.身份识别和身份验证错误 8.软件和数据完整性故障 9.安全日志和监控故障 10.服务端请求伪造SSRF 常见的端口和相关的服务？A    服务 端口号 说明    FTP 20 FTP服务器真">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gaifagafin&#39;s blog">
+<meta property="og:url" content="https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="gaifagafin&#39;s blog">
+<meta property="og:description" content="蓝队面试题总结基础篇题目讲一下TOP10有哪些？A 1.失效的访问控制   2.加密机制失效 3.注入（包括跨站脚本攻击XSS和SQL注入等） 4.不安全设计 5.安全配置错误 6.自带缺陷和过时的组件 7.身份识别和身份验证错误 8.软件和数据完整性故障 9.安全日志和监控故障 10.服务端请求伪造SSRF 常见的端口和相关的服务？A    服务 端口号 说明    FTP 20 FTP服务器真">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-26T13:53:06.854Z">
+<meta property="article:modified_time" content="2024-02-28T07:06:38.147Z">
+<meta property="article:author" content="gaifagafin">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/","path":"2024/02/26/蓝队面试题总结/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | gaifagafin's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">gaifagafin's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">29</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93"><span class="nav-text">蓝队面试题总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%AF%87%E9%A2%98%E7%9B%AE"><span class="nav-text">基础篇题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B2%E4%B8%80%E4%B8%8BTOP10%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-text">讲一下TOP10有哪些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E7%AB%AF%E5%8F%A3%E5%92%8C%E7%9B%B8%E5%85%B3%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-text">常见的端口和相关的服务？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E7%9B%AE%E6%A0%87%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="nav-text">如何判断目标操作系统？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">正向代理和反向代理的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%90%91shell%E5%92%8C%E5%8F%8D%E5%90%91shell%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">正向shell和反向shell的区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%9F"><span class="nav-text">序列化和反序列化的概念？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%85%B7%E4%BD%93%E6%94%B6%E9%9B%86%E4%BB%80%E4%B9%88%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="nav-text">信息收集具体收集什么信息？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8CDN%EF%BC%9F"><span class="nav-text">怎么验证是否存在CDN？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E7%BB%95%E8%BF%87CDN%E5%AF%BB%E6%89%BE%E7%9C%9F%E5%AE%9Eip%EF%BC%9F"><span class="nav-text">怎么绕过CDN寻找真实ip？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E9%AA%8C%E8%AF%81%E6%89%BE%E5%88%B0%E7%9A%84ip%E6%98%AF%E5%90%A6%E4%B8%BA%E7%9C%9F%E5%AE%9Eip%EF%BC%9F"><span class="nav-text">怎么验证找到的ip是否为真实ip？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E5%BB%BA%E7%AB%8B%E9%9A%90%E8%97%8F%E7%94%A8%E6%88%B7%EF%BC%9F"><span class="nav-text">怎么建立隐藏用户？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E7%BD%91%E7%AB%99%E7%9A%84CMS%E6%9C%89%E4%BB%80%E4%B9%88%E6%84%8F%E4%B9%89%EF%BC%9F"><span class="nav-text">判断网站的CMS有什么意义？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%85%E6%9C%89%E5%93%AA%E4%BA%9B%E8%AF%B7%E6%B1%82%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-text">数据包有哪些请求方式？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%AF%87%E9%A2%98%E7%9B%AE"><span class="nav-text">漏洞篇题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E5%8E%9F%E7%90%86%E5%92%8C%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0%EF%BC%9F"><span class="nav-text">SQL注入的原理和产生原因？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E7%B1%BB%E5%9E%8B%EF%BC%9F"><span class="nav-text">SQL注入的类型？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E9%98%B2SQL%E6%B3%A8%E5%85%A5%E7%9A%84%E6%96%B9%E6%B3%95%E5%92%8C%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="nav-text">预防SQL注入的方法和原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E6%9C%89%E5%93%AA%E4%BA%9B%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-text">SQL注入有哪些绕过方法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8D%B1%E5%AE%B3%EF%BC%9F"><span class="nav-text">SQL注入有哪些危害？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS%E7%9A%84%E7%90%86%E5%92%8C%E7%B1%BB%E5%9E%8B%EF%BC%9F"><span class="nav-text">XSS的理和类型？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS%E7%9A%84%E7%BB%95%E8%BF%87%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-text">XSS的绕过方法？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS%E7%9A%84%E5%8D%B1%E5%AE%B3%EF%BC%9F"><span class="nav-text">XSS的危害？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XSS%E7%9A%84%E9%98%B2%E8%8C%83%E6%8E%AA%E6%96%BD%EF%BC%9F"><span class="nav-text">XSS的防范措施？</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="gaifagafin"
+      src="/images/gaifagafin.jpg">
+  <p class="site-author-name" itemprop="name">gaifagafin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gaifagafin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gaifagafin" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/1454991831@qq.com" title="E-Mail → 1454991831@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+        <div class="pjax">
+        </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/gaifagafin.jpg">
+      <meta itemprop="name" content="gaifagafin">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="gaifagafin's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | gaifagafin's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-26 21:53:06" itemprop="dateCreated datePublished" datetime="2024-02-26T21:53:06+08:00">2024-02-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-28 15:06:38" itemprop="dateModified" datetime="2024-02-28T15:06:38+08:00">2024-02-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="蓝队面试题总结"><a href="#蓝队面试题总结" class="headerlink" title="蓝队面试题总结"></a>蓝队面试题总结</h1><h2 id="基础篇题目"><a href="#基础篇题目" class="headerlink" title="基础篇题目"></a><strong>基础篇题目</strong></h2><h3 id="讲一下TOP10有哪些？"><a href="#讲一下TOP10有哪些？" class="headerlink" title="讲一下TOP10有哪些？"></a><strong>讲一下TOP10有哪些？</strong></h3><p><strong>A</strong></p>
+<p>1.失效的访问控制  </p>
+<p>2.加密机制失效</p>
+<p>3.注入（包括跨站脚本攻击XSS和SQL注入等）</p>
+<p>4.不安全设计</p>
+<p>5.安全配置错误</p>
+<p>6.自带缺陷和过时的组件</p>
+<p>7.身份识别和身份验证错误</p>
+<p>8.软件和数据完整性故障</p>
+<p>9.安全日志和监控故障</p>
+<p>10.服务端请求伪造SSRF</p>
+<h3 id="常见的端口和相关的服务？"><a href="#常见的端口和相关的服务？" class="headerlink" title="常见的端口和相关的服务？"></a><strong>常见的端口和相关的服务？</strong></h3><p><strong>A</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>服务</strong></th>
+<th><strong>端口号</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>FTP</strong></td>
+<td><strong>20</strong></td>
+<td>FTP服务器真正传输所用的端口，用于上传、下载</td>
+</tr>
+<tr>
+<td><strong>FTP</strong></td>
+<td><strong>21</strong></td>
+<td>用于FTP的登陆认证</td>
+</tr>
+<tr>
+<td><strong>SSH、SFTP</strong></td>
+<td><strong>22</strong></td>
+<td>加密的远程登录，文件传输</td>
+</tr>
+<tr>
+<td><strong>Telnet</strong></td>
+<td><strong>23</strong></td>
+<td>远程登录（在本地主机上使用此端口与远程服务器的22&#x2F;3389端口连接）</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td><strong>25</strong></td>
+<td>用于发送邮件</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td><strong>53</strong></td>
+<td>域名解析</td>
+</tr>
+<tr>
+<td><strong>HTTP</strong></td>
+<td><strong>80</strong></td>
+<td>用于网页浏览</td>
+</tr>
+<tr>
+<td><strong>POP3</strong></td>
+<td><strong>110</strong></td>
+<td>SUN公司的RPC服务所有端口</td>
+</tr>
+<tr>
+<td><strong>Network News Transfer Protocol</strong></td>
+<td><strong>119</strong></td>
+<td>NEWS新闻组传输协议，承载USENET通信</td>
+</tr>
+<tr>
+<td><strong>SMTP</strong></td>
+<td><strong>161</strong></td>
+<td>Simple Network Management Protocol，简单网络管理协议</td>
+</tr>
+<tr>
+<td><strong>SNMP Trap</strong></td>
+<td><strong>160、162</strong></td>
+<td>SNMP陷阱</td>
+</tr>
+<tr>
+<td><strong>HTTPS</strong></td>
+<td><strong>443</strong></td>
+<td>加密的网页浏览端口</td>
+</tr>
+<tr>
+<td><strong>CIFS</strong></td>
+<td><strong>445</strong></td>
+<td>公共Internet文件系统</td>
+</tr>
+<tr>
+<td><strong>sql server</strong></td>
+<td><strong>1433</strong></td>
+<td>Microsoft的SQL服务开放的端口 数据库</td>
+</tr>
+<tr>
+<td><strong>Oracle</strong></td>
+<td><strong>1521</strong></td>
+<td>数据库</td>
+</tr>
+<tr>
+<td><strong>NFS</strong></td>
+<td><strong>2049</strong></td>
+<td>通过网络，让不同的机器、不同的操作系统实现文件共享</td>
+</tr>
+<tr>
+<td><strong>MySQL</strong></td>
+<td><strong>3306</strong></td>
+<td>数据库</td>
+</tr>
+<tr>
+<td><strong>WIN2003远程登录</strong></td>
+<td><strong>3389</strong></td>
+<td>Windows 2000(2003) Server远程桌面的服务端口，本地服务器开放此端口，去连接到远程的服务器</td>
+</tr>
+<tr>
+<td><strong>QQ·</strong></td>
+<td><strong>4000</strong></td>
+<td>腾讯QQ客户端开放此端口</td>
+</tr>
+<tr>
+<td><strong>redis·</strong></td>
+<td><strong>6379</strong></td>
+<td>数据库</td>
+</tr>
+<tr>
+<td><strong>WebLogic</strong></td>
+<td><strong>7001</strong></td>
+<td>一个基于JAVAEE架构的中间件，WebLogic是用于开发、集成、部署和管理大型分布式Web应用、网络应用和数据库应用的Java应用服务器</td>
+</tr>
+<tr>
+<td><strong>Wingate</strong></td>
+<td><strong>8010</strong></td>
+<td>Wingate代理开放此端口</td>
+</tr>
+<tr>
+<td><strong>TOMCAT</strong></td>
+<td><strong>8080</strong></td>
+<td>WWW代理开放此端口</td>
+</tr>
+</tbody></table>
+<h3 id="如何判断目标操作系统？"><a href="#如何判断目标操作系统？" class="headerlink" title="如何判断目标操作系统？"></a><strong>如何判断目标操作系统？</strong></h3><p><strong>A</strong></p>
+<p>大小写检测：windows大小写不敏感，而linux大小写敏感。</p>
+<p>PING指令：根据TTL值，winodws一般情况下&gt;100,linux&lt;100</p>
+<h3 id="正向代理和反向代理的区别？"><a href="#正向代理和反向代理的区别？" class="headerlink" title="正向代理和反向代理的区别？"></a><strong>正向代理和反向代理的区别？</strong></h3><p><strong>A</strong></p>
+<p>正向代理即是客户端代理, 代理客户端, 服务端不知道实际发起请求的客户端</p>
+<p>反向代理即是服务端代理, 代理服务端, 客户端不知道实际提供服务的服务端</p>
+<h3 id="正向shell和反向shell的区别？"><a href="#正向shell和反向shell的区别？" class="headerlink" title="正向shell和反向shell的区别？"></a><strong>正向shell和反向shell的区别？</strong></h3><p><strong>A</strong></p>
+<p>正向Shell：攻击者连接被攻击者机器，可用于攻击者处于内网，被攻击者处于公网的情况。</p>
+<p>反向Shell：被攻击者主动连接攻击者，可用于攻击者处于外网，被攻击者处于内网的情况。</p>
+<h3 id="序列化和反序列化的概念？"><a href="#序列化和反序列化的概念？" class="headerlink" title="序列化和反序列化的概念？"></a><strong>序列化和反序列化的概念？</strong></h3><p><strong>A</strong></p>
+<p>序列化：把对象转化为可传输的字节序列过程称为序列化。</p>
+<p>反序列化：把字节序列还原为对象的过程称为反序列化。</p>
+<h3 id="信息收集具体收集什么信息？"><a href="#信息收集具体收集什么信息？" class="headerlink" title="信息收集具体收集什么信息？"></a><strong>信息收集具体收集什么信息？</strong></h3><p><strong>A</strong></p>
+<p><strong>1.服务器的相关信息</strong></p>
+<p>真实IP，服务器操作系统及其版本，数据库类型及其版本，开放端口及其对应服务（常用端口扫描工具Nmap，Zenmap，Masscan等），WAF探测</p>
+<p><strong>2.网站相关信息</strong></p>
+<p>CMS（内容管理系统），web容器，web框架，CDN，web指纹识别（常用指纹识别工具潮汐指纹，云悉指纹，WhatWeb等），旁站和C段信息</p>
+<p><strong>3.域名相关信息</strong></p>
+<p>子域名，whois信息（查询域名的IP以及所有者等信息的传输协议），公司名称，注册人或者机构信息、公司或个人联系方式（邮箱，手机号码等信息），备案号</p>
+<p><strong>4.具体站点信息</strong></p>
+<p>漏洞扫描（常用漏扫工具Nessus，AppScan，AWVS，X-ray等），目录爆破（常用目录爆破工具dirsearch，dirb，dirbuster，ffuf等），robots.txt，</p>
+<h3 id="怎么验证是否存在CDN？"><a href="#怎么验证是否存在CDN？" class="headerlink" title="怎么验证是否存在CDN？"></a><strong>怎么验证是否存在CDN？</strong></h3><p><strong>A</strong></p>
+<p>使用多地ping的服务，查看对应IP地址是否唯一，如果不唯一大概率就是存在CDN</p>
+<p>使用nslookup命令检测，查看返回域名解析对应IP地址是否唯一，如果不唯一很可能存在CDN</p>
+<h3 id="怎么绕过CDN寻找真实ip？"><a href="#怎么绕过CDN寻找真实ip？" class="headerlink" title="怎么绕过CDN寻找真实ip？"></a><strong>怎么绕过CDN寻找真实ip？</strong></h3><p><strong>A</strong></p>
+<p>1.查询历史DNS记录</p>
+<p>查看IP和域名绑定的历史记录，利用站长工具，微步在线等网站说不定就能找到使用CDN之前的真实IP。</p>
+<p>2.查询子域名</p>
+<p>收集子域名信息，如果子域名对应的IP不存在CDN，就可以利用这些IP来辅助查找目标网站的真实IP<br>3.查询主域名</p>
+<p>有些网站为了方便维护只让WWW域名使用CDN，把目标域名前面的WWW去掉ping一下说不定就是真实IP。<br>4.通过邮件服务器查找</p>
+<p>一般邮件系统都在内部，没有经过CDN的解析，通过用户注册、找回密码以及RSS邮件订阅等功能接收目标网站发送的邮件，查看源码（或者信息头）就有可能得到目标网站真实IP。</p>
+<p>5.使用国外主机解析域名</p>
+<p>国内很多 CDN 厂商因为各种原因只做了国内的线路，而针对国外的线路可能几乎没有，此时我们使用国外的主机直接访问可能就能获取到真实IP</p>
+<p>6.网站漏洞查找 </p>
+<p>利用网站自身存在的漏洞，很多情况下会泄露服务器的真实IP地址</p>
+<p>7.利用SSL证书寻找真实原始IP</p>
+<p>证书颁发机构(CA)必须将他们发布的每个SSL&#x2F;TLS证书发布到公共日志中，SSL&#x2F;TLS证书通常包含域名、子域名和电子邮件地址。使用Censys等工具搜索目标网站信息。</p>
+<ol start="8">
+<li>F5 LTM解码法</li>
+</ol>
+<p>当服务器使用F5 LTM做负载均衡时，通过对set-cookie关键字的解码真实ip也可被获取，例如：Set-Cookie: BIGipServerpool_8.29_8030&#x3D;487098378.24095.0000，先把第一小节的十进制数即487098378取出来，然后将其转为十六进制数1d08880a，接着从后至前，以此取四位数出来，也就是0a.88.08.1d，最后依次把他们转为十进制数10.136.8.29，也就是最后的ip。</p>
+<p>9.网络空间搜索引擎</p>
+<p>根据网站特征或者响应内容特征等查找目标网站信息，当然也可以直接通过域名查找。</p>
+<h3 id="怎么验证找到的ip是否为真实ip？"><a href="#怎么验证找到的ip是否为真实ip？" class="headerlink" title="怎么验证找到的ip是否为真实ip？"></a><strong>怎么验证找到的ip是否为真实ip？</strong></h3><p><strong>A</strong></p>
+<p>使用端口扫描工具扫描开了哪些端口，然后结合开放的端口直接访问找到的IP，看看响应的页面是不是和访问域名返回的一样。</p>
+<h3 id="怎么建立隐藏用户？"><a href="#怎么建立隐藏用户？" class="headerlink" title="怎么建立隐藏用户？"></a><strong>怎么建立隐藏用户？</strong></h3><p><strong>A</strong></p>
+<p>net user test$ 123456 &#x2F;add [建立隐藏用户]</p>
+<p>net localgroup administrators test$ &#x2F;add[将隐藏用户加入管理组]</p>
+<h3 id="判断网站的CMS有什么意义？"><a href="#判断网站的CMS有什么意义？" class="headerlink" title="判断网站的CMS有什么意义？"></a><strong>判断网站的CMS有什么意义？</strong></h3><p><strong>A</strong></p>
+<p>查找已曝光的漏洞。</p>
+<p>如果开源，还能下载相应的源码进行代码审计。</p>
+<p>根据CMS特征关联同CMS框架站点，进行敏感备份文件扫描，有可能获得站点备份文件。</p>
+<h3 id="数据包有哪些请求方式？"><a href="#数据包有哪些请求方式？" class="headerlink" title="数据包有哪些请求方式？"></a><strong>数据包有哪些请求方式？</strong></h3><p><strong>A</strong></p>
+<p>目前常用八种请求方式，分别是 GET、POST、HEAD、PUT、DELETE、OPTIONS、TRACE、 CONNECT，get 和 post 最常用</p>
+<h2 id="漏洞篇题目"><a href="#漏洞篇题目" class="headerlink" title="漏洞篇题目"></a><strong>漏洞篇题目</strong></h2><h3 id="SQL注入的原理和产生原因？"><a href="#SQL注入的原理和产生原因？" class="headerlink" title="SQL注入的原理和产生原因？"></a><strong>SQL注入的原理和产生原因？</strong></h3><p><strong>A</strong></p>
+<p><strong>SQL注入原理：</strong></p>
+<p>通过某种方式将恶意的sql代码添加到输入参数中，然后传递到sql服务器使其解析并执行的一种攻击手法</p>
+<p><strong>漏洞产生原因（实现条件）：</strong></p>
+<p>用户对sql查询语句参数可控</p>
+<p>原本程序要执行的SQL语句,拼接了用户输入的恶意数据</p>
+<h3 id="SQL注入的类型？"><a href="#SQL注入的类型？" class="headerlink" title="SQL注入的类型？"></a><strong>SQL注入的类型？</strong></h3><p><strong>A</strong></p>
+<p>1.联合注入</p>
+<p>2.堆叠注入<br>3.宽字节注入<br>4.cookie注入<br>5.XFF头注入<br>6.UA注入（user-agent注入）    </p>
+<p>7.Referer注入<br>8.二次注入<br>9.base64注入</p>
+<p>10.万能密码<br>1.文件读写</p>
+<p>盲注类型：<br>    1.基于时间的盲注   sleep()  benchmark()<br>    2.基于布尔的注入<br>    3.基于报错的注入   </p>
+<p>updatexml() extractvalue() floor() exp()</p>
+<h3 id="预防SQL注入的方法和原理？"><a href="#预防SQL注入的方法和原理？" class="headerlink" title="预防SQL注入的方法和原理？"></a><strong>预防SQL注入的方法和原理？</strong></h3><p><strong>A</strong></p>
+<p>1.预编译（数据库不会将参数的内容视为SQL命令执行，而是作为一个字段的属性值来处理）</p>
+<p>2.PDO预处理  (本地和Mysql服务端使用字符集对输入进行转义)<br>3.正则表达式过滤 (如果用户输入了非法信息则利用正则表达式过滤)</p>
+<h3 id="SQL注入有哪些绕过方法？"><a href="#SQL注入有哪些绕过方法？" class="headerlink" title="SQL注入有哪些绕过方法？"></a><strong>SQL注入有哪些绕过方法？</strong></h3><p><strong>A</strong></p>
+<p>1.大小写绕过注入</p>
+<p>2.双写绕过注入</p>
+<p>3.编码绕过注入</p>
+<p>4.内联注释绕过注入</p>
+<h3 id="SQL注入有哪些危害？"><a href="#SQL注入有哪些危害？" class="headerlink" title="SQL注入有哪些危害？"></a><strong>SQL注入有哪些危害？</strong></h3><p><strong>A</strong></p>
+<p>1.获取数据库数据</p>
+<p>数据库中存放的用户的隐私信息的泄露，脱取数据库中的数据内容（脱库），可获取网站管理员帐号、密码悄无声息的进行对网站后台操作等。</p>
+<p>2.网页篡改</p>
+<p>通过操作数据库对特定网页进行篡改，严重影响正常业务进行与受害者信誉。</p>
+<p>3.网页挂马</p>
+<p>将恶意文件或者木马下载链接写入数据库，修改数据库字段值，进行挂马攻击。</p>
+<p>4.篡改数据库数据</p>
+<p>攻击数据库服务器，篡改或者添加普通用户或者管理员帐号。</p>
+<p>5.获取服务器权限</p>
+<p>列取目录、读取、写入shell文件获取webshell，远程控制服务器，安装后门，经由数据库服务器提供的操作系统支持，让攻击者得以修改或控制操作系统。</p>
+<h3 id="XSS的理和类型？"><a href="#XSS的理和类型？" class="headerlink" title="XSS的理和类型？"></a><strong>XSS的理和类型？</strong></h3><p><strong>A</strong></p>
+<p>原理：攻击者在Web页面中注入恶意的Script代码，当用户浏览该网页时，嵌入的Script代码会被执行，从而达到攻击的目的。</p>
+<p>类型：反射型XSS  存储型XSS  DOM型XSS</p>
+<h3 id="XSS的绕过方法？"><a href="#XSS的绕过方法？" class="headerlink" title="XSS的绕过方法？"></a><strong>XSS的绕过方法？</strong></h3><p><strong>A</strong></p>
+<ol>
+<li><p>大小写转换；</p>
+</li>
+<li><p>引号的使用；</p>
+</li>
+<li><p>使用 &#x2F; 代替空格；</p>
+</li>
+<li><p>编码绕过(将字符进行十进制或者十六进制转码)；</p>
+</li>
+</ol>
+<p>5.双写绕过；</p>
+<p>6.使用制表符 换行符和回车符</p>
+<p>7.使用 IMG 源</p>
+<h3 id="XSS的危害？"><a href="#XSS的危害？" class="headerlink" title="XSS的危害？"></a><strong>XSS的危害？</strong></h3><p><strong>A</strong></p>
+<p>窃取cookie</p>
+<p>抓取屏幕截图</p>
+<p>获取键盘记录</p>
+<p>重定向</p>
+<p>植入广告，恶意链接</p>
+<p>网页钓鱼</p>
+<p>网页挂马</p>
+<p>结合网页挂马或者其他工具(Metasploit)获取服务器或者操作系统权限</p>
+<h3 id="XSS的防范措施？"><a href="#XSS的防范措施？" class="headerlink" title="XSS的防范措施？"></a><strong>XSS的防范措施？</strong></h3><p><strong>A</strong></p>
+<p>对用户的输入进行过滤</p>
+<p>比如说添加黑名单或者白名单规则，比如说对&amp;  “ ‘ &#x2F;  javascript  import等敏感字符进行转义</p>
+<p>使用 HttpOnly Cookie</p>
+<p>如果cookie中设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息，这样能有效的防止XSS攻击，窃取cookie内容，这样可以有效的防止XSS攻击窃取cookie。</p>
+<p>设置X-XSS-Protection属性</p>
+<p>该属性被所有的主流浏览器默认开启。X-XSS-Protection，即XSS保护属性，是设置在响应头中目的是用来防范XSS攻击的。在检查到XSS攻击时，停止渲染页面。</p>
+<p>开启CSP网页安全策略</p>
+<p>CSP是网页安全策略(Content Security Policy)的缩写。开启策略后可以起到以下作用：禁止加载外域代码，防止复杂的攻击逻辑；禁止外域提交，网站被攻击后，用户的数据不会泄露到外域；禁止内联脚本执行（规则较严格，目前发现 GitHub 使用）；禁止未授权的脚本执行（新特性，Google Map 移动版在使用）。合理使用上报可以及时发现 XSS，利于尽快修复问题。</p>
+<p>避免内联事件</p>
+<p>尽量不要使用 onLoad&#x3D;“onload(’’)”、onClick&#x3D;“go(’’)” 这种拼接内联事件的写法。在 JavaScript 中通过 .addEventlistener() 事件绑定会更安全。</p>
+<p>使用模板引擎</p>
+<p>开启模板引擎自带的 HTML 转义功能。例如： 在 ejs 中，尽量使用 而不是 ； 在 doT.js 中，尽量使用 </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>gaifagafin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/" title="">https://gaifagafin.top/2024/02/26/蓝队面试题总结/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/22/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" rel="next" title="渗透测试">
+                  渗透测试 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">gaifagafin</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.umd.js" integrity="sha256-oyhjPiYRWGXaAt+ny/mTMWOnN1GBoZDUQnzzgC7FRI4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":"ture","archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://gaifagafin.top/2024/02/26/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/"}</script>
+  <script src="/js/third-party/quicklink.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+
+<script>
+var options = {
+  bottom: '32px',
+  right: 'unset',
+  left: '32px',
+  time: '0.3s',
+  mixColor: 'transparent',
+  backgroundColor: 'transparent',
+  buttonColorDark: '#100f2c',
+  buttonColorLight: '#fff',
+  saveInCookies: true,
+  label: '🌓',
+  autoMatchOsTheme: true
+}
+const darkmode = new Darkmode(options);
+window.darkmode = darkmode;
+darkmode.showWidget();
+</script>
+
+</body>
+</html>
