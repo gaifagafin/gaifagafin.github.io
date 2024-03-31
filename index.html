@@ -1,1196 +1,306 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha256-CTSx/A06dm1B063156EVh15m6Y67pAjZZaQc89LLSrU=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.css" integrity="sha256-vQkngPS8jiHHH0I6ABTZroZk8NPZ7b+MUReOFE9UsXQ=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"gaifagafin.top","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.18.2","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"fold":{"enable":false,"height":500},"bookmark":{"enable":true,"color":"#222","save":"manual"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":true,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInUp","post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
-
-    <meta property="og:type" content="website">
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>gaifagafin's blog</title><meta name="author" content="gaifagafin"><meta name="copyright" content="gaifagafin"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#222222"><meta property="og:type" content="website">
 <meta property="og:title" content="gaifagafin&#39;s blog">
 <meta property="og:url" content="https://gaifagafin.top/index.html">
 <meta property="og:site_name" content="gaifagafin&#39;s blog">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.gaifagafin.top/gaifagafin.jpg">
 <meta property="article:author" content="gaifagafin">
 <meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="https://gaifagafin.top/">
-
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>gaifagafin's blog</title>
-  
-
-
-
-
-
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <h1 class="site-title">gaifagafin's blog</h1>
-      <i class="logo-line"></i>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">26</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">12</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">28</span></a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup"><div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" maxlength="80"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close" role="button">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div class="search-result-container no-result">
-  <div class="search-result-icon">
-    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="gaifagafin"
-      src="/images/gaifagafin.jpg">
-  <p class="site-author-name" itemprop="name">gaifagafin</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">28</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-          <a href="/categories/">
-        <span class="site-state-item-count">12</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-          <a href="/tags/">
-        <span class="site-state-item-count">26</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/gaifagafin" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gaifagafin" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="/1454991831@qq.com" title="E-Mail → 1454991831@qq.com" rel="noopener me"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
-      </span>
-  </div>
-
-        </div>
-      </div>
-    </div>
-
+<meta name="twitter:image" content="https://img.gaifagafin.top/gaifagafin.jpg"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://gaifagafin.top/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'gaifagafin\'s blog',
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2024-03-31 15:48:59'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
     
-        <div class="pjax">
-        </div>
-  </aside>
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
 
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
 
-    </div>
-
-    <div class="main-inner index posts-expand">
-
+        document.head.appendChild(script)
+      })
     
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/" class="post-title-link" itemprop="url">逻辑漏洞靶场环境——logic</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-12-02 20:47:24" itemprop="dateCreated datePublished" datetime="2023-12-02T20:47:24+08:00">2023-12-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-12-04 21:06:53" itemprop="dateModified" datetime="2023-12-04T21:06:53+08:00">2023-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
     
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#222222')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'FFFFF0')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
     
-    <div class="post-body" itemprop="articleBody">
-          <p>实验要求 1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容 （弹框中的flag）。 2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开  头)，并暴力破解这两个用户对应的密码。 3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。 4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不 少于5条）。 5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/">
-                阅读全文 &raquo;
-              </a>
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/static/css/github-dark-dimmed.css"><meta name="generator" content="Hexo 6.3.0"><style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://img.gaifagafin.top/gaifagafin.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 更多</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="gaifagafin's blog"><span class="site-name">gaifagafin's blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 更多</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/" title="逻辑漏洞靶场环境——logic">逻辑漏洞靶场环境——logic</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-12-02T12:47:24.000Z" title="发表于 2023-12-02 20:47:24">2023-12-02</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%BC%8F%E6%B4%9E/">漏洞</a></span></div><div class="content">实验要求漏洞环境：逻辑漏洞靶场环境——logic要求提交实验报告1.突破功能限制漏洞。要求突破查询按钮disable限制，获取编号：110010的查询内容（弹框中的flag）。2.用户信息泄漏漏洞。通过回显信息，以暴力破解方式猜测系统中存在的两个用户名(提示：用户名以 “u” 开头)，并暴力破解这两个用户对应的密码。3.越权漏洞。通过上一步破解的用户名密码登录，利用越权漏洞获取admin与admin1的个人信息。4.遍历漏洞。已知当前系统中存在的一个学号为：20190504035XA01。利用遍历漏洞获取其他学号对应的成绩（不少于5条）。5.暴力破解攻击。获取系统中另一个六位数字编号对应的弹框flag内容。
+靶场搭建进入靶场文件目录下输入docker-compose up -d启动靶场，访问http://192.168.37.128:8993即可
+漏洞复现突破功能限制漏洞查询按钮是灰色的，无法被点击
+
+按F12进入查看器，定位到按钮的前端功能实现，将disable=&quot;disable&quot;删除后点击查询
+
+弹窗获得FLAG：flag&#123;byp4ss1s_ez&#1 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/12/01/BUUCTF-NewStar2023-Web-Week1/" title="NewStar2023-Web-Week1">NewStar2023-Web-Week1</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-12-01T14:12:13.000Z" title="发表于 2023-12-01 22:12:13">2023-12-01</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/CTF/">CTF</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/CTF/CTF-Writeup/">CTF_Writeup</a></span></div><div class="content">泄露的秘密
+提示：粗心的管理员泄漏了一些敏感信息，请你找出他泄漏的两个敏感信息!
+
+访问/robot.txt，获得第一部分flag
+
+另一部分是www.zip，下载解压得到index.php
+&lt;?php$PART_TWO = &quot;_4nd_www.zip_1s_s0_d4ng3rous&#125;&quot;;echo &quot;&lt;h1&gt;粗心的管理员泄漏了一些敏感信息，请你找出他泄漏的两个敏感信息！&lt;/h1&gt;&quot;;
+
+FLAG：flag&#123;r0bots_1s_s0_us3ful_4nd_www.zip_1s_s0_d4ng3rous&#125;
+Begin of Upload绕过客户端 JavaScript检验，上传一句话木马burpsuite修改文件名后缀即可
+//一句话木马内容&lt;?php @eval($_POST[&#x27;cmd&#x27;]);?&gt;
+
+
+蚁剑连接，得到FLAG
+
+Begin of HTTP前面的都非常简单，类似这种，根据题目提示修改请求头参数就行 	
+来到最后一步
+
+第一时间想到改X-Forw ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/" title="前端漏洞靶场环境——front">前端漏洞靶场环境——front</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-27T04:14:07.000Z" title="发表于 2023-11-27 12:14:07">2023-11-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%BC%8F%E6%B4%9E/">漏洞</a></span></div><div class="content">实验要求漏洞环境：前端漏洞靶场环境——front(系统有两个用户： user1&#x2F;user1 、admin1&#x2F;admin1)，要求提交实验报告
+
+挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明）
+复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456
+复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息
+通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接口的用户信息。
+挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网
+
+靶场搭建进入靶场文件目录下输入docker-compose up -d启动靶场，访问http://192.168.37.128:8983即可
+漏洞挖掘与复现反射型XSS漏洞使用用户名user1与密码user1登录
+查看网站源码，发现参数name处可能存在XSS漏洞
+
+尝试构造PoC并发送，成功弹窗，证明存在反射型XSS漏洞
+http://192.168.37.128:8983/front/info.p ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/" title="记一次vimwiki安装及vim markDown的使用">记一次vimwiki安装及vim markDown的使用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-24T02:43:34.000Z" title="发表于 2023-11-24 10:43:34">2023-11-24</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Linux/">Linux</a><i class="fas fa-angle-right article-meta-link"></i><a class="article-meta__categories" href="/categories/Linux/Vim/">Vim</a></span></div><div class="content">写这篇博客的缘由是我的Linux操作系统的老师布置的一项作业
+
+vimwiki安装这个是vimwiki的官方文档：vimwiki&#x2F;vimwiki: Personal Wiki for Vim (github.com)
+我采用的是Vim packages安装，查看官方文档↓
+
+
+vimsrc配置查看一下vim的版本
+终端输入vim -v即可查看，我的版本是9.0.1378
+
+
+确认版本符合要求后要将vim的配置文件vimrc修改，我的vimrc文件在/etc/vim/vimrc，管理员权限输入
+vi /etc/vim/vimrc
+
+将这三个配置修改成如下图
+
+
+下载vimwiki在终端输入：
+# 下载vimwikigit clone https://github.com/vimwiki/vimwiki.git ~/.vim/pack/plugins/start/vimwiki# to generate documentation i.e. &#x27;:h vimwiki&#x27;vim -c &#x27;helptags ~/.vim/pack/plugins/start/ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/" title="Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)">Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-23T12:23:41.000Z" title="发表于 2023-11-23 20:23:41">2023-11-23</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/vulhub/">vulhub</a></span></div><div class="content">实验要求漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)
+
+复现环境中的反序列化漏洞，截图证明
+尝试利用漏洞执行系统命令，列出&#x2F;etc目录的文件结构，提供截图
+
+靶场搭建执行如下命令启动一个使用了Apache Shiro 1.2.4的Web服务：
+docker compose up -d
+
+服务启动后，访问http://your-ip:8080可使用admin:vulhub进行登录。
+产生原因shiro默认使用了CookieRememberMeManager，其处理cookie的流程是：得到rememberMe的cookie值–&gt;Base64解码–&gt;AES解密–&gt;反序列化。 然而AES的密钥是硬编码的，就导致了攻击者可以构造恶意数据造成反序列化的RCE漏洞。
+实际上漏洞与shiro版本无关, 无论是否升级shiro到1.2.5及以上, 如果shiro的rememberMe功能的AES密钥被泄露, 就会导致反序列化漏洞. 本人已在实际工作中遇到这样的特例, 密钥泄漏的根本原因是开发人员在开发过程中部分代码直接使用了网上的 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/" title="Apache solr XXE漏洞(CVE-2017-12629)">Apache solr XXE漏洞(CVE-2017-12629)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-22T15:15:42.000Z" title="发表于 2023-11-22 23:15:42">2023-11-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/vulhub/">vulhub</a></span></div><div class="content">实验要求漏洞环境：Apache solr XXE漏洞(CVE-2017-12629)
+
+复现环境中的XXE漏洞，截图证明
+利用XXE漏洞发送HTTP请求，在VPS服务器接收请求，或收到DNS记录。（SSRF利用）
+利用XXE漏洞读取本地的 &#x2F;etc&#x2F;passwd文件。（文件读取利用）
+
+靶场搭建进入漏洞文件目录下，运行漏洞环境：
+docker compose up -d
+
+命令执行成功后，需要等待一会，之后访问http://your-ip:8983/即可查看到Apache solr的管理页面，无需登录。
+漏洞复现XXE漏洞原理一般情况下，有些网站会支持XML-RPC（XML Remote Procedure Call），用户提交数据格式如下：
+POST /xxe HTTP/1.1Host: aaa.comContent-Type: text/xml&lt;?xml version=&quot;1.0&quot;?&gt;&lt;student&gt;&lt;useername&gt;xxx&lt;/username&gt;&lt;password&gt;yyy&lt ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/" title="Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)">Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-22T15:15:42.000Z" title="发表于 2023-11-22 23:15:42">2023-11-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/vulhub/">vulhub</a></span></div><div class="content">实验要求漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)
+
+复现环境中的OGNL表达式注入漏洞，截图证明
+尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图
+
+靶场搭建执行如下命令启动struts2 2.3.30：
+docker compose up -d
+
+环境启动后，访问http://your-ip:8080即可看到上传页面。
+漏洞复现payload：
+%&#123;#context[&#x27;com.opensymphony.xwork2.dispatcher.HttpServletResponse&#x27;].addHeader(&#x27;vulhub&#x27;,233*233)&#125;.multipart/form-data
+
+将payload放在Content-Type后面发送数据包，可见233*233已成功执行：
+
+
+读取pom.xml构造payload，cmd=后面的内容改成&#39;cat pom.xml&#39;，发送数据包
+POST /doUpload.action HTTP/1.1Host: 1 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/" title="Jupyter Notebook 未授权访问漏洞">Jupyter Notebook 未授权访问漏洞</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-22T15:15:26.000Z" title="发表于 2023-11-22 23:15:26">2023-11-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/vulhub/">vulhub</a></span></div><div class="content">实验要求漏洞环境：Jupyter Notebook 未授权访问漏洞
+
+复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明
+利用Jupyter Notebook控制台执行系统命令，读取&#x2F;etc&#x2F;passwd内容，提供截图
+
+靶场搭建运行测试环境：
+docker compose up -d
+
+运行后，访问http://your-ip:8888将看到Jupyter Notebook的Web管理界面，并没有要求填写密码。
+漏洞复现选择 new -&gt; terminal 即可创建一个控制台：
+
+
+可以直接执行任意命令：
+
+
+读取&#x2F;etc&#x2F;passwd内容
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/" title="Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)">Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-22T15:10:35.000Z" title="发表于 2023-11-22 23:10:35">2023-11-22</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/vulhub/">vulhub</a></span></div><div class="content">实验要求漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438）
+
+复现环境中的SSRF漏洞，截图证明
+尝试利用SSRF漏洞，访问重庆邮电大学官网（http://www.cqupt.edu.cn/）
+
+靶场搭建进入漏洞目录执行如下命令编译及运行一个Apache HTTP Server 2.4.43服务器：
+docker compose up -d
+
+服务器启动后，访问8080端口可以看到一个Apache Tomcat的示例页面，此时Apache HTTP Server是以中间反代服务器的身份，运行在客户端（用户）和后端服务器（Tomcat）之间，Apache和Tomcat通过AJP协议进行通信。
+漏洞复现发送如下数据包，可见我们已经成功请求到http://example.com的页面并返回：
+GET /?unix:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/" title="使用河马对PHP Webshell进行查杀">使用河马对PHP Webshell进行查杀</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-16T14:33:03.000Z" title="发表于 2023-11-16 22:33:03">2023-11-16</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/Web%E5%AE%89%E5%85%A8/">Web安全</a></span></div><div class="content">环境搭建这里我直接使用PHPStudy2018+pikachu漏洞平台构建的环境。选择Unsafe Fileupload下的client check
+
+
+先创建一个PHP一句话木马shell.php
+&lt;?php @eval($_POST[cmd]);?&gt;
+
+这里如果直接上传一个shell.php文件的话，会显示上传文件不符合要求
+于是先将shell文件的后缀改成.jpg，然后burpsuite开启代理后再点击上传文件
+
+
+将shell.jpg改成shell.php后点击发送
+
+
+页面回显文件上传成功
+
+
+用蚁剑连接，url地址是：
+http://localhost:8888/pikachu/vul/unsafeupload/uploads/shell.php
+
+
+可以看到连接成功，证明已经将一句话木马上传
+
+
+使用河马查杀脚本木马安装河马详情见官方教程：https://www.shellpub.com/doc/hm_win_usage.html
+查杀木马进入软件点击立即扫描
+
+
+点击添加扫描路径，将可能存在Webshell的目录添加上去，点击开始扫描
+
+
+扫描结果如下，点击 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="page-number" href="/page/3/#content-inner">3</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://img.gaifagafin.top/gaifagafin.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">gaifagafin</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">26</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/gaifagafin"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/02/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94logic/" title="逻辑漏洞靶场环境——logic">逻辑漏洞靶场环境——logic</a><time datetime="2023-12-02T12:47:24.000Z" title="发表于 2023-12-02 20:47:24">2023-12-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/01/BUUCTF-NewStar2023-Web-Week1/" title="NewStar2023-Web-Week1">NewStar2023-Web-Week1</a><time datetime="2023-12-01T14:12:13.000Z" title="发表于 2023-12-01 22:12:13">2023-12-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/" title="前端漏洞靶场环境——front">前端漏洞靶场环境——front</a><time datetime="2023-11-27T04:14:07.000Z" title="发表于 2023-11-27 12:14:07">2023-11-27</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/" title="记一次vimwiki安装及vim markDown的使用">记一次vimwiki安装及vim markDown的使用</a><time datetime="2023-11-24T02:43:34.000Z" title="发表于 2023-11-24 10:43:34">2023-11-24</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/" title="Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)">Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</a><time datetime="2023-11-23T12:23:41.000Z" title="发表于 2023-11-23 20:23:41">2023-11-23</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/12/01/BUUCTF-NewStar2023-Web-Week1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/12/01/BUUCTF-NewStar2023-Web-Week1/" class="post-title-link" itemprop="url">NewStar2023-Web-Week1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-12-01 22:12:13" itemprop="dateCreated datePublished" datetime="2023-12-01T22:12:13+08:00">2023-12-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-03-28 16:07:35" itemprop="dateModified" datetime="2024-03-28T16:07:35+08:00">2024-03-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CTF/" itemprop="url" rel="index"><span itemprop="name">CTF</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CTF/CTF-Writeup/" itemprop="url" rel="index"><span itemprop="name">CTF_Writeup</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>NewStar新生赛CTF题目Week1</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/12/01/BUUCTF-NewStar2023-Web-Week1/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/" class="post-title-link" itemprop="url">前端漏洞靶场环境——front</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-27 12:14:07" itemprop="dateCreated datePublished" datetime="2023-11-27T12:14:07+08:00">2023-11-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-12-01 17:26:52" itemprop="dateModified" datetime="2023-12-01T17:26:52+08:00">2023-12-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">漏洞</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1. 挖掘环境中的反射型XSS漏洞，（以弹框 test13 证明） 2. 复现环境中的CSRF漏洞，设计表单，当管理员点击URL以后自动将自己的密码重置为：123456 3. 复现环境中JSON Hijacking漏洞，在另一个网站（或本机另一个端口）获取用户信息 4. 通过在服务器Web目录创建.htaccess文件，控制服务器响应头，实现CORS漏洞，在另一网站，接收HTML接   	  口的用户信息。 5. 挖掘环境中的URL跳转漏洞，构造请求，跳转到重邮官网</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/27/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E%E9%9D%B6%E5%9C%BA%E7%8E%AF%E5%A2%83%E2%80%94%E2%80%94front/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">记一次vimwiki安装及vim markDown的使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-11-24 10:43:34 / 修改时间：16:41:03" itemprop="dateCreated datePublished" datetime="2023-11-24T10:43:34+08:00">2023-11-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/Vim/" itemprop="url" rel="index"><span itemprop="name">Vim</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>vimwiki,vim插件的安装和使用vim编写markDown</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/24/%E8%AE%B0%E4%B8%80%E6%AC%A1vimwiki%E5%AE%89%E8%A3%85%E5%8F%8Avim-markDown%E7%9A%84%E4%BD%BF%E7%94%A8/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/" class="post-title-link" itemprop="url">Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-23 20:23:41" itemprop="dateCreated datePublished" datetime="2023-11-23T20:23:41+08:00">2023-11-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-02-28 21:08:48" itemprop="dateModified" datetime="2024-02-28T21:08:48+08:00">2024-02-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vulhub/" itemprop="url" rel="index"><span itemprop="name">vulhub</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>漏洞环境：Apache Shiro 1.2.4反序列化漏洞(CVE-2016-4437) 1. 复现环境中的反序列化漏洞，截图证明 2. 尝试利用漏洞执行系统命令，列出/etc目录的文件结构，提供截图</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/23/Apache-Shiro-1-2-4%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E-CVE-2016-4437/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/" class="post-title-link" itemprop="url">Apache solr XXE漏洞(CVE-2017-12629)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-22 23:15:42" itemprop="dateCreated datePublished" datetime="2023-11-22T23:15:42+08:00">2023-11-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-25 08:33:52" itemprop="dateModified" datetime="2023-11-25T08:33:52+08:00">2023-11-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vulhub/" itemprop="url" rel="index"><span itemprop="name">vulhub</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>漏洞环境：Apache solr XXE漏洞(CVE-2017-12629) 1. 复现环境中的XXE漏洞，截图证明 2. 利用XXE漏洞发送HTTP请求，在VPS服务器接收请求，或收到DNS记录。（SSRF利用） 3. 利用XXE漏洞读取本地的 /etc/passwd文件。（文件读取利用）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/22/Apache-solr-XXE%E6%BC%8F%E6%B4%9E(CVE-2017-12629)/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/" class="post-title-link" itemprop="url">Struts2 S2-045远程代码执行漏洞(CVE-2017-5638)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-22 23:15:42" itemprop="dateCreated datePublished" datetime="2023-11-22T23:15:42+08:00">2023-11-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-12-23 20:26:18" itemprop="dateModified" datetime="2023-12-23T20:26:18+08:00">2023-12-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vulhub/" itemprop="url" rel="index"><span itemprop="name">vulhub</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>漏洞环境：Struts2 S2-045远程代码执行漏洞(CVE-2017-5638) 1. 复现环境中的OGNL表达式注入漏洞，截图证明 2. 尝试利用漏洞执行系统命令，读取当前目录下的pom.xml内容，提供截图</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/22/Struts2-S2-045%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2017-5638/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/" class="post-title-link" itemprop="url">Jupyter Notebook 未授权访问漏洞</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-22 23:15:26" itemprop="dateCreated datePublished" datetime="2023-11-22T23:15:26+08:00">2023-11-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-25 08:32:35" itemprop="dateModified" datetime="2023-11-25T08:32:35+08:00">2023-11-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vulhub/" itemprop="url" rel="index"><span itemprop="name">vulhub</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>漏洞环境：Jupyter Notebook 未授权访问漏洞 1. 复现环境中的未授权访问漏洞，登录Jupyter Web管理界面，截图证明 2. 利用Jupyter Notebook控制台执行系统命令，读取/etc/passwd内容，提供截图</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/22/Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE%E6%BC%8F%E6%B4%9E/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/" class="post-title-link" itemprop="url">Apache HTTPD 2.4.48 mod_proxy SSRF漏洞(CVE-2021-40438)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-11-22 23:10:35" itemprop="dateCreated datePublished" datetime="2023-11-22T23:10:35+08:00">2023-11-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-11-25 08:32:28" itemprop="dateModified" datetime="2023-11-25T08:32:28+08:00">2023-11-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/vulhub/" itemprop="url" rel="index"><span itemprop="name">vulhub</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>漏洞环境：Apache HTTPD 2.4.48 mod_proxy SSRF漏洞（CVE-2021-40438） 1. 复现环境中的SSRF漏洞，截图证明 2. 尝试利用SSRF漏洞，访问重庆邮电大学官网</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/22/Apache-HTTPD-2-4-48-mod-proxy-SSRF%E6%BC%8F%E6%B4%9E-CVE-2021-40438/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://gaifagafin.top/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/gaifagafin.jpg">
-      <meta itemprop="name" content="gaifagafin">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | gaifagafin's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/" class="post-title-link" itemprop="url">使用河马对PHP Webshell进行查杀</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2023-11-16 22:33:03 / 修改时间：23:20:44" itemprop="dateCreated datePublished" datetime="2023-11-16T22:33:03+08:00">2023-11-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">Web安全</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>河马Webshell扫描工具的使用</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/11/16/%E4%BD%BF%E7%94%A8%E6%B2%B3%E9%A9%AC%E5%AF%B9PHP-Webshell%E8%BF%9B%E8%A1%8C%E6%9F%A5%E6%9D%80/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 
-    <span itemprop="copyrightYear">2024</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">gaifagafin</span>
-  </div>
-
-    </div>
-  </footer>
-
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
-
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.24/fancybox/fancybox.umd.js" integrity="sha256-oyhjPiYRWGXaAt+ny/mTMWOnN1GBoZDUQnzzgC7FRI4=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script><script src="/js/pjax.js"></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
-<script src="/js/third-party/search/local-search.js"></script>
-
-  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.12/pdfobject.min.js","integrity":"sha256-g2xji1rlE3KsGVClvuxTbcR0Kn2+wtQADSff2Tbb4zA="},"url":"/lib/pdf/web/viewer.html"}</script>
-  <script src="/js/third-party/tags/pdf.js"></script>
-
-
-
-  <script src="/js/third-party/fancybox.js"></script>
-
-
-
-  
-
-
-
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/quicklink/2.3.0/quicklink.umd.js" integrity="sha256-yvJQOINiH9fWemHn0vCA5lsHWJaHs6/ZmO+1Ft04SvM=" crossorigin="anonymous"></script>
-  <script class="next-config" data-name="quicklink" type="application/json">{"enable":"ture","home":"ture","archive":true,"delay":true,"timeout":3000,"priority":true,"url":"https://gaifagafin.top/"}</script>
-  <script src="/js/third-party/quicklink.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
-
-<script>
-var options = {
-  bottom: '32px',
-  right: 'unset',
-  left: '32px',
-  time: '0.3s',
-  mixColor: 'transparent',
-  backgroundColor: 'transparent',
-  buttonColorDark: '#100f2c',
-  buttonColorLight: '#fff',
-  saveInCookies: true,
-  label: '🌓',
-  autoMatchOsTheme: true
-}
-const darkmode = new Darkmode(options);
-window.darkmode = darkmode;
-darkmode.showWidget();
-</script>
-
-</body>
-</html>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF/"><span class="card-category-list-name">CTF</span><span class="card-category-list-count">7</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF/CTF-Basics/"><span class="card-category-list-name">CTF_Basics</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF/CTF-Tools/"><span class="card-category-list-name">CTF_Tools</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/CTF/CTF-Writeup/"><span class="card-category-list-name">CTF_Writeup</span><span class="card-category-list-count">3</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/"><span class="card-category-list-name">Linux</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Linux/Vim/"><span class="card-category-list-name">Vim</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Web%E5%AE%89%E5%85%A8/"><span class="card-category-list-name">Web安全</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/vulhub/"><span class="card-category-list-name">vulhub</span><span class="card-category-list-count">10</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Http/" style="font-size: 1.1em; color: #999">Http</a> <a href="/tags/%E7%8E%AF%E5%A2%83/" style="font-size: 1.1em; color: #999">环境</a> <a href="/tags/Web/" style="font-size: 1.1em; color: #999">Web</a> <a href="/tags/CTF/" style="font-size: 1.3em; color: #99a1ac">CTF</a> <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="font-size: 1.5em; color: #99a9bf">漏洞</a> <a href="/tags/vimwiki/" style="font-size: 1.1em; color: #999">vimwiki</a> <a href="/tags/python/" style="font-size: 1.1em; color: #999">python</a> <a href="/tags/picture/" style="font-size: 1.1em; color: #999">picture</a> <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" style="font-size: 1.1em; color: #999">SQL注入</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.1em; color: #999">笔记</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%A0%81/" style="font-size: 1.1em; color: #999">状态码</a> <a href="/tags/SSTI/" style="font-size: 1.2em; color: #999da3">SSTI</a> <a href="/tags/%E5%BB%BA%E7%AB%99/" style="font-size: 1.1em; color: #999">建站</a> <a href="/tags/socket/" style="font-size: 1.1em; color: #999">socket</a> <a href="/tags/%E5%9B%BE%E5%BA%8A/" style="font-size: 1.1em; color: #999">图床</a> <a href="/tags/PHP/" style="font-size: 1.1em; color: #999">PHP</a> <a href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" style="font-size: 1.2em; color: #999da3">攻防世界</a> <a href="/tags/Linux/" style="font-size: 1.1em; color: #999">Linux</a> <a href="/tags/LAMP/" style="font-size: 1.1em; color: #999">LAMP</a> <a href="/tags/%E4%BC%AA%E5%8D%8F%E8%AE%AE/" style="font-size: 1.1em; color: #999">伪协议</a> <a href="/tags/Writeup/" style="font-size: 1.2em; color: #999da3">Writeup</a> <a href="/tags/vulhub/" style="font-size: 1.4em; color: #99a5b6">vulhub</a> <a href="/tags/GPG/" style="font-size: 1.1em; color: #999">GPG</a> <a href="/tags/vim-markDown/" style="font-size: 1.1em; color: #999">vim-markDown</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E/" style="font-size: 1.1em; color: #999">前端漏洞</a> <a href="/tags/Webshell%E6%89%AB%E6%8F%8F/" style="font-size: 1.1em; color: #999">Webshell扫描</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">18</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">8</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">28</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-03-31T07:48:59.579Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2023/10/29/Hns3KL4TP2qQm9f.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2021 - 2024 By gaifagafin</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
