@@ -1,7 +1,10 @@
 ---
-title: Anaconda报错
+title: Anaconda报错：No module named 'urllib3.packages.six.moves'
 createTime: 2025/09/17 17:11:04
 permalink: /article/2k3pieoy/
+tag:
+  - Anaconda
+  - 报错
 ---
 ## 报错提示
 
