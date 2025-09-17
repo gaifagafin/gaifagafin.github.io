@@ -1,8 +1,13 @@
+---
+title: Anaconda报错
+createTime: 2025/09/17 17:11:04
+permalink: /article/2k3pieoy/
+---
 ## 报错提示
 
 在启动==conda==时报错：`ModuleNotFoundError: No module named 'urllib3.packages.six.moves'`
 
-![](..\.vuepress\public\images\image-20250917170522068.png)
+![](../.vuepress/public/images/image-20250917170522068.png)
 
 ## 解决方法
 
@@ -16,7 +21,7 @@ pip3 install --no-cache-dir -U urllib3
 
 成功启动conda，但是存在告警。
 
-![](..\.vuepress\public\images\image-20250917170528706.png)
+![](../.vuepress/public/images/image-20250917170528706.png)
 
 ```powershell title="报错"
 ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
