@@ -10,6 +10,7 @@ export default defineNavbarConfig([
   { text: '首页', link: '/', icon: 'mdi:home' },
   { text: '博客', link: '/blog/', icon: 'mdi:book' },
   { text: '标签', link: '/blog/tags/', icon: 'mdi:tag' },
+  { text: '分类', link: '/blog/categories/', icon: 'mdi:folder-file' },
   { text: '归档', link: '/blog/archives/', icon: 'mdi:archive' },
   {
     text: '笔记',
