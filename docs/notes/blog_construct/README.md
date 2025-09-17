@@ -8,7 +8,7 @@ permalink: /blog_construct/
 
 ::: center 
 
-[进入笔记->](./1.博客主题颜色.md) 
+[进入笔记->](./1.博客部署.md) 
 
 :::
 
