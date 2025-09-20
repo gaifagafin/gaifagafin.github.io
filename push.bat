@@ -33,6 +33,6 @@ if %errorlevel% neq 0 (
 echo ✓ 推送成功
 
 echo.
-echo ---所有操作完成！GitHub Actions将自动开始部署。
+echo 🎉 所有操作完成！GitHub Actions将自动开始部署。
 echo 可以在GitHub仓库的Actions标签页查看部署进度。
 pause
