@@ -16,7 +16,7 @@ export default defineNavbarConfig([
     text: '笔记',
     icon: 'mdi:file-document',
     items: [
-      { text: '博客搭建指北', link: '/blog_construct/', icon: 'mdi:file-outline' },
+      { text: '博客搭建指北', link: '/blog_construct/', icon: 'mdi:compass' },
       { text: '交易笔记', link: '/trading/', icon: 'mdi:trending-up' },
     ]
   },

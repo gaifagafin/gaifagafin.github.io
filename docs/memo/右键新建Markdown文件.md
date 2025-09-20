@@ -1,17 +1,13 @@
 ---
-title: 右键新建Markdown文件
+title: Windows右键新建Markdown文件
 createTime: 2025/09/18 10:00:51
 permalink: /article/fve6i2x2/
 ---
 使用Typora进行写作时，右键新建菜单里面能直接新建md文件是非常有必要的。效果如下图：
 
-
-
 ![](../.vuepress/public/images/image-20250918100649855.png)
 
-## 前提条件
-
-电脑中必须安装==Typora==。
+------
 
 ## 操作步骤
 

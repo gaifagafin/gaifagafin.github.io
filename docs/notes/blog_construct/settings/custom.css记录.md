@@ -1,3 +1,11 @@
+---
+title: custom.css记录
+createTime: 2025/09/20 20:23:48
+permalink: /blog_construct/1a7s0qm3/
+---
+
+对博客定制css样式表的记录
+```css
 :root {
 
   /**
@@ -142,3 +150,6 @@
 .vp-doc h6:hover::before {
   background-color: var(--vp-c-brand-2);
 }
+
+```
+

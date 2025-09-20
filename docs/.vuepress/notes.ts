@@ -27,20 +27,28 @@ const tradingNote = defineNoteConfig({
   // 如果 前缀不一致，则无法生成侧边栏。
   // 所以请确保  markdown 文件的 permalink 都以 `link` 开头
   link: '/trading',
-  // 手动配置侧边栏结构
-  // sidebar: ['', 'foo', 'bar'],
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
+  // 改进的"auto"功能：以笔记名称为最高层级，自动包含所有子文件
+  sidebar: [
+    {
+      text: '交易笔记', // 最高层级为笔记名称
+      link: '/trading/', // README.md 作为总入口
+      items: 'auto' // 自动生成子文件列表
+    }
+  ],
 })
 
 const blogConstructNote = defineNoteConfig({
   dir: 'blog_construct',
   // `dir` 所指向的目录中的所有 markdown 文件，其 permalink 需要以 `link` 配置作为前缀
   link: '/blog_construct',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-  // 也可以手动配置侧边栏结构
-  // sidebar: [''],
+  // 改进的"auto"功能：以笔记名称为最高层级，自动包含所有子文件
+  sidebar: [
+    {
+      text: '博客搭建指北', // 最高层级为笔记名称
+      link: '/blog_construct/', // README.md 作为总入口
+      items: 'auto' // 自动生成子文件列表
+    }
+  ],
 })
 
 /**
